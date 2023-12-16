@@ -1,0 +1,122 @@
+﻿#include "my_fProt.h"
+
+int VIEWPORT_WIDTH = 1600;
+int VIEWPORT_HEIGHT = 900;
+#define BASE_WIDTH 8
+#define LEN_PER_NUM 8
+#define BOX_WIDTH 184
+#define ITEM_SPACING 8
+#define HEIGHT_SPACING 4
+#define HEIGHT_SPACING_PLUS 20
+#define MIN_TEXT_SIZE 174
+#define combo_length(arr) int(sizeof(arr) / sizeof(arr[0]))
+
+const int AIRCRAFT_ID = 999999;
+
+SDL_Window *gWindow = NULL;			// The window we'll be rendering to
+SDL_Renderer *gRenderTarget = NULL; // The window renderer
+SDL_Texture *gBackGround = NULL;	// The image we will load and show on the screen
+
+ImVec4 clear_color;
+ImVec2 cmdButtonSize = ImVec2(70, 30);
+ImVec2 actionButtonSize = ImVec2(117, 41);
+
+struct button
+{
+	const char *name;
+	int width;
+	int height;
+	int x_pos;
+	int y_pos;
+
+	button(const char *name, int w, int h)
+	{
+		this->name = name;
+		width = w;
+		height = h;
+		x_pos = (VIEWPORT_WIDTH - width) / 2;
+		y_pos = (VIEWPORT_HEIGHT - height) / 2;
+	}
+
+	button(const char *name, ImVec2 buttonSize, ImVec2 CursorPos, int totalButton)
+	{
+		switch (totalButton)
+		{
+		case 4:
+			this->name = name;
+			width = buttonSize.x;
+			height = buttonSize.y;
+			x_pos = CursorPos.x;
+			y_pos = CursorPos.y + HEIGHT_SPACING_PLUS;
+		}
+	}
+
+	button(const char *name, button &beforebutton, int heightSpace)
+	{
+		this->name = name;
+		width = beforebutton.width;
+		height = beforebutton.height;
+		x_pos = beforebutton.x_pos;
+		y_pos = beforebutton.y_pos + beforebutton.height + heightSpace;
+	}
+
+	button(const char *name, button &beforebutton, int widthSpace, int totalButton)
+	{
+		this->name = name;
+		width = beforebutton.width;
+		height = beforebutton.height;
+		x_pos = beforebutton.x_pos + beforebutton.width + widthSpace;
+		y_pos = beforebutton.y_pos;
+	}
+};
+
+enum screen
+{
+	NONE,
+	MAIN_MENU,
+	AIRCRAFT_MANAGEMENT,
+	FLIGHT_MANAGEMENT,
+	DEMO_WINDOW,
+};
+bool open_state[] = {false, false, false, false, false};
+
+#define fixed_full_screen ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+#define fast_instruction ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+
+screen current_screen = FLIGHT_MANAGEMENT;
+
+const char *airlines[] = {"Vietnam Airlines", "Vietjet Air", "Bamboo Airways", "Emirates Airlines", "Starlux Airlines"};
+const char *flightNumbers[] = {"VN", "VJ", "QH", "EK", "JX"};
+const char *airports[] = {
+		"Dien Bien Phu (DIN)",
+		"Tho Xuan (THD)",
+		"Dong Hoi (VDH)",
+		"Chu Lai (VCL)",
+		"Tuy Hoa (TBB)",
+		"Pleiku (PXU)",
+		"Buon Ma Thuot (BMV)",
+		"Rach Gia (VKG)",
+		"Ca Mau (CAH)",
+		"Con Dao (VCS)",
+		"Noi Bai (HAN)",
+		"Tan Son Nhat (SGN)",
+		"Da Nang (DAD)",
+		"Van Don (VDO)",
+		"Cat Bi (HPH)",
+		"Vinh (VII)",
+		"Phu Bai (HUI)",
+		"Cam Ranh (CXR)",
+		"Lien Khuong (DLI)",
+		"Phu Cat (UIH)",
+		"Can Tho (VCA)",
+		"Phu Quoc (PQC)",
+		"Long Thanh (under construction)"};
+
+const char *VN_types[] = {"Airbus A330", "Airbus A321", "Airbus A350", "Boeing 787", "ATR 72-500"};
+const char *VJ_types[] = {"Airbus A320", "Airbus A321neo", "Boeing 737 MAX 200"};
+const char *QH_types[] = {"Airbus A320neo", "Airbus A321CEO", "Embraer 190", "Boeing 787-9 Dreamliner"};
+const char *EK_types[] = {"Airbus A380", "Airbus A340-500", "Boeing 777", "Boeing 777-200ER"};
+const char *JX_types[] = {"Airbus A321neo ACF", "Airbus A330-900", "Airbus A350-900"};
+
+const char **aircraftTypes[] = {VN_types, VJ_types, QH_types, EK_types, JX_types};
+const int aircraftTypesLength[] = {combo_length(VN_types), combo_length(VJ_types), combo_length(QH_types), combo_length(EK_types), combo_length(JX_types)};

@@ -1,0 +1,36 @@
+VN-0807
+ATR 72-500
+8
+70
+VN-1708
+Boeing 787-9 Dreamliner
+8
+17
+B-99999
+Airbus A321neo ACF
+11
+100
+A6-YAY
+Boeing 777
+11
+100
+A6-PRO
+Boeing 777
+9
+100
+A6-PLS
+Airbus A380
+10
+100
+A6-XYZ
+Airbus A380
+9
+100
+VN-2507
+Boeing 787-9 Dreamliner
+7
+25
+A6-XXX
+Boeing 777-200ER
+10
+100
