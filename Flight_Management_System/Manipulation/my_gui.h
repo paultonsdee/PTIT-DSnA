@@ -788,25 +788,6 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 	}
 }
 
-void draw_combo(const char *label, const char *choices[], const int &length, int &current_index, const char *&current)
-{
-	if (ImGui::BeginCombo(label, current))
-	{
-		for (int n = 0; n < length; n++)
-		{
-			const bool is_selected = (current_index == n);
-			if (ImGui::Selectable(choices[n], is_selected))
-			{
-				current_index = n;
-				current = choices[current_index];
-			}
-			if (is_selected)
-				ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-		}
-		ImGui::EndCombo();
-	}
-}
-
 static void HelpMarker(const char *desc)
 {
 	ImGui::TextDisabled("(?)");
@@ -867,7 +848,7 @@ void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 	}
 }
 
-void draw_flight_management_screen(FlightListPTR &flightList, PlaneList& planeList, ImFont *&headerFont)
+void draw_flight_management_screen(FlightListPTR &flightList, PlaneList &planeList, ImFont *&headerFont)
 {
 	open_state[FLIGHT_MANAGEMENT] = true;
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -947,7 +928,7 @@ void draw_flight_management_screen(FlightListPTR &flightList, PlaneList& planeLi
 		add_flight_popup(planeList, show_add_flight_popup);
 }
 
-void add_flight_popup(PlaneList& planeList, bool& show_add_flight_popup)
+void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 {
 	ImGui::OpenPopup("Want to add a new flight?");
 
@@ -1042,24 +1023,13 @@ void add_flight_popup(PlaneList& planeList, bool& show_add_flight_popup)
 
 		ImGui::Text("Aircraft Registration: ");
 		ImGui::SameLine();
-		static int countPlanes = 0;
-		static const char *aircraftRegistration[MAXPLANE];
-
-		for (int i = 0; i < planeList.totalPlane; i++)
-			{
-				if (is_in_array(planeList.nodes[i]->planeType, aircraftTypes[current_flightNumber_index], current_flightNumber_index))
-				{
-					aircraftRegistration[countPlanes] = planeList.nodes[i]->planeID.c_str();
-					countPlanes++;
-				}
-			}
 
 		static int current_aircraftRegistration_index = 0;
-		static const char *current_aircraftRegistration = aircraftRegistration[current_aircraftRegistration_index];
+		static const char *current_aircraftRegistration = planeList.nodes[current_aircraftRegistration_index]->planeID.c_str();
 		// ImGui::PushItemWidth(BOX_WIDTH);
 		// ImGui::SetCursorPosX(MIN_TEXT_SIZE);
-		draw_combo("##aircraft_registration_choice", aircraftRegistration, countPlanes, current_aircraftRegistration_index, current_aircraftRegistration);
 
+		draw_combo("##aircraft_registration", planeList, current_aircraftRegistration_index, current_aircraftRegistration, current_flightNumber_index);
 
 
 		if (ImGui::Button("Save", cmdButtonSize))
@@ -1075,5 +1045,70 @@ void add_flight_popup(PlaneList& planeList, bool& show_add_flight_popup)
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();
+	}
+}
+
+void draw_combo(const char *label, const char *choices[], const int &length, int &current_index, const char *&current)
+{
+	if (ImGui::BeginCombo(label, current))
+	{
+		for (int n = 0; n < length; n++)
+		{
+			const bool is_selected = (current_index == n);
+			if (ImGui::Selectable(choices[n], is_selected))
+			{
+				current_index = n;
+				current = choices[current_index];
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		ImGui::EndCombo();
+	}
+}
+
+void draw_combo(const char *label,PlaneList& planeList, int &current_index, const char *&current, int &airline)
+{
+			static int planeAirlines[MAXPLANE];
+		for (int i = 0; i < MAXPLANE; i++)
+		{
+			planeAirlines[i] = -1;
+		}
+
+		for (int i = 0; i < planeList.totalPlane; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				if (is_in_array(planeList.nodes[i]->planeType, aircraftTypes[j], j))
+				{
+					planeAirlines[i] = j;
+					break;
+				}
+			}
+		}
+
+	static const char *tempTypesArray[MAXPLANE];
+		for (int i = 0; i < planeList.totalPlane; i++)
+		{
+			tempTypesArray[i] = planeList.nodes[i]->planeID.c_str();
+		}
+
+	if (ImGui::BeginCombo(label, current))
+	{
+		for (int n = 0; n < planeList.totalPlane; n++)
+		{
+			if (planeAirlines[n] == airline)
+			{
+				const bool is_selected = (current_index == n);
+				if (ImGui::Selectable(tempTypesArray[n], is_selected))
+				{
+					current_index = n;
+					current = tempTypesArray[current_index];
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+			}
+		}
+		ImGui::EndCombo();
 	}
 }
