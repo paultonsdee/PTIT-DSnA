@@ -392,14 +392,17 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 		// ImGui::Text("Dont forget to save data!\nThis operation cannot be undone!");
 		ImGui::Separator();
 
-		ImGui::Text("Airlines: ");
+		ImGui::Text("Airlines");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 
 		static int current_airline_index = 0;
 		static const char *current_airline = airlines[current_airline_index];
 		const int airline_length = combo_length(airlines);
-		ImGui::PushItemWidth(BOX_WIDTH);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM);
+		
 		draw_combo("##aircraft_registration", airlines, airline_length, current_airline_index, current_airline);
 		ImGui::PopItemWidth();
 
@@ -435,27 +438,36 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 		case 2:
 			HelpMarker("0000 -> 9999");
 			ImGui::SameLine();
-			ImGui::Text(":  VN-");
+			ImGui::SetCursorPosX(COLON_POSX_AM);
+			ImGui::Text(":  ");
 			ImGui::SameLine();
-			ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 3));
+			ImGui::Text("VN-");
+			ImGui::SameLine();
+			ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3));
 			ImGui::InputText("##XXXX", aircraft_registration_buf, 5, ImGuiInputTextFlags_CharsDecimal);
 			ImGui::PopItemWidth();
 			break;
 		case 3:
 			HelpMarker("AAA -> ZZZ");
 			ImGui::SameLine();
-			ImGui::Text(":  A6-");
+			ImGui::SetCursorPosX(COLON_POSX_AM);
+			ImGui::Text(":  ");
 			ImGui::SameLine();
-			ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 3));
+			ImGui::Text("A6-");
+			ImGui::SameLine();
+			ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3));
 			ImGui::InputText("##YYY", aircraft_registration_buf, 4, ImGuiInputTextFlags_CallbackCharFilter, TextFilters::emirates_filter);
 			ImGui::PopItemWidth();
 			break;
 		case 4:
 			HelpMarker("00000 -> 99999");
 			ImGui::SameLine();
-			ImGui::Text(":  B-");
+			ImGui::SetCursorPosX(COLON_POSX_AM);
+			ImGui::Text(":  ");
 			ImGui::SameLine();
-			ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 2));
+			ImGui::Text("B-");
+			ImGui::SameLine();
+			ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 2));
 			ImGui::InputText("##XXXXX", aircraft_registration_buf, 6, ImGuiInputTextFlags_CharsDecimal);
 			ImGui::PopItemWidth();
 			break;
@@ -465,7 +477,10 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 
 		ImGui::Spacing();
 
-		ImGui::Text("Aircraft type: ");
+		ImGui::Text("Aircraft type");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 
 		static int current_aircraftType_index[5] = {0};
@@ -475,23 +490,24 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 			current_aircraftType[i] = aircraftTypes[i][current_aircraftType_index[i]];
 		}
 
-		ImGui::PushItemWidth(BOX_WIDTH);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM);
 		draw_combo("##aircraft_type", aircraftTypes[current_airline_index], aircraftTypesLength[current_airline_index], current_aircraftType_index[current_airline_index], current_aircraftType[current_airline_index]);
 
 		ImGui::PopItemWidth();
 
 		ImGui::Spacing();
 
-		ImGui::Text("Total seats: ");
+		ImGui::Text("Total seats");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 		static int total_seats = 2;
-		ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 2) - ITEM_SPACING);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 2) - ITEM_SPACING);
 		ImGui::SliderInt("##slider_seats", &total_seats, 2, 11);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		ImGui::PushItemWidth(BASE_WIDTH + LEN_PER_NUM * 2);
+		ImGui::PushItemWidth(BASE_WIDTH + DIGIT_WIDTH * 2);
 		if (ImGui::InputInt("##input_seats", &total_seats, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
 			if (total_seats < 2)
@@ -503,15 +519,17 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 
 		ImGui::Spacing();
 
-		ImGui::Text("Total rows: ");
+		ImGui::Text("Total rows");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 		static int total_rows = 1;
-		ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 3) - ITEM_SPACING);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3) - ITEM_SPACING);
 		ImGui::SliderInt("##slider_rows", &total_rows, 1, 100);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		ImGui::PushItemWidth(BASE_WIDTH + LEN_PER_NUM * 3);
+		ImGui::PushItemWidth(BASE_WIDTH + DIGIT_WIDTH * 3);
 		if (ImGui::InputInt("##input_rows", &total_rows, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
 			if (total_rows < 1)
@@ -569,7 +587,10 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 		// ImGui::Text("Dont forget to save data!\nThis operation cannot be undone!");
 		ImGui::Separator();
 
-		ImGui::Text("Airlines: ");
+		ImGui::Text("Airlines");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 
 		static int current_airline_index = 0;
@@ -592,8 +613,7 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 		}
 		static const char *current_airline = airlines[current_airline_index];
 		const int airline_length = combo_length(airlines);
-		ImGui::PushItemWidth(BOX_WIDTH);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM);
 		draw_combo("##aircraft_registration", airlines, airline_length, current_airline_index, current_airline);
 		ImGui::PopItemWidth();
 
@@ -647,27 +667,36 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 		case 2:
 			HelpMarker("0000 -> 9999");
 			ImGui::SameLine();
-			ImGui::Text(":  VN-");
+			ImGui::SetCursorPosX(COLON_POSX_AM);
+			ImGui::Text(":  ");
 			ImGui::SameLine();
-			ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 3));
+			ImGui::Text("VN-");
+			ImGui::SameLine();
+			ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3));
 			ImGui::InputText("##XXXX", aircraft_registration_buf, 5, ImGuiInputTextFlags_CharsDecimal);
 			ImGui::PopItemWidth();
 			break;
 		case 3:
 			HelpMarker("AAA -> ZZZ");
 			ImGui::SameLine();
-			ImGui::Text(":  A6-");
+			ImGui::SetCursorPosX(COLON_POSX_AM);
+			ImGui::Text(":  ");
 			ImGui::SameLine();
-			ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 3));
+			ImGui::Text("A6-");
+			ImGui::SameLine();
+			ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3));
 			ImGui::InputText("##YYY", aircraft_registration_buf, 4, ImGuiInputTextFlags_CallbackCharFilter, TextFilters::emirates_filter);
 			ImGui::PopItemWidth();
 			break;
 		case 4:
 			HelpMarker("00000 -> 99999");
 			ImGui::SameLine();
-			ImGui::Text(":  B-");
+			ImGui::SetCursorPosX(COLON_POSX_AM);
+			ImGui::Text(":  ");
 			ImGui::SameLine();
-			ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 2));
+			ImGui::Text("B-");
+			ImGui::SameLine();
+			ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 2));
 			ImGui::InputText("##XXXXX", aircraft_registration_buf, 6, ImGuiInputTextFlags_CharsDecimal);
 			ImGui::PopItemWidth();
 			break;
@@ -677,7 +706,10 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 
 		ImGui::Spacing();
 
-		ImGui::Text("Aircraft type: ");
+		ImGui::Text("Aircraft type");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 
 		static int current_aircraftType_index[5] = {0};
@@ -701,23 +733,24 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 			successLoadAircraftType = true;
 		}
 
-		ImGui::PushItemWidth(BOX_WIDTH);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM);
 		draw_combo("##aircraft_type", aircraftTypes[current_airline_index], aircraftTypesLength[current_airline_index], current_aircraftType_index[current_airline_index], current_aircraftType[current_airline_index]);
 
 		ImGui::PopItemWidth();
 
 		ImGui::Spacing();
 
-		ImGui::Text("Total seats: ");
+		ImGui::Text("Total seats");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 		static int total_seats = planeList.nodes[selectedPlane]->seatNum;
-		ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 2) - ITEM_SPACING);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 2) - ITEM_SPACING);
 		ImGui::SliderInt("##slider_seats", &total_seats, 2, 11);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		ImGui::PushItemWidth(BASE_WIDTH + LEN_PER_NUM * 2);
+		ImGui::PushItemWidth(BASE_WIDTH + DIGIT_WIDTH * 2);
 		if (ImGui::InputInt("##input_seats", &total_seats, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
 			if (total_seats < 2)
@@ -729,15 +762,17 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 
 		ImGui::Spacing();
 
-		ImGui::Text("Total rows: ");
+		ImGui::Text("Total rows");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_AM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 		static int total_rows = planeList.nodes[selectedPlane]->rowNum;
-		ImGui::PushItemWidth(BOX_WIDTH - (BASE_WIDTH + LEN_PER_NUM * 3) - ITEM_SPACING);
-		ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3) - ITEM_SPACING);
 		ImGui::SliderInt("##slider_rows", &total_rows, 1, 100);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
-		ImGui::PushItemWidth(BASE_WIDTH + LEN_PER_NUM * 3);
+		ImGui::PushItemWidth(BASE_WIDTH + DIGIT_WIDTH * 3);
 		if (ImGui::InputInt("##input_rows", &total_rows, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
 			if (total_rows < 1)
@@ -940,16 +975,20 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 	{
 		ImGui::Separator();
 
-		ImGui::Text("Flight Number: ");
+		ImGui::Text("Flight Number");
 		ImGui::SameLine();
 		HelpMarker("VNxxxx: Vietnam Airlines\nVJxxxx: Vietjet Air\nQHxxxx: Bamboo Airways\nEKxxxx: Emirates Airlines\nJXxxxx: Starlux Airlines\nxxxx: 0000 -> 9999");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 		static int current_flightNumber_index = 0;
 		static const char *current_flightNumber = flightNumbers[current_flightNumber_index];
 		const int flightNumber_length = combo_length(flightNumbers);
-		// ImGui::PushItemWidth(BOX_WIDTH);
-		// ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		int dropdownBox2Digit = (BASE_WIDTH_DROPDOWN + DIGIT_WIDTH * 2) + DROPDOWN_WIDTH;
+		ImGui::PushItemWidth(dropdownBox2Digit);
 		draw_combo("##flight_number", flightNumbers, flightNumber_length, current_flightNumber_index, current_flightNumber);
+		ImGui::PopItemWidth();
 
 		struct TextFilters
 		{
@@ -971,14 +1010,23 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		};
 		ImGui::SameLine();
 		static char flight_number[5] = "";
+		ImGui::PushItemWidth(BOX_WIDTH_FM - dropdownBox2Digit - ITEM_SPACING);
 		ImGui::InputText("##XXXX", flight_number, 5, ImGuiInputTextFlags_CharsDecimal);
 
 		ImGui::Spacing();
 
-		ImGui::Text("Departure Date: ");
+		ImGui::Text("Departure Date");
 		ImGui::SameLine();
 		HelpMarker("DD/MM/YYYY");
 		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		int box2digit = BASE_WIDTH + DIGIT_WIDTH * 2;
+		int box4digit = BASE_WIDTH + DIGIT_WIDTH * 4;
+		int excessWidth = (BOX_WIDTH_FM - (box2digit * 2 + box4digit + ITEM_SPACING * 4 + DIGIT_WIDTH / 2 * 2)) / 3;
+		box2digit += excessWidth;
+		ImGui::PushItemWidth(box2digit);
 		static char day[3] = "";
 		ImGui::InputText("##day", day, 3, ImGuiInputTextFlags_CharsDecimal);
 		ImGui::SameLine();
@@ -986,18 +1034,27 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		ImGui::SameLine();
 		static char month[3] = "";
 		ImGui::InputText("##month", month, 3, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::Text("/");
 		ImGui::SameLine();
+		box4digit += (excessWidth - 2);
+		ImGui::PushItemWidth(box4digit);
 		static char year[5] = "";
 		ImGui::InputText("##year", year, 5, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::PopItemWidth();
 
 		ImGui::Spacing();
 
-		ImGui::Text("Departure Time: ");
+		ImGui::Text("Departure Time");
 		ImGui::SameLine();
 		HelpMarker("HH:MM");
 		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		int timeBox = (BOX_WIDTH_FM - (ITEM_SPACING * 2 + DIGIT_WIDTH / 2)) / 2;
+		ImGui::PushItemWidth(timeBox);
 		static char departure_hour[3] = "";
 		ImGui::InputText("##departure_hour", departure_hour, 3, ImGuiInputTextFlags_CharsDecimal);
 		ImGui::SameLine();
@@ -1005,32 +1062,44 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		ImGui::SameLine();
 		static char departure_minute[3] = "";
 		ImGui::InputText("##departure_minute", departure_minute, 3, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::PopItemWidth();
 
 		ImGui::Spacing();
 
-		ImGui::Text("Destination Airport: ");
+		ImGui::Text("Destination Airport");
 		ImGui::SameLine();
 		HelpMarker("SGN: Tan Son Nhat International Airport\nHAN: Noi Bai International Airport\nDAD: Da Nang International Airport\nHUI: Phu Bai International Airport\nPQC: Phu Quoc International Airport\nVCA: Can Tho International Airport\nVCS: Con Dao International Airport\nDIN: Dien Bien Phu Airport\nVKG: Rach Gia Airport\nBMV: Buon Ma Thuot Airport\nVII: Vinh International Airport\nUIH: Phu Cat Airport\nPXU: Pleiku Airport\nTHD: Thanh Hoa Airport\nTBB: Tuy Hoa Airport\nVCL: Chu Lai Airport\nVDO: Van Don International Airport\nVDH: Dong Hoi Airport\nVKG: Rach Gia Airport\nVII: Vinh International Airport\nUIH: Phu Cat Airport\nPXU: Pleiku Airport\nTHD: Thanh Hoa Airport\nTBB: Tuy Hoa Airport\nVCL: Chu Lai Airport\nVDO: Van Don International Airport\nVDH: Dong Hoi Airport\nVKG: Rach Gia Airport\nVII: Vinh International Airport\nUIH: Phu Cat Airport\nPXU: Pleiku Airport\nTHD: Thanh Hoa Airport\nTBB: Tuy Hoa Airport\nVCL: Chu Lai Airport\nVDO: Van Don International Airport\nVDH: Dong Hoi Airport");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 		static int current_destinationAirport_index = 0;
 		static const char *current_destinationAirport = airports[current_destinationAirport_index];
 		const int Airports_length = combo_length(airports);
-		// ImGui::PushItemWidth(BOX_WIDTH);
-		// ImGui::SetCursorPosX(MIN_TEXT_SIZE);
+		
+		ImGui::PushItemWidth(BOX_WIDTH_FM);
 		draw_combo("##destination_airport", airports, Airports_length, current_destinationAirport_index, current_destinationAirport);
-
+		
 		ImGui::Spacing();
 
-		ImGui::Text("Aircraft Registration: ");
+		ImGui::Text("Aircraft Registration");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
 		ImGui::SameLine();
 
 		static int current_aircraftRegistration_index = 0;
 		static const char *current_aircraftRegistration = planeList.nodes[current_aircraftRegistration_index]->planeID.c_str();
-		// ImGui::PushItemWidth(BOX_WIDTH);
-		// ImGui::SetCursorPosX(MIN_TEXT_SIZE);
-
+		// ImGui::PushItemWidth(BOX_WIDTH_AM);
+		
 		draw_combo("##aircraft_registration", planeList, current_aircraftRegistration_index, current_aircraftRegistration, current_flightNumber_index);
+		ImGui::PopItemWidth();
 
+		ImGui::Separator();
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
 
 		if (ImGui::Button("Save", cmdButtonSize))
 		{
@@ -1067,31 +1136,31 @@ void draw_combo(const char *label, const char *choices[], const int &length, int
 	}
 }
 
-void draw_combo(const char *label,PlaneList& planeList, int &current_index, const char *&current, int &airline)
+void draw_combo(const char *label, PlaneList &planeList, int &current_index, const char *&current, int &airline)
 {
-			static int planeAirlines[MAXPLANE];
-		for (int i = 0; i < MAXPLANE; i++)
-		{
-			planeAirlines[i] = -1;
-		}
+	static int planeAirlines[MAXPLANE];
+	for (int i = 0; i < MAXPLANE; i++)
+	{
+		planeAirlines[i] = -1;
+	}
 
-		for (int i = 0; i < planeList.totalPlane; i++)
+	for (int i = 0; i < planeList.totalPlane; i++)
+	{
+		for (int j = 0; j < 5; j++)
 		{
-			for (int j = 0; j < 5; j++)
+			if (is_in_array(planeList.nodes[i]->planeType, aircraftTypes[j], j))
 			{
-				if (is_in_array(planeList.nodes[i]->planeType, aircraftTypes[j], j))
-				{
-					planeAirlines[i] = j;
-					break;
-				}
+				planeAirlines[i] = j;
+				break;
 			}
 		}
+	}
 
 	static const char *tempTypesArray[MAXPLANE];
-		for (int i = 0; i < planeList.totalPlane; i++)
-		{
-			tempTypesArray[i] = planeList.nodes[i]->planeID.c_str();
-		}
+	for (int i = 0; i < planeList.totalPlane; i++)
+	{
+		tempTypesArray[i] = planeList.nodes[i]->planeID.c_str();
+	}
 
 	if (ImGui::BeginCombo(label, current))
 	{

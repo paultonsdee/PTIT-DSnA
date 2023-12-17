@@ -3,13 +3,18 @@
 int VIEWPORT_WIDTH = 1600;
 int VIEWPORT_HEIGHT = 900;
 #define BASE_WIDTH 8
-#define LEN_PER_NUM 8
-#define BOX_WIDTH 184
+#define BASE_WIDTH_DROPDOWN 16
+#define DIGIT_WIDTH 8
+#define COLON_POSX_AM 165
+#define BOX_WIDTH_AM 184
 #define ITEM_SPACING 8
 #define HEIGHT_SPACING 4
 #define HEIGHT_SPACING_PLUS 20
-#define MIN_TEXT_SIZE 174
+#define BOX_POSX_AM 174
 #define combo_length(arr) int(sizeof(arr) / sizeof(arr[0]))
+#define COLON_POSX_FM 157
+#define BOX_WIDTH_FM 168
+#define DROPDOWN_WIDTH 20
 
 const int AIRCRAFT_ID = 999999;
 
@@ -109,8 +114,7 @@ const char *airports[] = {
 		"Lien Khuong (DLI)",
 		"Phu Cat (UIH)",
 		"Can Tho (VCA)",
-		"Phu Quoc (PQC)",
-		"Long Thanh (under construction)"};
+		"Phu Quoc (PQC)"};
 
 const char *VN_types[] = {"Airbus A330", "Airbus A321", "Airbus A350", "Boeing 787", "ATR 72-500"};
 const char *VJ_types[] = {"Airbus A320", "Airbus A321neo", "Boeing 737 MAX 200"};

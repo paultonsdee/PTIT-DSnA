@@ -72,9 +72,9 @@ int main(int, char**)
 				}
 				else if (ev.type == SDL_MOUSEBUTTONDOWN)
 				{
-					// int mouseX, mouseY;
-					// SDL_GetMouseState(&mouseX, &mouseY);
-					// std::cout << mouseX << " " << mouseY << std::endl;
+					int mouseX, mouseY;
+					SDL_GetMouseState(&mouseX, &mouseY);
+					std::cout << mouseX << " " << mouseY << std::endl;
 				}
 				else if (ev.type == SDL_MOUSEBUTTONUP)
 				{
