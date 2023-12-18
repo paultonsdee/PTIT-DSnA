@@ -2,10 +2,6 @@
 
 SDL_Color BLACK = {0, 0, 0};
 
-// bool loadMedia(); // Loads media
-// SDL_Surface* get_text_surface(const char*, const char*, int);
-// void draw_button(SDL_Rect*, const char*, void(*)(void*), void*);
-
 void display_message(const char *type, const char *label, const char *message)
 {
 	Uint32 flag;
@@ -265,19 +261,6 @@ void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
 							ImGui::Text("%d x %d", plane->seatNum, plane->rowNum);
 							ImGui::EndTooltip();
 						}
-						// ImGui::SameLine();
-						// ImGui::PushID(row * AIRCRAFT_ID + column);
-						// ImGui::SmallButton("BUY");
-						// if (ImGui::BeginPopupContextItem("Want to buy a ticket?"))
-						// {
-						// 	ImGui::Text(" %d,%d", column, row);
-						// 	if (ImGui::Button("buy"))
-						// 		ImGui::CloseCurrentPopup();
-						// 	if (ImGui::Button("cancel"))
-						// 		ImGui::CloseCurrentPopup();
-						// 	ImGui::EndPopup();
-						// }
-						// ImGui::PopID();
 
 						break;
 					}
@@ -910,47 +893,6 @@ void draw_flight_management_screen(FlightListPTR &flightList, PlaneList &planeLi
 	//    ImGuiTableFlags_SizingStretchSame|
 	//    ImGuiTableFlags_ScrollX
 	//    ImGuiTableFlags_SizingFixedFit;
-
-	// ImGuiTableFlags_NoBordersInBody, HighlightHoveredColumn, ImGuiTableFlags_ScrollY
-
-	// ImVec2 tableCursorPos = ImGui::GetCursorPos();
-
-	// static int selected_row = -1;
-	// if (ImGui::BeginTable("Flights", 4, flags))
-	// {
-	// 	ImGui::TableSetupColumn("Flight ID");
-	// 	ImGui::TableSetupColumn("Aircraft Registration");
-	// 	ImGui::TableSetupColumn("Departure Time");
-	// 	ImGui::TableSetupColumn("Arrival Time");
-	// 	ImGui::TableHeadersRow();
-	// 	if (!is_flightList_empty(flightList))
-	// 	{
-	// 		ImGui::TableNextRow();
-	// 		// static bool* selected = new bool[planeList.totalPlane] {false};
-	// 		for (int row = 0; row < flightList.totalFlight; row++)
-	// 		{
-	// 			ImGui::TableNextRow();
-	// 			for (int column = 0; column < 4; column++)
-	// 			{
-	// 				ImGui::TableSetColumnIndex(column);
-	// 				Flight *flight = flightList.nodes[row];
-	// 				switch (column)
-	// 				{
-	// 				case 0:
-	// 					if (ImGui::Selectable((flight->flightID).c_str(), selected_row == row, ImGuiSelectableFlags_SpanAllColumns))
-	// 						selected_row = row;
-	// 					break;
-	// 				case 1:
-	// 					ImGui::Text((flight->planeID).c_str());
-	// 					break;
-	// 				case 2:
-	// 					ImGui::Text("%d:%d", flight->departureTime.hour, flight->departureTime.minute);
-	// 					break;
-	// 				case 3:
-	// 					ImGui::Text("%d:%d", flight->arrivalTime.hour, flight->arrivalTime.minute);
-	// 					break;
-	// 				}
-	// 			}
 
 	// Always center this window when appearing
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
