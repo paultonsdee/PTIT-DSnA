@@ -385,7 +385,7 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 		static const char *current_airline = airlines[current_airline_index];
 		const int airline_length = combo_length(airlines);
 		ImGui::PushItemWidth(BOX_WIDTH_AM);
-		
+
 		draw_combo("##aircraft_registration", airlines, airline_length, current_airline_index, current_airline);
 		ImGui::PopItemWidth();
 
@@ -969,21 +969,49 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		int excessWidth = (BOX_WIDTH_FM - (box2digit * 2 + box4digit + ITEM_SPACING * 4 + DIGIT_WIDTH / 2 * 2)) / 3;
 		box2digit += excessWidth;
 		ImGui::PushItemWidth(box2digit);
-		static char day[3] = "";
-		ImGui::InputText("##day", day, 3, ImGuiInputTextFlags_CharsDecimal);
+		static int day = 1;
+		static int month = 1;
+		static int year = 2024;
+		int maxDayInMonth[12];
+		const int minDay = 1;
+		const int minMonth = 1;
+		const int maxMonth = 12;
+		const int minYear = 2024;
+		const int maxYear = 2099;
+		find_max_day_in_month(maxDayInMonth, month, year);
+
+		if (ImGui::InputInt("##day", &day, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+
+			if (day < minDay)
+				day = minDay;
+			else if (day > maxDayInMonth[month-1])
+				day = maxDayInMonth[month-1];
+		}
 		ImGui::SameLine();
 		ImGui::Text("/");
 		ImGui::SameLine();
-		static char month[3] = "";
-		ImGui::InputText("##month", month, 3, ImGuiInputTextFlags_CharsDecimal);
+		if (ImGui::InputInt("##month", &month, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if(month < minMonth)
+				month = minMonth;
+			else if (month > maxMonth)
+				month = maxMonth;
+		}
+
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::Text("/");
 		ImGui::SameLine();
 		box4digit += (excessWidth - 2);
 		ImGui::PushItemWidth(box4digit);
-		static char year[5] = "";
-		ImGui::InputText("##year", year, 5, ImGuiInputTextFlags_CharsDecimal);
+		if (ImGui::InputInt("##year", &year, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (year < minYear)
+				year = minYear;
+			else if (year > maxYear)
+				year = maxYear;
+		}
 		ImGui::PopItemWidth();
 
 		ImGui::Spacing();
@@ -1018,10 +1046,10 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		static int current_destinationAirport_index = 0;
 		static const char *current_destinationAirport = airports[current_destinationAirport_index];
 		const int Airports_length = combo_length(airports);
-		
+
 		ImGui::PushItemWidth(BOX_WIDTH_FM);
 		draw_combo("##destination_airport", airports, Airports_length, current_destinationAirport_index, current_destinationAirport);
-		
+
 		ImGui::Spacing();
 
 		ImGui::Text("Aircraft Registration");
@@ -1033,7 +1061,7 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		static int current_aircraftRegistration_index = 0;
 		static const char *current_aircraftRegistration = planeList.nodes[current_aircraftRegistration_index]->planeID.c_str();
 		// ImGui::PushItemWidth(BOX_WIDTH_AM);
-		
+
 		draw_combo("##aircraft_registration", planeList, current_aircraftRegistration_index, current_aircraftRegistration, current_flightNumber_index);
 		ImGui::PopItemWidth();
 
@@ -1122,4 +1150,28 @@ void draw_combo(const char *label, PlaneList &planeList, int &current_index, con
 		}
 		ImGui::EndCombo();
 	}
+}
+
+void find_max_day_in_month(int *maxDayInMonth, int &month, int &year)
+{
+	for (int i = 0; i < 12; i++)
+	{
+		int month = i + 1;
+		if (month < 8)
+		{
+			if (month % 2)
+				maxDayInMonth[i] = 31;
+			else
+				maxDayInMonth[i] = 30;
+		}
+		else if (month % 2)
+			maxDayInMonth[i] = 30;
+		else
+			maxDayInMonth[i] = 31;
+	}
+	if ((year % 4 == 0) && (year % 100) ||
+		(year % 4 == 0) && (year % 100) && (year % 400))
+		maxDayInMonth[1] = 29;
+	else
+		maxDayInMonth[1] = 28;
 }

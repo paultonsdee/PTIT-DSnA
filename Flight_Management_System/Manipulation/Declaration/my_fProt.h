@@ -24,6 +24,7 @@ void show_delete_plane_popup(PlaneList&, int&);
 void draw_flight_management_screen(FlightListPTR&, PlaneList&, ImFont*&);
 void add_flight_popup(PlaneList&, bool&);
 void draw_combo(const char *,PlaneList& , int &, const char *&, int&);
+void find_max_day_in_month (int*, int&, int&);
 
 // --------------------------------------------
 // |             Data Handling                |
