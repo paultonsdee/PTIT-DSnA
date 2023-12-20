@@ -1025,13 +1025,29 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 		ImGui::SameLine();
 		int timeBox = (BOX_WIDTH_FM - (ITEM_SPACING * 2 + DIGIT_WIDTH / 2)) / 2;
 		ImGui::PushItemWidth(timeBox);
-		static char departure_hour[3] = "";
-		ImGui::InputText("##departure_hour", departure_hour, 3, ImGuiInputTextFlags_CharsDecimal);
+		static int departureHour = 0;
+		int minHour = 0;
+		int maxHour = 23;
+		if(ImGui::InputInt("##departure_hour", &departureHour, 0 ,0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (departureHour < minHour)
+				departureHour = minHour;
+			else if (departureHour > maxHour)
+				departureHour = maxHour;
+		}
 		ImGui::SameLine();
 		ImGui::Text(":");
 		ImGui::SameLine();
-		static char departure_minute[3] = "";
-		ImGui::InputText("##departure_minute", departure_minute, 3, ImGuiInputTextFlags_CharsDecimal);
+		static int departureMinute = 0;
+		int minMinute = 0;
+		int maxMinute = 59;
+		if (ImGui::InputInt("##departure_minute", &departureMinute, 0 ,0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (departureMinute < minMinute)
+				departureMinute = minMinute;
+			if (departureMinute > maxMinute)
+				departureMinute = maxMinute;
+		}
 		ImGui::PopItemWidth();
 
 		ImGui::Spacing();
