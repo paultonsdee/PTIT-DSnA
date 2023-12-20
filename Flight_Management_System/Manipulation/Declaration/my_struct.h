@@ -39,6 +39,7 @@ struct Ticket
 {
     std::string ticketID;
     std::string passengerID;
+    bool inUse;
 };
 
 struct Flight
