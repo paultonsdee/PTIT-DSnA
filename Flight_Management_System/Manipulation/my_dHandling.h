@@ -1,6 +1,7 @@
 ﻿#include "Declaration/my_fProt.h"
 
 std::string aircraftFile = "./Media/aircraft.txt";
+std::string flightFile = "./Media/flight.txt";
 
 void string_uppercase(std::string &);
 bool check_valid_planeID(std::string &);
@@ -102,22 +103,6 @@ void edit_plane(PlaneList &planeList, int &current_airline_index, char aircraft_
 	std::cout << "edited successfully!" << std::endl;
 }
 
-void display_planeList(PlaneList &planeList)
-{
-	if (is_planeList_empty(planeList))
-	{
-		std::cout << "The list is empty";
-		return;
-	}
-
-	std::cout << "Plane ID\tPlane Type\tSeat Number\tRow Number" << std::endl;
-	for (int i = 0; i < planeList.totalPlane; i++)
-	{
-		Plane *plane = planeList.nodes[i];
-		std::cout << plane->planeID << "\t" << plane->planeType << "\t" << plane->seatNum << "\t" << plane->rowNum << std::endl;
-	}
-}
-
 // void save_aircraft(PlaneList &planeList, std::string filename) //binary file
 // {
 // 	std::ofstream f(filename, std::ios::binary);
@@ -211,4 +196,68 @@ void delete_plane(PlaneList &planeList, int &planeIndex)
 	for (int i = planeIndex; i < planeList.totalPlane - 1; i++)
 		planeList.nodes[i] = planeList.nodes[i + 1];
 	planeList.totalPlane--;
+}
+
+void insert_flight(FlightListPTR &First, const char*& flightNumber1, char (&flightNumber2)[5], const char*& desAirport, PlaneList& planeList, int& selectedPlane, int& day, int& month, int& year, int& hour, int& minute)
+
+{
+	FlightListPTR Last = NULL;
+	if (First != NULL)
+		for (Last = First; Last->next != NULL; Last = Last->next)
+			;
+	
+	FlightListPTR p = new_flight();
+
+	Flight *flight = &p->flight;
+	flight->flightNumber = flightNumber1;
+	flight->flightNumber += flightNumber2;
+	flight->desAirport = desAirport;
+	flight->stt = 1;
+	flight->planeID = planeList.nodes[selectedPlane]->planeID;
+	flight->totalTicket = 0;
+	flight->maxTicket = planeList.nodes[selectedPlane]->seatNum*planeList.nodes[selectedPlane]->rowNum;
+	flight->ticketList = new Ticket[flight->maxTicket];
+
+	// Ticket *ticket = &flight->ticketList[flight->totalTicket];
+	// ticket->ticketID = ;
+	// ticket->passengerID = ;
+	// ticket->inUse = 0;
+
+	DT *departureTime = &flight->departureTime;
+	departureTime->day = day;
+	departureTime->month = month;
+	departureTime->year = year;
+	departureTime->hour = hour;
+	departureTime->minute = minute;
+
+	p->next = NULL;
+	if (First == NULL)
+		First = p;
+	else
+		Last->next = p;
+	Last = p;
+
+	std::cout << "created successfully!" << std::endl;
+}
+
+void link_list_initialize (FlightListPTR &First)
+{
+	First = NULL;
+}
+
+FlightListPTR new_flight (void) {
+	FlightListPTR p = new FlightList;
+	return p;
+}
+
+int count_flights (FlightListPTR First)
+{
+	int count = 0;
+	FlightListPTR p = First;
+	while (p != NULL)
+	{
+		count++;
+		p = p->next;
+	}
+	return count;
 }

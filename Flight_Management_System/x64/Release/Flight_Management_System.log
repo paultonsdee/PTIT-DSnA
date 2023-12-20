@@ -1,10 +1,10 @@
 ﻿  main.cpp
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(15,17): warning C5043: 'terminate': exception specification does not match previous declaration
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(14,17): warning C5043: 'terminate': exception specification does not match previous declaration
   (compiling source file 'main.cpp')
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_terminate.h(33,48):
   see declaration of 'terminate'
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(15,6): warning C4273: 'terminate': inconsistent dll linkage
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(14,6): warning C4273: 'terminate': inconsistent dll linkage
   (compiling source file 'main.cpp')
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_terminate.h(33,48):
   see previous definition of 'terminate'
@@ -184,17 +184,17 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(10
   imgui_tables.cpp
   imgui_widgets.cpp
   my_fProt.h
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(15,17): warning C5043: 'terminate': exception specification does not match previous declaration
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(14,17): warning C5043: 'terminate': exception specification does not match previous declaration
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_terminate.h(33,48):
   see declaration of 'terminate'
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(15,6): warning C4273: 'terminate': inconsistent dll linkage
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_fProt.h(14,6): warning C4273: 'terminate': inconsistent dll linkage
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_terminate.h(33,48):
   see previous definition of 'terminate'
   
      Creating library D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.lib and object D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 2464 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 2479 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Flight_Management_System.vcxproj -> D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exe

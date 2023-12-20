@@ -8,7 +8,8 @@ int main(int, char**)
 	// std::string filename = "aircraft.dat";
 	PlaneList planeList;
 	
-	FlightListPTR pFlightList = NULL;
+	FlightListPTR pFirstFlight;
+	link_list_initialize(pFirstFlight);
 
 	if (!init_SDL())
 	{
@@ -75,6 +76,36 @@ int main(int, char**)
 					// int mouseX, mouseY;
 					// SDL_GetMouseState(&mouseX, &mouseY);
 					// std::cout << mouseX << " " << mouseY << std::endl;
+
+					// if (count_flights(pFirstFlight) != 0)
+					// {
+					// 	std::cout << pFirstFlight->flight.flightNumber << std::endl;
+					// 	std::cout << pFirstFlight->flight.departureTime.day << std::endl;
+					// 	std::cout << pFirstFlight->flight.departureTime.month << std::endl;
+					// 	std::cout << pFirstFlight->flight.departureTime.year << std::endl;
+					// 	std::cout << pFirstFlight->flight.departureTime.hour << std::endl;
+					// 	std::cout << pFirstFlight->flight.departureTime.minute << std::endl;
+					// 	std::cout << pFirstFlight->flight.desAirport << std::endl;
+					// 	std::cout << pFirstFlight->flight.stt << std::endl;
+					// 	std::cout << pFirstFlight->flight.planeID << std::endl;
+					// 	std::cout << pFirstFlight->flight.totalTicket << std::endl;
+					// 	std::cout << pFirstFlight->flight.maxTicket << std::endl;
+					// }
+					// if (count_flights(pFirstFlight) > 1)
+					// {
+					// 	std::cout << pFirstFlight->next->flight.flightNumber << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.departureTime.day << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.departureTime.month << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.departureTime.year << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.departureTime.hour << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.departureTime.minute << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.desAirport << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.stt << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.planeID << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.totalTicket << std::endl;
+					// 	std::cout << pFirstFlight->next->flight.maxTicket << std::endl;
+					// }
+
 				}
 				else if (ev.type == SDL_MOUSEBUTTONUP)
 				{
@@ -93,7 +124,7 @@ int main(int, char**)
 				draw_aircraft_management_screen(planeList, special_font);
 				break;
 			case FLIGHT_MANAGEMENT:
-				draw_flight_management_screen(pFlightList, planeList, special_font);
+				draw_flight_management_screen(pFirstFlight, planeList, special_font);
 				break;
 			case DEMO_WINDOW:
 				ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);

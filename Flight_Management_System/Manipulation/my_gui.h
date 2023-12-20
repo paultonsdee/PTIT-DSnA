@@ -866,7 +866,7 @@ void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 	}
 }
 
-void draw_flight_management_screen(FlightListPTR &flightList, PlaneList &planeList, ImFont *&headerFont)
+void draw_flight_management_screen(FlightListPTR &pFirstFlight, PlaneList &planeList, ImFont *&headerFont)
 {
 	open_state[FLIGHT_MANAGEMENT] = true;
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -902,10 +902,10 @@ void draw_flight_management_screen(FlightListPTR &flightList, PlaneList &planeLi
 	if (ImGui::Button("Add", ImVec2(200, 50)))
 		show_add_flight_popup = true;
 	if (show_add_flight_popup)
-		add_flight_popup(planeList, show_add_flight_popup);
+		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup);
 }
 
-void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
+void add_flight_popup(FlightListPTR &pFirstFlight, PlaneList &planeList, bool &show_add_flight_popup)
 {
 	ImGui::OpenPopup("Want to add a new flight?");
 
@@ -1089,6 +1089,7 @@ void add_flight_popup(PlaneList &planeList, bool &show_add_flight_popup)
 
 		if (ImGui::Button("Save", cmdButtonSize))
 		{
+			insert_flight(pFirstFlight, current_flightNumber, flight_number, current_destinationAirport, planeList, current_aircraftRegistration_index, day, month, year, departureHour, departureMinute);
 			show_add_flight_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
