@@ -1,0 +1,88 @@
+EK5555
+A6-YAY
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+1100
+1
+EK5555
+A6-XXX
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+1000
+1
+EK5555
+A6-PLS
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+1000
+1
+EK5555
+A6-PRO
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+900
+1
+JX5555
+B-99999
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+1100
+1
+QH5555
+VN-1708
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+136
+1
+VJ5555
+VN-0807
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+560
+1
+VN5555
+VN-0807
+Dien Bien Phu (DIN)
+5
+5
+2024
+12
+12
+0
+560
+1
