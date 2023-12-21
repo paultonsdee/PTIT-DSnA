@@ -199,15 +199,9 @@ void delete_plane(PlaneList &planeList, int &planeIndex)
 }
 
 void insert_flight(FlightNodePTR &First, const char*& flightNumber1, char (&flightNumber2)[5], const char*& desAirport, PlaneList& planeList, int& selectedPlane, int& day, int& month, int& year, int& hour, int& minute)
-
 {
-	FlightNodePTR Last = NULL;
-	if (First != NULL)
-		for (Last = First; Last->next != NULL; Last = Last->next)
-			;
-	
 	FlightNodePTR p = new_flight();
-
+		
 	Flight *flight = &p->flight;
 	flight->flightNumber = flightNumber1;
 	flight->flightNumber += flightNumber2;
@@ -234,8 +228,12 @@ void insert_flight(FlightNodePTR &First, const char*& flightNumber1, char (&flig
 	if (First == NULL)
 		First = p;
 	else
+	{
+		FlightNodePTR Last = NULL;
+		for (Last = First; Last->next != NULL; Last = Last->next)
+			;
 		Last->next = p;
-	Last = p;
+	}
 
 	std::cout << "created successfully!" << std::endl;
 }
