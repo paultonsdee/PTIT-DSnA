@@ -36,11 +36,11 @@ void display_error(std::string error)
 			  << error << std::endl;
 }
 
-bool insert_plane(PlaneList &planeList, int &current_airline_index, char aircraft_registration_buf[], const char *&current_aircraftType, int &total_seats, int &total_rows)
+bool insert_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircraft_registration_buf[], const char *&pCurrent_aircraftType, int &total_seats, int &total_rows)
 {
 	if (is_planeList_full(planeList))
 	{
-		std::cout << "The list is full";
+		std::cout << "The aircraft list is full";
 		return 0;
 	}
 
@@ -48,7 +48,7 @@ bool insert_plane(PlaneList &planeList, int &current_airline_index, char aircraf
 	Plane *plane = planeList.nodes[planeList.totalPlane];
 
 	std::string aircraftRegistration;
-	switch (current_airline_index)
+	switch (pCurrent_airline_index)
 	{
 	case 0:
 	case 1:
@@ -64,23 +64,23 @@ bool insert_plane(PlaneList &planeList, int &current_airline_index, char aircraf
 	}
 
 	plane->planeID = aircraftRegistration + aircraft_registration_buf;
-	plane->planeType = current_aircraftType;
+	plane->planeType = pCurrent_aircraftType;
 	plane->seatNum = total_seats;
 	plane->rowNum = total_rows;
 
-	std::cout << "created successfully!" << std::endl;
+	std::cout << "aircraft created successfully!" << std::endl;
 
 	planeList.totalPlane++;
 
 	return 1;
 }
 
-void edit_plane(PlaneList &planeList, int &current_airline_index, char aircraft_registration_buf[], const char *&current_aircraftType, int &total_seats, int &total_rows, int &planeIndex)
+void edit_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircraft_registration_buf[], const char *&pCurrent_aircraftType, int &total_seats, int &total_rows, int &planeIndex)
 {
 	Plane *plane = planeList.nodes[planeIndex];
 
 	std::string aircraftRegistration;
-	switch (current_airline_index)
+	switch (pCurrent_airline_index)
 	{
 	case 0:
 	case 1:
@@ -96,11 +96,11 @@ void edit_plane(PlaneList &planeList, int &current_airline_index, char aircraft_
 	}
 
 	plane->planeID = aircraftRegistration + aircraft_registration_buf;
-	plane->planeType = current_aircraftType;
+	plane->planeType = pCurrent_aircraftType;
 	plane->seatNum = total_seats;
 	plane->rowNum = total_rows;
 
-	std::cout << "edited successfully!" << std::endl;
+	std::cout << "aircraft edited successfully!" << std::endl;
 }
 
 // void save_aircraft(PlaneList &planeList, std::string filename) //binary file
@@ -134,7 +134,7 @@ void save_aircraft(PlaneList &planeList, std::string &filename) // txt file
 		}
 	else
 	{
-		std::cout << "An error occurred while opening file" << std::endl;
+		std::cout << "An error occurred while opening aircraft file" << std::endl;
 		return;
 	}
 
@@ -181,7 +181,7 @@ void load_aircraft(PlaneList &planeList, std::string filename) // txt file
 		}
 	else
 	{
-		std::cout << "An error occurred while opening file" << std::endl;
+		std::cout << "An error occurred while opening aircraft file" << std::endl;
 		return;
 	}
 
@@ -198,10 +198,10 @@ void delete_plane(PlaneList &planeList, int &planeIndex)
 	planeList.totalPlane--;
 }
 
-void insert_flight(FlightNodePTR &First, const char*& flightNumber1, char (&flightNumber2)[5], const char*& desAirport, PlaneList& planeList, int& selectedPlane, int& day, int& month, int& year, int& hour, int& minute)
+void insert_flight(FlightNodePTR &First, const char *&flightNumber1, char (&flightNumber2)[5], const char *&desAirport, PlaneList &planeList, int &selectedPlane, int &day, int &month, int &year, int &hour, int &minute)
 {
 	FlightNodePTR p = new_flight();
-		
+
 	Flight *flight = &p->flight;
 	flight->flightNumber = flightNumber1;
 	flight->flightNumber += flightNumber2;
@@ -209,7 +209,7 @@ void insert_flight(FlightNodePTR &First, const char*& flightNumber1, char (&flig
 	flight->stt = 1;
 	flight->planeID = planeList.nodes[selectedPlane]->planeID;
 	flight->totalTicket = 0;
-	flight->maxTicket = planeList.nodes[selectedPlane]->seatNum*planeList.nodes[selectedPlane]->rowNum;
+	flight->maxTicket = planeList.nodes[selectedPlane]->seatNum * planeList.nodes[selectedPlane]->rowNum;
 	flight->ticketList = new Ticket[flight->maxTicket];
 
 	// Ticket *ticket = &flight->ticketList[flight->totalTicket];
@@ -224,31 +224,48 @@ void insert_flight(FlightNodePTR &First, const char*& flightNumber1, char (&flig
 	departureTime->hour = hour;
 	departureTime->minute = minute;
 
-	p->next = NULL;
-	if (First == NULL)
+	// p->next = NULL;
+	// if (First == NULL)
+	// 	First = p;
+	// else
+	// {
+	// 	FlightNodePTR Last = NULL;
+	// 	for (Last = First; Last->next != NULL; Last = Last->next)
+	// 		;
+	// 	Last->next = p;
+	// }
+
+	if ((First == NULL) || (First->flight.flightNumber > flight->flightNumber))
+	{
+		p->next = First;
 		First = p;
+	}
 	else
 	{
-		FlightNodePTR Last = NULL;
-		for (Last = First; Last->next != NULL; Last = Last->next)
-			;
-		Last->next = p;
+		FlightNodePTR pCurrent = First;
+		while ((pCurrent->next != NULL) && (pCurrent->next->flight.flightNumber < flight->flightNumber))
+		{
+			pCurrent = pCurrent->next;
+		}
+		p->next = pCurrent->next;
+		pCurrent->next = p;
 	}
 
-	std::cout << "created successfully!" << std::endl;
+	std::cout << "flight created successfully!" << std::endl;
 }
 
-void link_list_initialize (FlightNodePTR &First)
+void link_list_initialize(FlightNodePTR &First)
 {
 	First = NULL;
 }
 
-FlightNodePTR new_flight (void) {
+FlightNodePTR new_flight(void)
+{
 	FlightNodePTR p = new FlightNode;
 	return p;
 }
 
-int count_flights (FlightNodePTR First)
+int count_flights(FlightNodePTR First)
 {
 	int count = 0;
 	FlightNodePTR p = First;
@@ -258,4 +275,103 @@ int count_flights (FlightNodePTR First)
 		p = p->next;
 	}
 	return count;
+}
+
+void save_flight(FlightNodePTR &First, std::string &filename)
+{
+	std::ofstream f(filename);
+
+	if (f.is_open())
+	{
+		FlightNodePTR p = First;
+		while (p != NULL)
+		{
+			f << p->flight.flightNumber << '\n'
+			  << p->flight.planeID << '\n'
+			  << p->flight.desAirport << '\n'
+			  << p->flight.departureTime.day << '\n'
+			  << p->flight.departureTime.month << '\n'
+			  << p->flight.departureTime.year << '\n'
+			  << p->flight.departureTime.hour << '\n'
+			  << p->flight.departureTime.minute << '\n'
+			  << p->flight.totalTicket << '\n'
+			  << p->flight.maxTicket << '\n'
+			  << p->flight.stt << '\n';
+			p = p->next;
+		}
+	}
+	else
+	{
+		std::cout << "An error occurred while opening flight file" << std::endl;
+		return;
+	}
+
+	f.close();
+	std::cout << "Saved to flight file successfully!" << std::endl;
+}
+
+void load_flight(FlightNodePTR &First, std::string &filename)
+{
+	std::ifstream f(filename);
+	Flight flight;
+
+	std::string flightNumber, planeID, desAirport;
+	int day, month, year, hour, minute, totalTicket, maxTicket, stt;
+
+	if (f.is_open())
+		while (std::getline(f, flightNumber) &&
+			   std::getline(f, planeID) &&
+			   std::getline(f, desAirport) &&
+			   (f >> day) && f.ignore() &&
+			   (f >> month) && f.ignore() &&
+			   (f >> year) && f.ignore() &&
+			   (f >> hour) && f.ignore() &&
+			   (f >> minute) && f.ignore() &&
+			   (f >> totalTicket) && f.ignore() &&
+			   (f >> maxTicket) && f.ignore() &&
+			   (f >> stt) && f.ignore())
+		{
+			FlightNodePTR p = new_flight();
+
+			Flight *flight = &p->flight;
+			flight->flightNumber = flightNumber;
+			flight->desAirport = desAirport;
+			flight->planeID = planeID;
+			flight->totalTicket = totalTicket;
+			flight->maxTicket = maxTicket;
+			flight->ticketList = new Ticket[maxTicket];
+			flight->stt = stt;
+
+			DT *departureTime = &flight->departureTime;
+			departureTime->day = day;
+			departureTime->month = month;
+			departureTime->year = year;
+			departureTime->hour = hour;
+			departureTime->minute = minute;
+
+			if ((First == NULL) || (First->flight.flightNumber > flight->flightNumber))
+			{
+				p->next = First;
+				First = p;
+			}
+			else
+			{
+				FlightNodePTR pCurrent = First;
+				while ((pCurrent->next != NULL) && (pCurrent->next->flight.flightNumber < flight->flightNumber))
+				{
+					pCurrent = pCurrent->next;
+				}
+				p->next = pCurrent->next;
+				pCurrent->next = p;
+			}
+		}
+
+	else
+	{
+		std::cout << "An error occurred while opening flight file" << std::endl;
+		return;
+	}
+
+	f.close();
+	std::cout << "Loaded from flight file successfully!" << std::endl;
 }

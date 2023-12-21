@@ -8,7 +8,7 @@ int main(int, char**)
 	// std::string filename = "aircraft.dat";
 	PlaneList planeList;
 	
-	FlightNodePTR pFirstFlight;
+	FlightNodePTR pFirstFlight = NULL;
 	link_list_initialize(pFirstFlight);
 
 	if (!init_SDL())
@@ -19,6 +19,7 @@ int main(int, char**)
 	else
 	{
 		load_aircraft(planeList, aircraftFile);
+		load_flight(pFirstFlight, flightFile);
 
 		ImGuiIO& io = init_ImGui();
 
@@ -51,6 +52,7 @@ int main(int, char**)
 						break;
 					case SDLK_RETURN:
 						save_aircraft(planeList, aircraftFile);
+						save_flight(pFirstFlight, flightFile);
 						break;
 					case SDLK_SPACE:
 						current_screen = MAIN_MENU;
@@ -58,7 +60,9 @@ int main(int, char**)
 						break;
 					case SDLK_LCTRL: //test case
 						if (planeList.totalPlane == 0)
-							std::cout << "Plane list is empty";
+							std::cout << "Plane list is empty" << std::endl << "----------" << std::endl;
+						else
+							std::cout << "Planelist:" << std::endl << "----------" << std::endl;
 						for (int i = 0; i < planeList.totalPlane; i++)
 						{
 							Plane* plane = planeList.nodes[i];
@@ -68,6 +72,28 @@ int main(int, char**)
 							std::cout << plane->rowNum;
 							std::cout << std::endl;
 						}
+						std::cout << "----------" << std::endl;
+						if (count_flights(pFirstFlight) == 0)
+							std::cout << "Flight list is empty" << std::endl << "----------" << std::endl;
+						else
+							std::cout << "Flightlist:" << std::endl << "----------" << std::endl;
+						for (FlightNodePTR p = pFirstFlight; p != NULL; p = p->next)
+						{
+							std::cout << p->flight.flightNumber << " | ";
+							std::cout << p->flight.desAirport << " | ";
+							std::cout << p->flight.stt << " | ";
+							std::cout << p->flight.planeID << " | ";
+							std::cout << p->flight.totalTicket << " | ";
+							std::cout << p->flight.maxTicket;
+							std::cout << std::endl << "\t\t";
+							std::cout << p->flight.departureTime.day << "/";
+							std::cout << p->flight.departureTime.month << "/";
+							std::cout << p->flight.departureTime.year << " ";
+							std::cout << p->flight.departureTime.hour << ":";
+							std::cout << p->flight.departureTime.minute;
+							std::cout << std::endl;
+						}
+						std::cout << "----------" << std::endl;
 						break;
 					}
 				}

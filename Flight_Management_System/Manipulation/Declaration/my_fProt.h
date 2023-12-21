@@ -44,3 +44,5 @@ void link_list_initialize(FlightNodePTR &);
 void insert_flight(FlightNodePTR &, const char *&, char (&)[5], const char *&, PlaneList &, int &, int &, int &, int &, int &, int &);
 FlightNodePTR new_flight (void);
 int count_flights (FlightNodePTR );
+void save_flight(FlightNodePTR &, std::string &);
+void load_flight(FlightNodePTR &, std::string &);

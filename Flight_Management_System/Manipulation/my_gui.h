@@ -895,14 +895,126 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 	//    ImGuiTableFlags_SizingFixedFit;
 
 	// Always center this window when appearing
-	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	ImVec2 tableCursorPos = ImGui::GetCursorPos();
+
+	static int selected_row = -1;
+	static int currentPage = 0;
+	static int totalPages = count_flights(pFirstFlight) / 30;
+	if (count_flights(pFirstFlight) % 30)
+		totalPages += 1;
+
+	if (ImGui::BeginTable("Flights", 7, flags))
+	{
+		ImGui::TableSetupColumn("Flight Number");
+		ImGui::TableSetupColumn("Departure Date");
+		ImGui::TableSetupColumn("Departure Time");
+		ImGui::TableSetupColumn("Destination Airport");
+		ImGui::TableSetupColumn("Flights Status");
+		ImGui::TableSetupColumn("Aircraft Used");
+		ImGui::TableSetupColumn("Seats Available");
+		ImGui::TableHeadersRow();
+
+		ImGui::TableNextRow();
+		FlightNodePTR p = pFirstFlight;
+		for (int i = 0; i < 30 * currentPage; i++)
+			p = p->next;
+		int countRows = 0;
+		for (int row = 0; row < 30, p != NULL; row++)
+		{
+			ImGui::TableNextRow();
+			countRows++;
+			for (int column = 0; column < 7; column++)
+			{
+				ImGui::TableSetColumnIndex(column);
+				switch (column)
+				{
+				case 0:
+					if (ImGui::Selectable((p->flight.flightNumber).c_str(), selected_row == row, ImGuiSelectableFlags_SpanAllColumns))
+						selected_row = row;
+					break;
+				case 1:
+					if (p->flight.departureTime.day < 10)
+						ImGui::Text("0%d", p->flight.departureTime.day);
+					else
+						ImGui::Text("%d", p->flight.departureTime.day);
+					ImGui::SameLine(0, 0);
+					ImGui::Text(" / ");
+					ImGui::SameLine(0, 0);
+					if (p->flight.departureTime.month < 10)
+						ImGui::Text("0%d", p->flight.departureTime.month);
+					else
+						ImGui::Text("%d", p->flight.departureTime.month);
+					ImGui::SameLine(0, 0);
+					ImGui::Text(" / ");
+					ImGui::SameLine(0, 0);
+					ImGui::Text("%d", p->flight.departureTime.year);
+					break;
+				case 2:
+					if (p->flight.departureTime.hour < 10)
+						ImGui::Text("0%d", p->flight.departureTime.hour);
+					else
+						ImGui::Text("%d", p->flight.departureTime.hour);
+					ImGui::SameLine(0, 0);
+					ImGui::Text(" : ");
+					ImGui::SameLine(0, 0);
+					if (p->flight.departureTime.minute < 10)
+						ImGui::Text("0%d", p->flight.departureTime.minute);
+					else
+						ImGui::Text("%d", p->flight.departureTime.minute);
+					break;
+				case 3:
+					ImGui::Text((p->flight.desAirport).c_str());
+					break;
+				case 4:
+					switch (p->flight.stt)
+					{
+					case 0:
+						ImGui::Text("Canceled");
+						break;
+					case 1:
+						ImGui::Text("Tickets Available");
+						break;
+					case 2:
+						ImGui::Text("Sold Out");
+						break;
+					case 3:
+						ImGui::Text("Completed");
+						break;
+					}
+					break;
+				case 5:
+					ImGui::Text((p->flight.planeID).c_str());
+					break;
+				case 6:
+					ImGui::Text("%d/%d", p->flight.totalTicket, p->flight.maxTicket);
+					break;
+				}
+			}
+			p = p->next;
+		}
+		if (countRows < 30)
+		{
+			for (int row = countRows; row < 30; row++)
+			{
+				ImGui::TableNextRow();
+				for (int column = 0; column < 7; column++)
+				{
+					ImGui::TableSetColumnIndex(column);
+					ImGui::Text("");
+				}
+			}
+		}
+
+		ImGui::EndTable();
+	}
 
 	static bool show_add_flight_popup = false;
 	if (ImGui::Button("Add", ImVec2(200, 50)))
 		show_add_flight_popup = true;
 	if (show_add_flight_popup)
 		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup);
+
+	ImGui::End();
 }
 
 void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &show_add_flight_popup)
@@ -985,15 +1097,15 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 
 			if (day < minDay)
 				day = minDay;
-			else if (day > maxDayInMonth[month-1])
-				day = maxDayInMonth[month-1];
+			else if (day > maxDayInMonth[month - 1])
+				day = maxDayInMonth[month - 1];
 		}
 		ImGui::SameLine();
 		ImGui::Text("/");
 		ImGui::SameLine();
 		if (ImGui::InputInt("##month", &month, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
-			if(month < minMonth)
+			if (month < minMonth)
 				month = minMonth;
 			else if (month > maxMonth)
 				month = maxMonth;
@@ -1028,7 +1140,7 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 		static int departureHour = 0;
 		int minHour = 0;
 		int maxHour = 23;
-		if(ImGui::InputInt("##departure_hour", &departureHour, 0 ,0, ImGuiInputTextFlags_CharsDecimal))
+		if (ImGui::InputInt("##departure_hour", &departureHour, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
 			if (departureHour < minHour)
 				departureHour = minHour;
@@ -1041,7 +1153,7 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 		static int departureMinute = 0;
 		int minMinute = 0;
 		int maxMinute = 59;
-		if (ImGui::InputInt("##departure_minute", &departureMinute, 0 ,0, ImGuiInputTextFlags_CharsDecimal))
+		if (ImGui::InputInt("##departure_minute", &departureMinute, 0, 0, ImGuiInputTextFlags_CharsDecimal))
 		{
 			if (departureMinute < minMinute)
 				departureMinute = minMinute;
