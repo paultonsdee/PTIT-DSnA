@@ -54,12 +54,12 @@ struct Flight
     int maxTicket;
 };
 
-struct FlightList
+struct FlightNode
 {
     Flight flight;
-    FlightList* next;
+    FlightNode* next;
 };
-typedef struct FlightList* FlightListPTR;
+typedef struct FlightNode* FlightNodePTR;
 
 struct Passenger
 {

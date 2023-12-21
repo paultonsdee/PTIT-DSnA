@@ -8,7 +8,7 @@ int main(int, char**)
 	// std::string filename = "aircraft.dat";
 	PlaneList planeList;
 	
-	FlightListPTR pFirstFlight;
+	FlightNodePTR pFirstFlight;
 	link_list_initialize(pFirstFlight);
 
 	if (!init_SDL())
@@ -109,6 +109,7 @@ int main(int, char**)
 				}
 				else if (ev.type == SDL_MOUSEBUTTONUP)
 				{
+
 				}
 				SDL_UpdateWindowSurface(gWindow);
 			}

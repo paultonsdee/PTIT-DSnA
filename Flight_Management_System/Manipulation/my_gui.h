@@ -866,7 +866,7 @@ void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 	}
 }
 
-void draw_flight_management_screen(FlightListPTR &pFirstFlight, PlaneList &planeList, ImFont *&headerFont)
+void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &planeList, ImFont *&headerFont)
 {
 	open_state[FLIGHT_MANAGEMENT] = true;
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -905,7 +905,7 @@ void draw_flight_management_screen(FlightListPTR &pFirstFlight, PlaneList &plane
 		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup);
 }
 
-void add_flight_popup(FlightListPTR &pFirstFlight, PlaneList &planeList, bool &show_add_flight_popup)
+void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &show_add_flight_popup)
 {
 	ImGui::OpenPopup("Want to add a new flight?");
 

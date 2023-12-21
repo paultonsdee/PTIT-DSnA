@@ -198,15 +198,15 @@ void delete_plane(PlaneList &planeList, int &planeIndex)
 	planeList.totalPlane--;
 }
 
-void insert_flight(FlightListPTR &First, const char*& flightNumber1, char (&flightNumber2)[5], const char*& desAirport, PlaneList& planeList, int& selectedPlane, int& day, int& month, int& year, int& hour, int& minute)
+void insert_flight(FlightNodePTR &First, const char*& flightNumber1, char (&flightNumber2)[5], const char*& desAirport, PlaneList& planeList, int& selectedPlane, int& day, int& month, int& year, int& hour, int& minute)
 
 {
-	FlightListPTR Last = NULL;
+	FlightNodePTR Last = NULL;
 	if (First != NULL)
 		for (Last = First; Last->next != NULL; Last = Last->next)
 			;
 	
-	FlightListPTR p = new_flight();
+	FlightNodePTR p = new_flight();
 
 	Flight *flight = &p->flight;
 	flight->flightNumber = flightNumber1;
@@ -240,20 +240,20 @@ void insert_flight(FlightListPTR &First, const char*& flightNumber1, char (&flig
 	std::cout << "created successfully!" << std::endl;
 }
 
-void link_list_initialize (FlightListPTR &First)
+void link_list_initialize (FlightNodePTR &First)
 {
 	First = NULL;
 }
 
-FlightListPTR new_flight (void) {
-	FlightListPTR p = new FlightList;
+FlightNodePTR new_flight (void) {
+	FlightNodePTR p = new FlightNode;
 	return p;
 }
 
-int count_flights (FlightListPTR First)
+int count_flights (FlightNodePTR First)
 {
 	int count = 0;
-	FlightListPTR p = First;
+	FlightNodePTR p = First;
 	while (p != NULL)
 	{
 		count++;
