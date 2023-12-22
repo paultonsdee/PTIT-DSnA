@@ -16,7 +16,8 @@ int VIEWPORT_HEIGHT = 900;
 #define BOX_WIDTH_FM 168
 #define DROPDOWN_WIDTH 20
 
-const int AIRCRAFT_ID = 999999;
+const int AIRCRAFT_ID = 8072004;
+const int FLIGHT_ID = 1782004;
 
 SDL_Window *gWindow = NULL;			// The window we'll be rendering to
 SDL_Renderer *gRenderTarget = NULL; // The window renderer

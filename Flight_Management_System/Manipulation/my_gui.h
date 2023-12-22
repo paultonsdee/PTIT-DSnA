@@ -291,12 +291,12 @@ void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
 	{
 		isInTable = false;
 	}
-	show_action_buttons(planeList, selected_row, isInTable);
+	show_AM_action_buttons(planeList, selected_row, isInTable);
 
 	ImGui::End();
 }
 
-void show_action_buttons(PlaneList &planeList, int &selected, bool &isInTable)
+void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
@@ -899,7 +899,7 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 
 	static int selected_row = -1;
 	static int currentPage = 0;
-	static int totalPages = count_flights(pFirstFlight) / 30;
+	int totalPages = count_flights(pFirstFlight) / 30;
 	if (count_flights(pFirstFlight) % 30)
 		totalPages += 1;
 
@@ -919,18 +919,17 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 		for (int i = 0; i < 30 * currentPage; i++)
 			p = p->next;
 		int countRows = 0;
-		for (int row = 0; row < 30, p != NULL; row++)
+		while (countRows < 30 && p != NULL)
 		{
 			ImGui::TableNextRow();
-			countRows++;
 			for (int column = 0; column < 7; column++)
 			{
 				ImGui::TableSetColumnIndex(column);
 				switch (column)
 				{
 				case 0:
-					if (ImGui::Selectable((p->flight.flightNumber).c_str(), selected_row == row, ImGuiSelectableFlags_SpanAllColumns))
-						selected_row = row;
+					if (ImGui::Selectable((p->flight.flightNumber).c_str(), selected_row == countRows, ImGuiSelectableFlags_SpanAllColumns))
+						selected_row = countRows;
 					break;
 				case 1:
 					if (p->flight.departureTime.day < 10)
@@ -981,6 +980,33 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 						ImGui::Text("Completed");
 						break;
 					}
+
+					if (ImGui::IsItemHovered())
+					{
+						if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+						{
+							selected_row = countRows;
+							ImGui::PushID(FLIGHT_ID * countRows + column);
+							ImGui::OpenPopup("Change Status");
+							ImGui::PopID();
+						}
+					}
+					
+					ImGui::PushID(FLIGHT_ID * countRows + column);
+					if (ImGui::BeginPopup("Change Status"))
+					{
+						if (ImGui::Selectable("Canceled"))
+							p->flight.stt = 0;
+						if (ImGui::Selectable("Tickets Available"))
+							p->flight.stt = 1;
+						if (ImGui::Selectable("Sold Out"))
+							p->flight.stt = 2;
+						if (ImGui::Selectable("Completed"))
+							p->flight.stt = 3;
+						ImGui::EndPopup();
+					}
+					ImGui::PopID();
+
 					break;
 				case 5:
 					ImGui::Text((p->flight.planeID).c_str());
@@ -991,6 +1017,7 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 				}
 			}
 			p = p->next;
+			countRows++;
 		}
 		if (countRows < 30)
 		{
@@ -1008,16 +1035,44 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 		ImGui::EndTable();
 	}
 
-	static bool show_add_flight_popup = false;
-	if (ImGui::Button("Add", ImVec2(200, 50)))
-		show_add_flight_popup = true;
-	if (show_add_flight_popup)
-		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup);
+	ImVec2 tableSize = ImGui::GetItemRectSize();
+
+	ImVec2 currentMousePos = ImGui::GetMousePos();
+	static bool isInTable = false;
+	if (ImGui::IsMouseHoveringRect(tableCursorPos, ImVec2(tableCursorPos.x + tableSize.x, tableCursorPos.y + tableSize.y))
+		&& ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+	{
+		isInTable = true;
+	}
+	else
+	{
+		isInTable = false;
+	}
+
+	if(ImGui::Button("<|", ImVec2(30, 30)))
+	{
+		if(currentPage < totalPages)
+			currentPage--;
+		if(currentPage < 0)
+			currentPage = 0;
+	}
+	ImGui::SameLine();
+	ImGui::Text("%d/%d", currentPage + 1, totalPages);
+	ImGui::SameLine();
+	if(ImGui::Button("|>", ImVec2(30, 30)))
+	{
+		if(currentPage >= 0)
+			currentPage++;
+		if(currentPage >= totalPages)
+			currentPage = totalPages - 1;
+	}
+
+	show_FM_action_buttons(pFirstFlight, planeList, selected_row);
 
 	ImGui::End();
 }
 
-void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &show_add_flight_popup)
+void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &show_add_flight_popup, int &selectedFlight)
 {
 	ImGui::OpenPopup("Want to add a new flight?");
 
@@ -1303,4 +1358,31 @@ void find_max_day_in_month(int *maxDayInMonth, int &month, int &year)
 		maxDayInMonth[1] = 29;
 	else
 		maxDayInMonth[1] = 28;
+}
+
+void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selectedFlight)
+{
+	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
+
+	ImVec2 actionButtonsCursorPos = ImGui::GetCursorPos();
+	button editButton("FIRST BUTTON", actionButtonSize, actionButtonsCursorPos, 4);
+
+	int widthSpacing = (viewportSize.x - 4 * actionButtonSize.x - 2 * editButton.x_pos) / 3;
+
+	button addButton("ADD", editButton, widthSpacing, 4);
+	ImGui::SetCursorPos(ImVec2(addButton.x_pos, addButton.y_pos));
+	static bool show_add_flight_popup = false;
+	if (ImGui::Button(addButton.name, actionButtonSize))
+		show_add_flight_popup = true;
+	if (show_add_flight_popup)
+		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup, selectedFlight);
+
+	button saveAndExitButton("SAVE & EXIT", addButton, widthSpacing, 4);
+	ImGui::SetCursorPos(ImVec2(saveAndExitButton.x_pos, saveAndExitButton.y_pos));
+	if (ImGui::Button(saveAndExitButton.name, actionButtonSize))
+	{
+		save_flight(pFirstFlight, flightFile);
+		current_screen = MAIN_MENU;
+		open_state[FLIGHT_MANAGEMENT] = false;
+	}
 }

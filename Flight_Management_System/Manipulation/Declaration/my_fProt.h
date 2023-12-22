@@ -18,12 +18,13 @@ void popup_inputPlane(PlaneList &);
 void draw_combo(const char *, const char *[], const int &, int &, const char *&);
 void HelpMarker(const char *);
 void add_plane_popup(PlaneList &, bool &, int &);
-void show_action_buttons(PlaneList &, int &, bool &);
+void show_AM_action_buttons(PlaneList &, int &, bool &);
 void show_delete_plane_popup(PlaneList &, int &);
 void draw_flight_management_screen(FlightNodePTR &, PlaneList &, ImFont *&);
-void add_flight_popup(FlightNodePTR &, PlaneList &, bool &);
+void add_flight_popup(FlightNodePTR &, PlaneList &, bool &, int &);
 void draw_combo(const char *, PlaneList &, int &, const char *&, int &);
 void find_max_day_in_month(int *, int &, int &);
+void show_FM_action_buttons(FlightNodePTR &, PlaneList &, int &);
 
 // --------------------------------------------
 // |             Data Handling                |
