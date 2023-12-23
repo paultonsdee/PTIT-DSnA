@@ -19,6 +19,11 @@ int VIEWPORT_HEIGHT = 900;
 const int AIRCRAFT_ID = 8072004;
 const int FLIGHT_ID = 1782004;
 
+bool showNoti = false;
+std::string notiMessage = "";
+float notiStartTime = 0.0f;
+const int timeDisplayNoti = 2507;
+
 SDL_Window *gWindow = NULL;			// The window we'll be rendering to
 SDL_Renderer *gRenderTarget = NULL; // The window renderer
 SDL_Texture *gBackGround = NULL;	// The image we will load and show on the screen
@@ -87,7 +92,7 @@ enum screen
 bool open_state[] = {false, false, false, false, false};
 
 #define fixed_full_screen ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
-#define fast_instruction ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+#define notification ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize
 
 screen current_screen = FLIGHT_MANAGEMENT;
 

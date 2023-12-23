@@ -1,13 +1,13 @@
 #include "Manipulation/my_dHandling.h"
 #include "Manipulation/my_gui.h"
 
-int main(int, char**)
+int main(int, char **)
 {
 	// Our state
 	bool show_another_window = false;
 	// std::string filename = "aircraft.dat";
 	PlaneList planeList;
-	
+
 	FlightNodePTR pFirstFlight = NULL;
 	link_list_initialize(pFirstFlight);
 
@@ -21,11 +21,12 @@ int main(int, char**)
 		load_aircraft(planeList, aircraftFile);
 		load_flight(pFirstFlight, flightFile);
 
-		ImGuiIO& io = init_ImGui();
+		ImGuiIO &io = init_ImGui();
 
 		io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 16.0f);
 		io.FontDefault = io.Fonts->Fonts.back();
-		ImFont* special_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 37.0f);
+		ImFont *special_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 37.0f);
+		ImFont *noti_font = io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 25.0f);
 
 		bool running = true;
 		SDL_Event ev;
@@ -58,14 +59,16 @@ int main(int, char**)
 						current_screen = MAIN_MENU;
 						// SDL_Window* menuWindow = SDL_CreateWindow("Menu", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 						break;
-					case SDLK_LCTRL: //test case
+					case SDLK_LCTRL: // test case
 						if (planeList.totalPlane == 0)
-							std::cout << "Plane list is empty" << std::endl << "----------" << std::endl;
+							std::cout << "Plane list is empty" << std::endl
+									  << "----------" << std::endl;
 						else
-							std::cout << "Planelist:" << std::endl << "----------" << std::endl;
+							std::cout << "Planelist:" << std::endl
+									  << "----------" << std::endl;
 						for (int i = 0; i < planeList.totalPlane; i++)
 						{
-							Plane* plane = planeList.nodes[i];
+							Plane *plane = planeList.nodes[i];
 							std::cout << plane->planeID << " | ";
 							std::cout << plane->planeType << " | ";
 							std::cout << plane->seatNum << " | ";
@@ -74,9 +77,11 @@ int main(int, char**)
 						}
 						std::cout << "----------" << std::endl;
 						if (count_flights(pFirstFlight) == 0)
-							std::cout << "Flight list is empty" << std::endl << "----------" << std::endl;
+							std::cout << "Flight list is empty" << std::endl
+									  << "----------" << std::endl;
 						else
-							std::cout << "Flightlist:" << std::endl << "----------" << std::endl;
+							std::cout << "Flightlist:" << std::endl
+									  << "----------" << std::endl;
 						for (FlightNodePTR p = pFirstFlight; p != NULL; p = p->next)
 						{
 							std::cout << p->flight.flightNumber << " | ";
@@ -85,7 +90,8 @@ int main(int, char**)
 							std::cout << p->flight.planeID << " | ";
 							std::cout << p->flight.totalTicket << " | ";
 							std::cout << p->flight.maxTicket;
-							std::cout << std::endl << "\t\t";
+							std::cout << std::endl
+									  << "\t\t";
 							std::cout << p->flight.departureTime.day << "/";
 							std::cout << p->flight.departureTime.month << "/";
 							std::cout << p->flight.departureTime.year << " ";
@@ -131,11 +137,9 @@ int main(int, char**)
 					// 	std::cout << pFirstFlight->next->flight.totalTicket << std::endl;
 					// 	std::cout << pFirstFlight->next->flight.maxTicket << std::endl;
 					// }
-
 				}
 				else if (ev.type == SDL_MOUSEBUTTONUP)
 				{
-
 				}
 				SDL_UpdateWindowSurface(gWindow);
 			}
@@ -158,7 +162,23 @@ int main(int, char**)
 				break;
 			}
 
-				// Rendering
+			if (showNoti)
+			{
+				ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+				ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+				ImGui::SetNextWindowFocus();
+				ImGui::PushFont(noti_font);
+				ImGui::Begin("Notification", &showNoti, notification);
+				ImGui::Text(notiMessage.c_str());
+				if (SDL_GetTicks() - notiStartTime > timeDisplayNoti)
+				{
+					showNoti = false;
+				}
+				ImGui::End();
+				ImGui::PopFont();
+			}
+
+			// Rendering
 			renderImGui(io);
 		}
 	}

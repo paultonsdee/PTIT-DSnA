@@ -25,6 +25,7 @@ void add_flight_popup(FlightNodePTR &, PlaneList &, bool &, int &);
 void draw_combo(const char *, PlaneList &, int &, const char *&, int &);
 void find_max_day_in_month(int *, int &, int &);
 void show_FM_action_buttons(FlightNodePTR &, PlaneList &, int &);
+void show_noti (const std::string &);
 
 // --------------------------------------------
 // |             Data Handling                |

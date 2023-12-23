@@ -1386,3 +1386,10 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 		open_state[FLIGHT_MANAGEMENT] = false;
 	}
 }
+
+void show_noti (const std::string &content)
+{
+	showNoti = true;
+	notiMessage = content;
+	notiStartTime = SDL_GetTicks();
+}
