@@ -93,6 +93,7 @@ bool open_state[] = {false, false, false, false, false};
 
 #define fixed_full_screen ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
 #define notification ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize
+#define tableFlags ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter
 
 screen current_screen = FLIGHT_MANAGEMENT;
 
