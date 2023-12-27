@@ -36,6 +36,31 @@ void display_error(std::string error)
 			  << error << std::endl;
 }
 
+void find_max_day_in_month(int *maxDayInMonth, int &month, int &year)
+{
+	for (int i = 0; i < 12; i++)
+	{
+		int month = i + 1;
+		if (month < 8)
+		{
+			if (month % 2)
+				maxDayInMonth[i] = 31;
+			else
+				maxDayInMonth[i] = 30;
+		}
+		else if (month % 2)
+			maxDayInMonth[i] = 30;
+		else
+			maxDayInMonth[i] = 31;
+	}
+	if ((year % 4 == 0) && (year % 100) ||
+		(year % 4 == 0) && (year % 100) && (year % 400))
+		maxDayInMonth[1] = 29;
+	else
+		maxDayInMonth[1] = 28;
+}
+
+
 bool insert_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircraft_registration_buf[], const char *&pCurrent_aircraftType, int &total_seats, int &total_rows)
 {
 	if (is_planeList_full(planeList))

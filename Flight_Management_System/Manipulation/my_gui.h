@@ -147,6 +147,94 @@ void renderImGui(ImGuiIO &io)
 	SDL_RenderPresent(gRenderTarget);
 }
 
+void draw_combo(const char *label, const char *choices[], const int &length, int &current_index, const char *&current)
+{
+	if (ImGui::BeginCombo(label, current))
+	{
+		for (int n = 0; n < length; n++)
+		{
+			const bool is_selected = (current_index == n);
+			if (ImGui::Selectable(choices[n], is_selected))
+			{
+				current_index = n;
+				current = choices[current_index];
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		ImGui::EndCombo();
+	}
+}
+
+void draw_combo(const char *label, PlaneList &planeList, int &current_index, const char *&current, int &airline)
+{
+	static int planeAirlines[MAXPLANE];
+	for (int i = 0; i < MAXPLANE; i++)
+	{
+		planeAirlines[i] = -1;
+	}
+
+	for (int i = 0; i < planeList.totalPlane; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			if (is_in_array(planeList.nodes[i]->planeType, aircraftTypes[j], j))
+			{
+				planeAirlines[i] = j;
+				break;
+			}
+		}
+	}
+
+	static const char *tempTypesArray[MAXPLANE];
+	for (int i = 0; i < planeList.totalPlane; i++)
+	{
+		tempTypesArray[i] = planeList.nodes[i]->planeID.c_str();
+	}
+
+	if (ImGui::BeginCombo(label, current))
+	{
+		for (int n = 0; n < planeList.totalPlane; n++)
+		{
+			if (planeAirlines[n] == airline)
+			{
+				const bool is_selected = (current_index == n);
+				if (ImGui::Selectable(tempTypesArray[n], is_selected))
+				{
+					current_index = n;
+					current = tempTypesArray[current_index];
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
+static void HelpMarker(const char *desc)
+{
+	ImGui::TextDisabled("(?)");
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
+}
+
+bool is_in_array(std::string &planeType, const char *arr[], const int &aircraftTypesIndex)
+{
+	for (int i = 0; i < aircraftTypesLength[aircraftTypesIndex]; i++)
+	{
+		if (planeType == arr[i])
+			return true;
+	}
+	return false;
+}
+
 void draw_main_menu_screen()
 {
 	open_state[MAIN_MENU] = true;
@@ -806,29 +894,6 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 	}
 }
 
-static void HelpMarker(const char *desc)
-{
-	ImGui::TextDisabled("(?)");
-	if (ImGui::IsItemHovered())
-	{
-		ImGui::BeginTooltip();
-		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		ImGui::TextUnformatted(desc);
-		ImGui::PopTextWrapPos();
-		ImGui::EndTooltip();
-	}
-}
-
-bool is_in_array(std::string &planeType, const char *arr[], const int &aircraftTypesIndex)
-{
-	for (int i = 0; i < aircraftTypesLength[aircraftTypesIndex]; i++)
-	{
-		if (planeType == arr[i])
-			return true;
-	}
-	return false;
-}
-
 void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 {
 	ImGui::OpenPopup("Want to delete a plane?");
@@ -1271,95 +1336,6 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 	}
 }
 
-void draw_combo(const char *label, const char *choices[], const int &length, int &current_index, const char *&current)
-{
-	if (ImGui::BeginCombo(label, current))
-	{
-		for (int n = 0; n < length; n++)
-		{
-			const bool is_selected = (current_index == n);
-			if (ImGui::Selectable(choices[n], is_selected))
-			{
-				current_index = n;
-				current = choices[current_index];
-			}
-			if (is_selected)
-				ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-		}
-		ImGui::EndCombo();
-	}
-}
-
-void draw_combo(const char *label, PlaneList &planeList, int &current_index, const char *&current, int &airline)
-{
-	static int planeAirlines[MAXPLANE];
-	for (int i = 0; i < MAXPLANE; i++)
-	{
-		planeAirlines[i] = -1;
-	}
-
-	for (int i = 0; i < planeList.totalPlane; i++)
-	{
-		for (int j = 0; j < 5; j++)
-		{
-			if (is_in_array(planeList.nodes[i]->planeType, aircraftTypes[j], j))
-			{
-				planeAirlines[i] = j;
-				break;
-			}
-		}
-	}
-
-	static const char *tempTypesArray[MAXPLANE];
-	for (int i = 0; i < planeList.totalPlane; i++)
-	{
-		tempTypesArray[i] = planeList.nodes[i]->planeID.c_str();
-	}
-
-	if (ImGui::BeginCombo(label, current))
-	{
-		for (int n = 0; n < planeList.totalPlane; n++)
-		{
-			if (planeAirlines[n] == airline)
-			{
-				const bool is_selected = (current_index == n);
-				if (ImGui::Selectable(tempTypesArray[n], is_selected))
-				{
-					current_index = n;
-					current = tempTypesArray[current_index];
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus(); // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-			}
-		}
-		ImGui::EndCombo();
-	}
-}
-
-void find_max_day_in_month(int *maxDayInMonth, int &month, int &year)
-{
-	for (int i = 0; i < 12; i++)
-	{
-		int month = i + 1;
-		if (month < 8)
-		{
-			if (month % 2)
-				maxDayInMonth[i] = 31;
-			else
-				maxDayInMonth[i] = 30;
-		}
-		else if (month % 2)
-			maxDayInMonth[i] = 30;
-		else
-			maxDayInMonth[i] = 31;
-	}
-	if ((year % 4 == 0) && (year % 100) ||
-		(year % 4 == 0) && (year % 100) && (year % 400))
-		maxDayInMonth[1] = 29;
-	else
-		maxDayInMonth[1] = 28;
-}
-
 void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selectedFlight)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -1385,11 +1361,4 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 		current_screen = MAIN_MENU;
 		open_state[FLIGHT_MANAGEMENT] = false;
 	}
-}
-
-void show_noti (const std::string &content)
-{
-	showNoti = true;
-	notiMessage = content;
-	notiStartTime = SDL_GetTicks();
 }
