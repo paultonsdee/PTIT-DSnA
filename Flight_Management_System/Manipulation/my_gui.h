@@ -120,6 +120,14 @@ SDL_Texture *LoadTexture(const char *filePath)
 	return texture;
 }
 
+void init_row_arr()
+{
+	for (int i = 0; i < 100; i++)
+	{
+		rows[i] = std::to_string(i + 1);
+	}
+}
+
 void terminate()
 {
 	ImGui_ImplSDLRenderer2_Shutdown();
@@ -240,7 +248,7 @@ void confirm_change_status(FlightNodePTR &pFirstFlight, int &newStatus, int &cur
 	FlightNodePTR p = pFirstFlight;
 
 	for (int i = 0; i < 30 * currentPage + row; i++)
-			p = p->next;
+		p = p->next;
 	if (newStatus != -1)
 	{
 
@@ -1039,8 +1047,7 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 			{
 				ImGui::TableSetColumnIndex(column);
 
-					std::string id = "##" + std::to_string(FLIGHT_ID * countRows + column);
-
+				std::string id = "##" + std::to_string(FLIGHT_ID * countRows + column);
 
 				switch (column)
 				{
@@ -1449,22 +1456,18 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 			edit_flight_popup(pFirstFlight, currentPage, selected, show_edit_flight_popup);
 
 		ImGui::SetCursorPos(ImVec2(bookTicketButton.x_pos, bookTicketButton.y_pos));
-		static bool show_delete_plane_popup = false;
+		static bool show_book_ticket_popup = false;
 		if (ImGui::Button(bookTicketButton.name, actionButtonSize))
-			;
-		// 	show_delete_plane_popup = true;
-		// if (show_delete_plane_popup)
-		// {
-		// 	delete_plane(planeList, selected);
-		// 	show_delete_plane_popup = false;
-		// }
+			show_book_ticket_popup = true;
+		if (show_book_ticket_popup)
+			book_ticket_popup(pFirstFlight, planeList, currentPage, selected, show_book_ticket_popup);
 	}
 }
 
-void edit_flight_popup(FlightNodePTR &pFirstFlight, int &currentPage, int &Row, bool &show_edit_flight_popup)
+void edit_flight_popup(FlightNodePTR &pFirstFlight, int &currentPage, int &row, bool &show_edit_flight_popup)
 {
 	FlightNodePTR p = pFirstFlight;
-	for (int i = 0; i < currentPage*30 + Row; i++)
+	for (int i = 0; i < currentPage * 30 + row; i++)
 		p = p->next;
 	ImGui::OpenPopup("Want to add a new flight?");
 
@@ -1620,6 +1623,68 @@ void edit_flight_popup(FlightNodePTR &pFirstFlight, int &currentPage, int &Row, 
 			show_edit_flight_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
+		ImGui::EndPopup();
+	}
+}
+
+void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &currentPage, int &selectedRow, bool &show_book_ticket_popup)
+{
+	FlightNodePTR p = pFirstFlight;
+	for (int i = 0; i < currentPage * 30 + selectedRow; i++)
+		p = p->next;
+
+	int seatNum, rowNum;
+
+	for (int i = 0; i < planeList.totalPlane; i++)
+	{
+		if (planeList.nodes[i]->planeID == p->flight.planeID)
+		{
+			seatNum = planeList.nodes[i]->seatNum;
+			rowNum = planeList.nodes[i]->rowNum;
+			break;
+		}
+	}
+	ImGui::OpenPopup("Book Ticket");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Book Ticket", NULL, popupModalFlags | ImGuiWindowFlags_NoTitleBar))
+	{
+		ImGui::Text("Please select seat(s) you want to book");
+
+		ImGui::Separator();
+		for (int row = 0; row < seatNum; row++)
+		{
+			for (int column = 0; column < rowNum; column++)
+			{
+				if (column != 0)
+					ImGui::SameLine();
+				std::string content = seats[row] + rows[column];
+				ImGui::Button(content.c_str(), ImVec2(30, 30));
+			}
+		}
+
+		ImGui::Separator();
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Yes", cmdButtonSize))
+		{
+			show_book_ticket_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("No", cmdButtonSize))
+		{
+			show_book_ticket_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+
 		ImGui::EndPopup();
 	}
 }

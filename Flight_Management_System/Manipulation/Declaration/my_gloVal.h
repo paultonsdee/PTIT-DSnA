@@ -133,3 +133,6 @@ const char *JX_types[] = {"Airbus A321neo ACF", "Airbus A330-900", "Airbus A350-
 
 const char **aircraftTypes[] = {VN_types, VJ_types, QH_types, EK_types, JX_types};
 const int aircraftTypesLength[] = {combo_length(VN_types), combo_length(VJ_types), combo_length(QH_types), combo_length(EK_types), combo_length(JX_types)};
+
+const char *seats[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+std::string rows[100];

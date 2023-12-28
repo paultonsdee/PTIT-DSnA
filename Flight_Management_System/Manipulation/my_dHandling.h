@@ -60,7 +60,6 @@ void find_max_day_in_month(int *maxDayInMonth, int &month, int &year)
 		maxDayInMonth[1] = 28;
 }
 
-
 bool insert_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircraft_registration_buf[], const char *&pCurrent_aircraftType, int &total_seats, int &total_rows)
 {
 	if (is_planeList_full(planeList))

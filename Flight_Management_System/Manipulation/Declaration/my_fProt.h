@@ -28,6 +28,7 @@ void show_FM_action_buttons(FlightNodePTR &, PlaneList &, int &, bool &, int &);
 void show_noti (const std::string &);
 void confirm_change_status(FlightNodePTR &, int &, int &, int &);
 void edit_flight_popup(FlightNodePTR &, int &, int &, bool &);
+void book_ticket_popup (FlightNodePTR &, PlaneList &, int &, int &, bool &);
 
 // --------------------------------------------
 // |             Data Handling                |
@@ -50,3 +51,4 @@ FlightNodePTR new_flight (void);
 int count_flights (FlightNodePTR );
 void save_flight(FlightNodePTR &, std::string &);
 void load_flight(FlightNodePTR &, std::string &);
+void init_row_arr();

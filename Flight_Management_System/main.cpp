@@ -18,6 +18,7 @@ int main(int, char **)
 	}
 	else
 	{
+		init_row_arr();
 		load_aircraft(planeList, aircraftFile);
 		load_flight(pFirstFlight, flightFile);
 
