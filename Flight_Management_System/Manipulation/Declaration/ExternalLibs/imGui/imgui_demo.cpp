@@ -3705,6 +3705,16 @@ static void ShowDemoWindowPopups()
                 {
                     selected = n;
                     ImGui::Text("This a popup for \"%s\"!", names[n]);
+                    if (ImGui::Button("Open"))
+                        ImGui::OpenPopup("##popup");
+                    if (ImGui::BeginPopupModal("##popup"))
+                    { 
+                        ImGui::Text("Inside a popup!");
+                        if (ImGui::Button("Close"))
+                            ImGui::CloseCurrentPopup();
+                        ImGui::EndPopup();
+                    }
+                        selected = -1;
                     if (ImGui::Button("Close"))
                         ImGui::CloseCurrentPopup();
                     ImGui::EndPopup();

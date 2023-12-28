@@ -235,6 +235,52 @@ bool is_in_array(std::string &planeType, const char *arr[], const int &aircraftT
 	return false;
 }
 
+void confirm_change_status(FlightNodePTR &pFirstFlight, int &newStatus, int &currentPage, int &row)
+{
+	FlightNodePTR p = pFirstFlight;
+
+	for (int i = 0; i < 30 * currentPage + row; i++)
+			p = p->next;
+	if (newStatus != -1)
+	{
+
+		ImGui::OpenPopup("Confirm change status");
+
+		// Always center this window when appearing
+		ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+		if (ImGui::BeginPopupModal("Confirm change status", NULL, popupModalFlags))
+		{
+			ImGui::Separator();
+			ImGui::Text("Are you sure you want to change this flight status?");
+			ImGui::Separator();
+
+			int windowWidth = ImGui::GetWindowWidth();
+			int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+			ImGui::SetCursorPosX(saveButtonX);
+
+			if (ImGui::Button("Yes", cmdButtonSize))
+			{
+				p->flight.stt = newStatus;
+				newStatus = -1;
+				row = -1;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("No", cmdButtonSize))
+			{
+				newStatus = -1;
+				row = -1;
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+	}
+}
+
 void draw_main_menu_screen()
 {
 	open_state[MAIN_MENU] = true;
@@ -457,7 +503,7 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Want to add a plane?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::BeginPopupModal("Want to add a plane?", NULL, popupModalFlags))
 	{
 
 		// ImGui::Text("Dont forget to save data!\nThis operation cannot be undone!");
@@ -653,7 +699,7 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Want to edit a plane?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::BeginPopupModal("Want to edit a plane?", NULL, popupModalFlags))
 	{
 		// ImGui::Text("Dont forget to save data!\nThis operation cannot be undone!");
 		ImGui::Separator();
@@ -902,7 +948,7 @@ void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Want to delete a plane?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::BeginPopupModal("Want to delete a plane?", NULL, popupModalFlags))
 	{
 		ImGui::Separator();
 
@@ -964,6 +1010,8 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 
 	static int selected_row = -1;
 	static int currentPage = 0;
+	static int newStatus = -1;
+
 	int totalPages = count_flights(pFirstFlight) / 30;
 	if (count_flights(pFirstFlight) % 30)
 		totalPages += 1;
@@ -979,8 +1027,8 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 		ImGui::TableSetupColumn("Seats Available");
 		ImGui::TableHeadersRow();
 
-		ImGui::TableNextRow();
 		FlightNodePTR p = pFirstFlight;
+		ImGui::TableNextRow();
 		for (int i = 0; i < 30 * currentPage; i++)
 			p = p->next;
 		int countRows = 0;
@@ -990,6 +1038,10 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 			for (int column = 0; column < 7; column++)
 			{
 				ImGui::TableSetColumnIndex(column);
+
+					std::string id = "##" + std::to_string(FLIGHT_ID * countRows + column);
+
+
 				switch (column)
 				{
 				case 0:
@@ -1051,26 +1103,24 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 						if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 						{
 							selected_row = countRows;
-							ImGui::PushID(FLIGHT_ID * countRows + column);
-							ImGui::OpenPopup("Change Status");
-							ImGui::PopID();
+							// ImGui::PushID(FLIGHT_ID * countRows + column);
+							// ImGui::OpenPopup("Change Status");
+							// ImGui::PopID();
 						}
 					}
-					
-					ImGui::PushID(FLIGHT_ID * countRows + column);
-					if (ImGui::BeginPopup("Change Status"))
+
+					if (ImGui::BeginPopupContextItem(id.c_str()))
 					{
 						if (ImGui::Selectable("Canceled"))
-							p->flight.stt = 0;
+							newStatus = 0;
 						if (ImGui::Selectable("Tickets Available"))
-							p->flight.stt = 1;
+							newStatus = 1;
 						if (ImGui::Selectable("Sold Out"))
-							p->flight.stt = 2;
+							newStatus = 2;
 						if (ImGui::Selectable("Completed"))
-							p->flight.stt = 3;
+							newStatus = 3;
 						ImGui::EndPopup();
 					}
-					ImGui::PopID();
 
 					break;
 				case 5:
@@ -1100,12 +1150,14 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 		ImGui::EndTable();
 	}
 
+	confirm_change_status(pFirstFlight, newStatus, currentPage, selected_row);
+
 	ImVec2 tableSize = ImGui::GetItemRectSize();
 
 	ImVec2 currentMousePos = ImGui::GetMousePos();
 	static bool isInTable = false;
-	if (ImGui::IsMouseHoveringRect(tableCursorPos, ImVec2(tableCursorPos.x + tableSize.x, tableCursorPos.y + tableSize.y))
-		&& ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+
+	if (ImGui::IsMouseHoveringRect(tableCursorPos, ImVec2(tableCursorPos.x + tableSize.x, tableCursorPos.y + tableSize.y)) && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 	{
 		isInTable = true;
 	}
@@ -1114,25 +1166,32 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 		isInTable = false;
 	}
 
-	if(ImGui::Button("<|", ImVec2(30, 30)))
+	ImVec2 pageNavButton = ImVec2(30, 30);
+
+	std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(totalPages);
+	int cursorX = viewportSize.x / 2 - pageNavButton.x - ITEM_SPACING - ImGui::CalcTextSize(pageInfo.c_str()).x / 2;
+	ImGui::SetCursorPosX(cursorX);
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 17);
+
+	if (ImGui::Button("<|", pageNavButton))
 	{
-		if(currentPage < totalPages)
+		if (currentPage < totalPages)
 			currentPage--;
-		if(currentPage < 0)
+		if (currentPage < 0)
 			currentPage = 0;
 	}
 	ImGui::SameLine();
-	ImGui::Text("%d/%d", currentPage + 1, totalPages);
+	ImGui::Text(pageInfo.c_str());
 	ImGui::SameLine();
-	if(ImGui::Button("|>", ImVec2(30, 30)))
+	if (ImGui::Button("|>", pageNavButton))
 	{
-		if(currentPage >= 0)
+		if (currentPage >= 0)
 			currentPage++;
-		if(currentPage >= totalPages)
+		if (currentPage >= totalPages)
 			currentPage = totalPages - 1;
 	}
 
-	show_FM_action_buttons(pFirstFlight, planeList, selected_row);
+	show_FM_action_buttons(pFirstFlight, planeList, selected_row, isInTable);
 
 	ImGui::End();
 }
@@ -1145,7 +1204,7 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Want to add a new flight?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::BeginPopupModal("Want to add a new flight?", NULL, popupModalFlags))
 	{
 		ImGui::Separator();
 
@@ -1336,22 +1395,22 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 	}
 }
 
-void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selectedFlight)
+void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selected, bool &isInTable)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
 	ImVec2 actionButtonsCursorPos = ImGui::GetCursorPos();
-	button editButton("FIRST BUTTON", actionButtonSize, actionButtonsCursorPos, 4);
+	button changeTimeButton("CHANGE TIME", actionButtonSize, actionButtonsCursorPos, 4);
 
-	int widthSpacing = (viewportSize.x - 4 * actionButtonSize.x - 2 * editButton.x_pos) / 3;
+	int widthSpacing = (viewportSize.x - 4 * actionButtonSize.x - 2 * changeTimeButton.x_pos) / 3;
 
-	button addButton("ADD", editButton, widthSpacing, 4);
+	button addButton("ADD", changeTimeButton, widthSpacing, 4);
 	ImGui::SetCursorPos(ImVec2(addButton.x_pos, addButton.y_pos));
 	static bool show_add_flight_popup = false;
 	if (ImGui::Button(addButton.name, actionButtonSize))
 		show_add_flight_popup = true;
 	if (show_add_flight_popup)
-		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup, selectedFlight);
+		add_flight_popup(pFirstFlight, planeList, show_add_flight_popup, selected);
 
 	button saveAndExitButton("SAVE & EXIT", addButton, widthSpacing, 4);
 	ImGui::SetCursorPos(ImVec2(saveAndExitButton.x_pos, saveAndExitButton.y_pos));
@@ -1360,5 +1419,45 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 		save_flight(pFirstFlight, flightFile);
 		current_screen = MAIN_MENU;
 		open_state[FLIGHT_MANAGEMENT] = false;
+	}
+
+	button bookTicketButton("BOOK TICKET", saveAndExitButton, widthSpacing, 4);
+
+	static bool isInEditButton = false;
+	if (ImGui::IsMouseHoveringRect(ImVec2(changeTimeButton.x_pos, changeTimeButton.y_pos), ImVec2(changeTimeButton.x_pos + changeTimeButton.width, changeTimeButton.y_pos + changeTimeButton.height)))
+		isInEditButton = true;
+	else
+		isInEditButton = false;
+
+	static bool isInDeleteButton = false;
+	if (ImGui::IsMouseHoveringRect(ImVec2(bookTicketButton.x_pos, bookTicketButton.y_pos), ImVec2(bookTicketButton.x_pos + bookTicketButton.width, bookTicketButton.y_pos + bookTicketButton.height)))
+		isInDeleteButton = true;
+	else
+		isInDeleteButton = false;
+
+	if (!(isInTable) && !(isInEditButton) && !(isInDeleteButton))
+		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			selected = -1;
+
+	if (selected != -1)
+	{
+		ImGui::SetCursorPos(ImVec2(changeTimeButton.x_pos, changeTimeButton.y_pos));
+		static bool show_edit_plane_popup = false;
+		if (ImGui::Button(changeTimeButton.name, actionButtonSize))
+			;
+		// 	show_edit_plane_popup = true;
+		// if (show_edit_plane_popup)
+		// 	edit_plane_popup(planeList, show_edit_plane_popup, selected);
+
+		ImGui::SetCursorPos(ImVec2(bookTicketButton.x_pos, bookTicketButton.y_pos));
+		static bool show_delete_plane_popup = false;
+		if (ImGui::Button(bookTicketButton.name, actionButtonSize))
+			;
+		// 	show_delete_plane_popup = true;
+		// if (show_delete_plane_popup)
+		// {
+		// 	delete_plane(planeList, selected);
+		// 	show_delete_plane_popup = false;
+		// }
 	}
 }

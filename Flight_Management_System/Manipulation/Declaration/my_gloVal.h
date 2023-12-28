@@ -16,8 +16,9 @@ int VIEWPORT_HEIGHT = 900;
 #define BOX_WIDTH_FM 168
 #define DROPDOWN_WIDTH 20
 
-const int AIRCRAFT_ID = 8072004;
-const int FLIGHT_ID = 1782004;
+const int AIRCRAFT_ID = 87;
+const int FLIGHT_ID = 178;
+const int CONFIRM_ID = 257;
 
 bool showNoti = false;
 std::string notiMessage = "";
@@ -94,6 +95,7 @@ bool open_state[] = {false, false, false, false, false};
 #define fixed_full_screen ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
 #define notification ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize
 #define tableFlags ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter
+#define popupModalFlags ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
 
 screen current_screen = FLIGHT_MANAGEMENT;
 
