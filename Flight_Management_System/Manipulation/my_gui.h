@@ -477,11 +477,11 @@ void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable
 	if (selected != -1)
 	{
 		ImGui::SetCursorPos(ImVec2(editButton.x_pos, editButton.y_pos));
-		static bool show_edit_plane_popup = false;
+		static bool show_edit_flight_popup = false;
 		if (ImGui::Button(editButton.name, actionButtonSize))
-			show_edit_plane_popup = true;
-		if (show_edit_plane_popup)
-			edit_plane_popup(planeList, show_edit_plane_popup, selected);
+			show_edit_flight_popup = true;
+		if (show_edit_flight_popup)
+			edit_plane_popup(planeList, show_edit_flight_popup, selected);
 
 		ImGui::SetCursorPos(ImVec2(deleteButton.x_pos, deleteButton.y_pos));
 		static bool show_delete_plane_popup = false;
@@ -1191,7 +1191,7 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 			currentPage = totalPages - 1;
 	}
 
-	show_FM_action_buttons(pFirstFlight, planeList, selected_row, isInTable);
+	show_FM_action_buttons(pFirstFlight, planeList, selected_row, isInTable, currentPage);
 
 	ImGui::End();
 }
@@ -1395,7 +1395,7 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 	}
 }
 
-void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selected, bool &isInTable)
+void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selected, bool &isInTable, int &currentPage)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
@@ -1442,12 +1442,11 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 	if (selected != -1)
 	{
 		ImGui::SetCursorPos(ImVec2(changeTimeButton.x_pos, changeTimeButton.y_pos));
-		static bool show_edit_plane_popup = false;
+		static bool show_edit_flight_popup = false;
 		if (ImGui::Button(changeTimeButton.name, actionButtonSize))
-			;
-		// 	show_edit_plane_popup = true;
-		// if (show_edit_plane_popup)
-		// 	edit_plane_popup(planeList, show_edit_plane_popup, selected);
+			show_edit_flight_popup = true;
+		if (show_edit_flight_popup)
+			edit_flight_popup(pFirstFlight, currentPage, selected, show_edit_flight_popup);
 
 		ImGui::SetCursorPos(ImVec2(bookTicketButton.x_pos, bookTicketButton.y_pos));
 		static bool show_delete_plane_popup = false;
@@ -1459,5 +1458,168 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 		// 	delete_plane(planeList, selected);
 		// 	show_delete_plane_popup = false;
 		// }
+	}
+}
+
+void edit_flight_popup(FlightNodePTR &pFirstFlight, int &currentPage, int &Row, bool &show_edit_flight_popup)
+{
+	FlightNodePTR p = pFirstFlight;
+	for (int i = 0; i < currentPage*30 + Row; i++)
+		p = p->next;
+	ImGui::OpenPopup("Want to add a new flight?");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Want to add a new flight?", NULL, popupModalFlags))
+	{
+		ImGui::Separator();
+		ImGui::Text("Flight Number");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		ImGui::Text((p->flight.flightNumber).c_str());
+
+		ImGui::Spacing();
+
+		ImGui::Text("Departure Date");
+		ImGui::SameLine();
+		HelpMarker("DD/MM/YYYY");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		int box2digit = BASE_WIDTH + DIGIT_WIDTH * 2;
+		int box4digit = BASE_WIDTH + DIGIT_WIDTH * 4;
+		int excessWidth = (BOX_WIDTH_FM - (box2digit * 2 + box4digit + ITEM_SPACING * 4 + DIGIT_WIDTH / 2 * 2)) / 3;
+		box2digit += excessWidth;
+		ImGui::PushItemWidth(box2digit);
+		static int day = p->flight.departureTime.day;
+		static int month = p->flight.departureTime.month;
+		static int year = p->flight.departureTime.year;
+		int maxDayInMonth[12];
+		const int minDay = 1;
+		const int minMonth = 1;
+		const int maxMonth = 12;
+		const int minYear = 2024;
+		const int maxYear = 2099;
+		find_max_day_in_month(maxDayInMonth, month, year);
+
+		if (ImGui::InputInt("##day", &day, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+
+			if (day < minDay)
+				day = minDay;
+			else if (day > maxDayInMonth[month - 1])
+				day = maxDayInMonth[month - 1];
+		}
+		ImGui::SameLine();
+		ImGui::Text("/");
+		ImGui::SameLine();
+		if (ImGui::InputInt("##month", &month, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (month < minMonth)
+				month = minMonth;
+			else if (month > maxMonth)
+				month = maxMonth;
+		}
+
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+		ImGui::Text("/");
+		ImGui::SameLine();
+		box4digit += (excessWidth - 2);
+		ImGui::PushItemWidth(box4digit);
+		if (ImGui::InputInt("##year", &year, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (year < minYear)
+				year = minYear;
+			else if (year > maxYear)
+				year = maxYear;
+		}
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("Departure Time");
+		ImGui::SameLine();
+		HelpMarker("HH:MM");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		int timeBox = (BOX_WIDTH_FM - (ITEM_SPACING * 2 + DIGIT_WIDTH / 2)) / 2;
+		ImGui::PushItemWidth(timeBox);
+		static int departureHour = p->flight.departureTime.hour;
+		int minHour = 0;
+		int maxHour = 23;
+		if (ImGui::InputInt("##departure_hour", &departureHour, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (departureHour < minHour)
+				departureHour = minHour;
+			else if (departureHour > maxHour)
+				departureHour = maxHour;
+		}
+		ImGui::SameLine();
+		ImGui::Text(":");
+		ImGui::SameLine();
+		static int departureMinute = p->flight.departureTime.minute;
+		int minMinute = 0;
+		int maxMinute = 59;
+		if (ImGui::InputInt("##departure_minute", &departureMinute, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+		{
+			if (departureMinute < minMinute)
+				departureMinute = minMinute;
+			if (departureMinute > maxMinute)
+				departureMinute = maxMinute;
+		}
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("Destination Airport");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+
+		ImGui::Text((p->flight.desAirport).c_str());
+
+		ImGui::Spacing();
+
+		ImGui::Text("Aircraft Registration");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_FM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		ImGui::Text((p->flight.planeID).c_str());
+		ImGui::PopItemWidth();
+
+		ImGui::Separator();
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Save", cmdButtonSize))
+		{
+			p->flight.departureTime.day = day;
+			p->flight.departureTime.month = month;
+			p->flight.departureTime.year = year;
+			p->flight.departureTime.hour = departureHour;
+			p->flight.departureTime.minute = departureMinute;
+			show_edit_flight_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", cmdButtonSize))
+		{
+			show_edit_flight_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
 	}
 }

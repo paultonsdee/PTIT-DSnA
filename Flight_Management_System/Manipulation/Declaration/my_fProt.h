@@ -24,9 +24,10 @@ void draw_flight_management_screen(FlightNodePTR &, PlaneList &, ImFont *&);
 void add_flight_popup(FlightNodePTR &, PlaneList &, bool &, int &);
 void draw_combo(const char *, PlaneList &, int &, const char *&, int &);
 void find_max_day_in_month(int *, int &, int &);
-void show_FM_action_buttons(FlightNodePTR &, PlaneList &, int &, bool &);
+void show_FM_action_buttons(FlightNodePTR &, PlaneList &, int &, bool &, int &);
 void show_noti (const std::string &);
 void confirm_change_status(FlightNodePTR &, int &, int &, int &);
+void edit_flight_popup(FlightNodePTR &, int &, int &, bool &);
 
 // --------------------------------------------
 // |             Data Handling                |
