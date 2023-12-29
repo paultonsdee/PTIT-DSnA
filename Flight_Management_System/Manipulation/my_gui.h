@@ -1634,7 +1634,6 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 		p = p->next;
 
 	int seatNum, rowNum;
-
 	for (int i = 0; i < planeList.totalPlane; i++)
 	{
 		if (planeList.nodes[i]->planeID == p->flight.planeID)
@@ -1661,11 +1660,11 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 		static bool isSeatSelected[100][11] = {};
 		const int frozen_cols = 1;
 		const int frozen_rows = 1;
-		const float TEXT_BASE_WIDTH = 388;
-		const float TEXT_BASE_HEIGHT = 307;
+		const float TABLE_WODTH = 388;
+		const float TABLE_HEIGHT = 307;
 		static bool selectedSeats = false;
 		static int countSelectedSeats = 0;
-		ImVec2 OuterSize = ImVec2(TEXT_BASE_WIDTH, TEXT_BASE_HEIGHT);
+		ImVec2 OuterSize = ImVec2(TABLE_WODTH, TABLE_HEIGHT);
 		ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders;
 		if (ImGui::BeginTable("table_angled_headers", columns_count, flags, OuterSize))
 		{
@@ -1687,14 +1686,20 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 					{
 						ImGui::PushID(column);
 						if (isSeatBooked[row][column - 1])
-						{
 							ImGui::Text("  B");
-						}
-						else if (ImGui::Checkbox("", &isSeatBooked[row][column - 1]))
-						{
-							selectedSeats = true;
-							countSelectedSeats++;
-						}
+						else if (ImGui::Checkbox("", &isSeatSelected[row][column - 1]))
+							if (isSeatSelected[row][column - 1] == false)
+							{
+								countSelectedSeats--;
+								if (countSelectedSeats == 0)
+									selectedSeats = false;
+							}
+							else
+							{
+								selectedSeats = true;
+								countSelectedSeats++;
+							}
+
 						ImGui::PopID();
 					}
 				ImGui::PopID();
@@ -1707,16 +1712,67 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 			ImGui::Text("Tickets Available");
-			ImGui::SameLine();
+			ImGui::SameLine(0, 0);
 			int posX = ImGui::GetCursorPosX();
 			ImGui::Text(": ");
-			ImGui::Text("Selected Seats");
 			ImGui::SameLine();
+			int countTicketsAvailable = rowNum * seatNum;
+			for (int row = 0; row < rowNum; row++)
+				for (int column = 0; column < seatNum; column++)
+				{
+					if (isSeatBooked[row][column])
+						countTicketsAvailable--;
+					if (isSeatSelected[row][column])
+						countTicketsAvailable--;
+				}
+			ImGui::Text("%d", countTicketsAvailable);
+
+			ImGui::Text("Selected Seats");
+			ImGui::SameLine(0, 0);
 			ImGui::SetCursorPosX(posX);
 			ImGui::Text(": ");
 			ImGui::SameLine();
 			ImGui::Text("%d", countSelectedSeats);
-			
+
+			ImGui::Separator();
+
+			ImGui::Text("Selected Seats: ");
+
+			bool firstElement = true;
+			bool firstElementNotFirstLine = false;
+			int countElementInLine = 0;
+			const int maxElementInLine = 5;
+			for (int row = 0; row < rowNum; row++)
+				for (int column = 0; column < seatNum; column++)
+					if (isSeatSelected[row][column])
+						if (firstElement)
+						{
+							if (firstElementNotFirstLine)
+							{
+								ImGui::SameLine(0, 0);
+								ImGui::Text(",");
+								firstElementNotFirstLine = false;
+							}
+							std::string seat = seats[column] + rows[row];
+							ImGui::Text(seat.c_str());
+							firstElement = false;
+							countElementInLine++;
+						}
+						else
+						{
+							ImGui::SameLine(0, 0);
+							std::string tempSeat = seats[column] + rows[row];
+							std::string seat = ", " + tempSeat;
+							ImGui::Text(seat.c_str());
+							countElementInLine++;
+							if (countElementInLine == maxElementInLine)
+							{
+								firstElement = true;
+								firstElementNotFirstLine = true;
+								countElementInLine = 0;
+							}
+						}
+
 			ImGui::EndGroup();
 		}
 

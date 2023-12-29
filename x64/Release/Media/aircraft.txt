@@ -1,24 +1,396 @@
-VN-0807
-ATR 72-500
+VN-0122
+Airbus A321
+6
+95
+VN-0133
+Airbus A350
+5
+66
+VN-0144
+Boeing 787
 8
+66
+VN-0155
+ATR 72-500
+9
+79
+VN-0166
+Airbus A330
+10
+69
+VN-0177
+Airbus A321
+6
+73
+VN-0188
+Airbus A350
+8
+58
+VN-0199
+Boeing 787
+8
+79
+VN-0210
+ATR 72-500
+11
+66
+VN-0807
+Airbus A330
+6
+52
+VN-1126
+Airbus A321
+7
+73
+VN-1129
+Airbus A350
+5
+63
+VN-1132
+Boeing 787
+8
+62
+VN-1135
+ATR 72-500
+5
+51
+VN-1138
+Airbus A330
+11
 70
+VN-1141
+Airbus A321
+8
+99
+VN-1144
+Airbus A350
+6
+56
+VN-1147
+Boeing 787
+9
+72
+VN-1150
+ATR 72-500
+6
+65
+VN-1153
+Airbus A330
+11
+68
+VN-1156
+Airbus A321
+11
+60
+VN-1159
+Airbus A350
+7
+100
+VN-1162
+Boeing 787
+9
+84
+VN-1165
+ATR 72-500
+11
+69
+VN-1168
+Airbus A330
+6
+79
+VN-1171
+Airbus A321
+6
+81
+VN-1174
+Airbus A350
+11
+91
+VN-1177
+Boeing 787
+5
+76
+VN-1180
+ATR 72-500
+10
+50
+VN-1500
+Airbus A320
+8
+52
+VN-1601
+Airbus A321neo
+6
+84
 VN-1708
+Boeing 737 MAX 200
+6
+59
+VN-1803
+Airbus A320
+8
+53
+VN-1904
+Airbus A321neo
+9
+61
+VN-2004
+Boeing 737 MAX 200
+9
+68
+VN-2106
+Airbus A320
+6
+78
+VN-2207
+Airbus A321neo
+11
+79
+VN-2308
+Boeing 737 MAX 200
+6
+68
+VN-2409
+Airbus A320
+9
+98
+VN-2507
+Airbus A321CEO
+7
+55
+VN-2611
 Boeing 787-9 Dreamliner
 8
-17
-B-99999
-Airbus A321neo ACF
+83
+VN-2712
+Airbus A320neo
+9
+71
+VN-2813
+Embraer 190
+7
+85
+VN-2914
+Airbus A320neo
+5
+86
+VN-3015
+Boeing 787-9 Dreamliner
+8
+75
+VN-3116
+Airbus A321CEO
+7
+85
+VN-3217
+Embraer 190
+7
+96
+VN-3318
+Airbus A320neo
+10
+62
+VN-3419
+Boeing 787-9 Dreamliner
+7
+58
+VN-3520
+Airbus A321CEO
+9
+71
+VN-3621
+Embraer 190
+3
+37
+VN-3722
+Airbus A320neo
+10
+83
+VN-3823
+Boeing 787-9 Dreamliner
 11
-100
-A6-YAY
-Boeing 777
+35
+VN-3924
+Airbus A321CEO
+2
 11
-100
+VN-5555
+Embraer 190
+9
+44
+VN-6157
+Airbus A320neo
+4
+3
+VN-7123
+Boeing 787-9 Dreamliner
+10
+71
+VN-8089
+Airbus A321CEO
+11
+68
+VN-9055
+Embraer 190
+10
+77
 A6-PRO
+Airbus A380
+7
+89
+A6-YAY
+Airbus A340-500
+7
+37
+A6-CHU
+Boeing 777
+10
+96
+A6-MMM
+Boeing 777-200ER
+11
+71
+A6-IUU
+Airbus A380
+8
+79
+A6-PHE
+Airbus A340-500
+3
+83
+A6-TTT
+Boeing 777
+3
+2
+A6-YEU
+Boeing 777-200ER
+11
+45
+A6-XIC
+Airbus A380
+3
+75
+A6-HUM
+Airbus A340-500
+8
+97
+A6-OKK
 Boeing 777
 11
-100
-A6-PLS
+96
+A6-LAM
+Boeing 777-200ER
+8
+41
+A6-DUO
 Airbus A380
 10
-100
+96
+A6-CCC
+Airbus A340-500
+3
+28
+A6-ROI
+Boeing 777
+5
+85
+A6-NEE
+Boeing 777-200ER
+4
+6
+A6-MOI
+Airbus A380
+2
+51
+A6-NGU
+Airbus A340-500
+6
+59
+A6-OII
+Boeing 777
+10
+94
+A6-KKK
+Boeing 777-200ER
+10
+82
+B-01010
+Airbus A321neo ACF
+5
+24
+B-05589
+Airbus A330-900
+6
+51
+B-10168
+Airbus A350-900
+5
+7
+B-14747
+Airbus A321neo ACF
+7
+6
+B-19326
+Airbus A330-900
+11
+41
+B-23905
+Airbus A350-900
+6
+74
+B-28484
+Airbus A321neo ACF
+6
+96
+B-33063
+Airbus A330-900
+6
+5
+B-37642
+Airbus A350-900
+5
+62
+B-42221
+Airbus A321neo ACF
+6
+66
+B-46800
+Airbus A330-900
+10
+79
+B-51379
+Airbus A350-900
+4
+23
+B-55958
+Airbus A321neo ACF
+11
+7
+B-60537
+Airbus A330-900
+5
+29
+B-65116
+Airbus A350-900
+3
+56
+B-69695
+Airbus A321neo ACF
+6
+54
+B-74274
+Airbus A330-900
+6
+60
+B-78853
+Airbus A350-900
+2
+51
+B-83432
+Airbus A321neo ACF
+5
+30
+B-88011
+Airbus A330-900
+6
+93
