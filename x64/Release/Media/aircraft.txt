@@ -16,8 +16,8 @@ Boeing 777
 100
 A6-PRO
 Boeing 777
-7
-25
+11
+100
 A6-PLS
 Airbus A380
 10

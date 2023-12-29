@@ -1655,31 +1655,86 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 		ImGui::Text("Please select seat(s) you want to book");
 
 		ImGui::Separator();
-		for (int row = 0; row < seatNum; row++)
+
+		const int columns_count = seatNum + 1;
+		static bool isSeatBooked[100][11] = {};
+		static bool isSeatSelected[100][11] = {};
+		const int frozen_cols = 1;
+		const int frozen_rows = 1;
+		const float TEXT_BASE_WIDTH = 388;
+		const float TEXT_BASE_HEIGHT = 307;
+		static bool selectedSeats = false;
+		static int countSelectedSeats = 0;
+		ImVec2 OuterSize = ImVec2(TEXT_BASE_WIDTH, TEXT_BASE_HEIGHT);
+		ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders;
+		if (ImGui::BeginTable("table_angled_headers", columns_count, flags, OuterSize))
 		{
-			for (int column = 0; column < rowNum; column++)
+			ImGui::TableSetupColumn("");
+			for (int n = 1; n < columns_count; n++)
+				ImGui::TableSetupColumn(seats[n - 1], ImGuiTableColumnFlags_None);
+			ImGui::TableSetupScrollFreeze(frozen_cols, frozen_rows);
+
+			ImGui::TableHeadersRow(); // Draw remaining headers and allow access to context-menu and other functions.
+			for (int row = 0; row < rowNum; row++)
 			{
-				if (column != 0)
-					ImGui::SameLine();
-				std::string content = seats[row] + rows[column];
-				ImGui::Button(content.c_str(), ImVec2(30, 30));
+				ImGui::PushID(row);
+				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				ImGui::AlignTextToFramePadding();
+				ImGui::Text(rows[row].c_str());
+				for (int column = 1; column < columns_count; column++)
+					if (ImGui::TableSetColumnIndex(column))
+					{
+						ImGui::PushID(column);
+						if (isSeatBooked[row][column - 1])
+						{
+							ImGui::Text("  B");
+						}
+						else if (ImGui::Checkbox("", &isSeatBooked[row][column - 1]))
+						{
+							selectedSeats = true;
+							countSelectedSeats++;
+						}
+						ImGui::PopID();
+					}
+				ImGui::PopID();
 			}
+			ImGui::EndTable();
 		}
 
+		if (selectedSeats)
+		{
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			ImGui::Text("Tickets Available");
+			ImGui::SameLine();
+			int posX = ImGui::GetCursorPosX();
+			ImGui::Text(": ");
+			ImGui::Text("Selected Seats");
+			ImGui::SameLine();
+			ImGui::SetCursorPosX(posX);
+			ImGui::Text(": ");
+			ImGui::SameLine();
+			ImGui::Text("%d", countSelectedSeats);
+			
+			ImGui::EndGroup();
+		}
+
+		ImGui::Text("(\"B\" means this seat is already booked by another passenger)");
 		ImGui::Separator();
 
 		int windowWidth = ImGui::GetWindowWidth();
 		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
 		ImGui::SetCursorPosX(saveButtonX);
 
-		if (ImGui::Button("Yes", cmdButtonSize))
+		if (ImGui::Button("Book", cmdButtonSize))
 		{
 			show_book_ticket_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		if (ImGui::Button("No", cmdButtonSize))
+		if (ImGui::Button("Back", cmdButtonSize))
 		{
 			show_book_ticket_popup = false;
 			ImGui::CloseCurrentPopup();

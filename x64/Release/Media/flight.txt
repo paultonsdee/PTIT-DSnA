@@ -12,17 +12,6 @@ Dien Bien Phu (DIN)
 EK2345
 A6-PRO
 Dien Bien Phu (DIN)
-9
-3
-2023
-14
-0
-0
-900
-3
-EK2345
-A6-PRO
-Dien Bien Phu (DIN)
 19
 7
 2023
@@ -31,6 +20,17 @@ Dien Bien Phu (DIN)
 0
 900
 2
+EK2345
+A6-PRO
+Dien Bien Phu (DIN)
+9
+3
+2023
+14
+0
+0
+900
+3
 EK3456
 A6-PRO
 Dien Bien Phu (DIN)
@@ -67,22 +67,22 @@ Dien Bien Phu (DIN)
 EK5678
 A6-PRO
 Dien Bien Phu (DIN)
-27
-7
+14
+2
 2023
 20
-0
+15
 0
 900
 1
 EK5678
 A6-PRO
 Dien Bien Phu (DIN)
-14
-2
+27
+7
 2023
 20
-15
+0
 0
 900
 1
@@ -210,17 +210,6 @@ Dien Bien Phu (DIN)
 JX7890
 A6-PRO
 Dien Bien Phu (DIN)
-20
-5
-2023
-16
-45
-0
-900
-1
-JX7890
-A6-PRO
-Dien Bien Phu (DIN)
 25
 1
 2023
@@ -229,6 +218,17 @@ Dien Bien Phu (DIN)
 0
 900
 0
+JX7890
+A6-PRO
+Dien Bien Phu (DIN)
+20
+5
+2023
+16
+45
+0
+900
+1
 JX8901
 A6-PRO
 Dien Bien Phu (DIN)
@@ -244,6 +244,17 @@ JX9012
 A6-PRO
 Dien Bien Phu (DIN)
 10
+10
+2023
+16
+15
+0
+900
+1
+JX9012
+A6-PRO
+Dien Bien Phu (DIN)
+10
 4
 2023
 13
@@ -251,28 +262,6 @@ Dien Bien Phu (DIN)
 0
 900
 2
-JX9012
-A6-PRO
-Dien Bien Phu (DIN)
-10
-10
-2023
-16
-15
-0
-900
-1
-QH1234
-A6-PRO
-Dien Bien Phu (DIN)
-28
-2
-2023
-16
-0
-0
-900
-1
 QH1234
 A6-PRO
 Dien Bien Phu (DIN)
@@ -284,6 +273,17 @@ Dien Bien Phu (DIN)
 0
 900
 2
+QH1234
+A6-PRO
+Dien Bien Phu (DIN)
+28
+2
+2023
+16
+0
+0
+900
+1
 QH2345
 A6-PRO
 Dien Bien Phu (DIN)
@@ -331,17 +331,6 @@ Dien Bien Phu (DIN)
 QH5678
 A6-PRO
 Dien Bien Phu (DIN)
-25
-11
-2023
-9
-30
-0
-900
-2
-QH5678
-A6-PRO
-Dien Bien Phu (DIN)
 28
 4
 2023
@@ -350,6 +339,17 @@ Dien Bien Phu (DIN)
 0
 900
 3
+QH5678
+A6-PRO
+Dien Bien Phu (DIN)
+25
+11
+2023
+9
+30
+0
+900
+2
 QH6789
 A6-PRO
 Dien Bien Phu (DIN)
@@ -441,22 +441,22 @@ Dien Bien Phu (DIN)
 VJ5678
 A6-PRO
 Dien Bien Phu (DIN)
-23
-4
+22
+10
 2023
-17
-0
+4
+15
 0
 900
 1
 VJ5678
 A6-PRO
 Dien Bien Phu (DIN)
-22
-10
-2023
+23
 4
-15
+2023
+17
+0
 0
 900
 1
@@ -474,17 +474,6 @@ Dien Bien Phu (DIN)
 VJ7890
 A6-PRO
 Dien Bien Phu (DIN)
-8
-2
-2023
-10
-45
-0
-900
-1
-VJ7890
-A6-PRO
-Dien Bien Phu (DIN)
 12
 12
 2023
@@ -493,6 +482,17 @@ Dien Bien Phu (DIN)
 0
 900
 3
+VJ7890
+A6-PRO
+Dien Bien Phu (DIN)
+8
+2
+2023
+10
+45
+0
+900
+1
 VJ8901
 A6-PRO
 Dien Bien Phu (DIN)
@@ -507,6 +507,17 @@ Dien Bien Phu (DIN)
 VJ9012
 A6-PRO
 Dien Bien Phu (DIN)
+7
+7
+2023
+13
+30
+0
+900
+2
+VJ9012
+A6-PRO
+Dien Bien Phu (DIN)
 1
 11
 2023
@@ -515,28 +526,6 @@ Dien Bien Phu (DIN)
 0
 900
 2
-VJ9012
-A6-PRO
-Dien Bien Phu (DIN)
-7
-7
-2023
-13
-30
-0
-900
-2
-VN1234
-A6-PRO
-Dien Bien Phu (DIN)
-12
-7
-2023
-13
-45
-0
-900
-1
 VN1234
 A6-PRO
 Dien Bien Phu (DIN)
@@ -548,6 +537,17 @@ Dien Bien Phu (DIN)
 0
 900
 0
+VN1234
+A6-PRO
+Dien Bien Phu (DIN)
+12
+7
+2023
+13
+45
+0
+900
+1
 VN2345
 A6-PRO
 Dien Bien Phu (DIN)
@@ -573,17 +573,6 @@ Dien Bien Phu (DIN)
 VN4567
 A6-PRO
 Dien Bien Phu (DIN)
-15
-12
-2023
-17
-30
-0
-900
-0
-VN4567
-A6-PRO
-Dien Bien Phu (DIN)
 11
 11
 2023
@@ -592,6 +581,17 @@ Dien Bien Phu (DIN)
 0
 900
 2
+VN4567
+A6-PRO
+Dien Bien Phu (DIN)
+15
+12
+2023
+17
+30
+0
+900
+0
 VN5678
 A6-PRO
 Dien Bien Phu (DIN)
