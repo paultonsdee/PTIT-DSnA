@@ -21,6 +21,7 @@ int main(int, char **)
 		init_row_arr();
 		load_aircraft(planeList, aircraftFile);
 		load_flight(pFirstFlight, flightFile);
+		load_ticket(pFirstFlight, ticketFile);
 
 		ImGuiIO &io = init_ImGui();
 
@@ -55,6 +56,8 @@ int main(int, char **)
 					case SDLK_RETURN:
 						save_aircraft(planeList, aircraftFile);
 						save_flight(pFirstFlight, flightFile);
+						save_ticket(pFirstFlight, ticketFile);
+
 						break;
 					case SDLK_SPACE:
 						current_screen = MAIN_MENU;

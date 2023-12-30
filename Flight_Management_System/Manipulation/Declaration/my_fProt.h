@@ -52,3 +52,5 @@ int count_flights (FlightNodePTR );
 void save_flight(FlightNodePTR &, std::string &);
 void load_flight(FlightNodePTR &, std::string &);
 void init_row_arr();
+void save_ticket (FlightNodePTR &, std::string &);
+void load_ticket (FlightNodePTR &, std::string &);

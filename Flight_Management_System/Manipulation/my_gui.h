@@ -1657,6 +1657,15 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 
 		const int columns_count = seatNum + 1;
 		static bool isSeatBooked[100][11] = {};
+		for (int row = 0; row < rowNum; row++)
+			for (int column = 0; column < seatNum; column++)
+			{
+				if (p->flight.ticketList[row * seatNum + column].inUse == false)
+					isSeatBooked[row][column] = false;
+				else
+					isSeatBooked[row][column] = true;
+			}
+
 		static bool isSeatSelected[100][11] = {};
 		const int frozen_cols = 1;
 		const int frozen_rows = 1;
@@ -1720,9 +1729,7 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			for (int row = 0; row < rowNum; row++)
 				for (int column = 0; column < seatNum; column++)
 				{
-					if (isSeatBooked[row][column])
-						countTicketsAvailable--;
-					if (isSeatSelected[row][column])
+					if (isSeatBooked[row][column] || isSeatSelected[row][column])
 						countTicketsAvailable--;
 				}
 			ImGui::Text("%d", countTicketsAvailable);
@@ -1785,6 +1792,10 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 
 		if (ImGui::Button("Book", cmdButtonSize))
 		{
+			for (int row = 0; row < rowNum; row++)
+				for (int column = 0; column < seatNum; column++)
+					if (isSeatSelected[row][column] || isSeatBooked[row][column])
+						p->flight.ticketList[row * seatNum + column].inUse = true;
 			show_book_ticket_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
