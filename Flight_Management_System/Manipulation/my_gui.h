@@ -233,6 +233,13 @@ static void HelpMarker(const char *desc)
 	}
 }
 
+void show_noti(const std::string &message)
+{
+	showNoti = true;
+	notiMessage = message;
+	notiStartTime = ImGui::GetTime();
+}
+
 bool is_in_array(std::string &planeType, const char *arr[], const int &aircraftTypesIndex)
 {
 	for (int i = 0; i < aircraftTypesLength[aircraftTypesIndex]; i++)
@@ -1643,6 +1650,7 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			break;
 		}
 	}
+
 	ImGui::OpenPopup("Book Ticket");
 
 	// Always center this window when appearing
@@ -1657,25 +1665,32 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 
 		const int columns_count = seatNum + 1;
 		static bool isSeatBooked[100][11] = {};
-		for (int row = 0; row < rowNum; row++)
-			for (int column = 0; column < seatNum; column++)
-			{
-				if (p->flight.ticketList[row * seatNum + column].inUse == false)
-					isSeatBooked[row][column] = false;
-				else
-					isSeatBooked[row][column] = true;
-			}
-
 		static bool isSeatSelected[100][11] = {};
+		static bool isFirstTime = true;
+		if (isFirstTime)
+		{
+			for (int column = 0; column < seatNum; column++)
+				for (int row = 0; row < rowNum; row++)
+				{
+					isSeatSelected[row][column] = false;
+					if (p->flight.ticketList[row * seatNum + column].inUse == false)
+						isSeatBooked[row][column] = false;
+					else
+						isSeatBooked[row][column] = true;
+				}
+			isFirstTime = false;
+		}
+
 		const int frozen_cols = 1;
 		const int frozen_rows = 1;
 		const float TABLE_WODTH = 388;
 		const float TABLE_HEIGHT = 307;
-		static bool selectedSeats = false;
-		static int countSelectedSeats = 0;
+		static bool selectedSeat = false;
+		bool moreThanOne = false;
+
 		ImVec2 OuterSize = ImVec2(TABLE_WODTH, TABLE_HEIGHT);
 		ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders;
-		if (ImGui::BeginTable("table_angled_headers", columns_count, flags, OuterSize))
+		if (ImGui::BeginTable("Tickets", columns_count, flags, OuterSize))
 		{
 			ImGui::TableSetupColumn("");
 			for (int n = 1; n < columns_count; n++)
@@ -1699,14 +1714,15 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 						else if (ImGui::Checkbox("", &isSeatSelected[row][column - 1]))
 							if (isSeatSelected[row][column - 1] == false)
 							{
-								countSelectedSeats--;
-								if (countSelectedSeats == 0)
-									selectedSeats = false;
+									selectedSeat = false;
+							}
+							else if (selectedSeat == true)
+							{
+								isSeatSelected[row][column - 1] = false;
 							}
 							else
 							{
-								selectedSeats = true;
-								countSelectedSeats++;
+								selectedSeat = true;
 							}
 
 						ImGui::PopID();
@@ -1716,7 +1732,7 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			ImGui::EndTable();
 		}
 
-		if (selectedSeats)
+		if (selectedSeat)
 		{
 			ImGui::SameLine();
 			ImGui::BeginGroup();
@@ -1739,46 +1755,14 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			ImGui::SetCursorPosX(posX);
 			ImGui::Text(": ");
 			ImGui::SameLine();
-			ImGui::Text("%d", countSelectedSeats);
 
-			ImGui::Separator();
-
-			ImGui::Text("Selected Seats: ");
-
-			bool firstElement = true;
-			bool firstElementNotFirstLine = false;
-			int countElementInLine = 0;
-			const int maxElementInLine = 5;
 			for (int row = 0; row < rowNum; row++)
 				for (int column = 0; column < seatNum; column++)
 					if (isSeatSelected[row][column])
-						if (firstElement)
-						{
-							if (firstElementNotFirstLine)
-							{
-								ImGui::SameLine(0, 0);
-								ImGui::Text(",");
-								firstElementNotFirstLine = false;
-							}
-							std::string seat = seats[column] + rows[row];
-							ImGui::Text(seat.c_str());
-							firstElement = false;
-							countElementInLine++;
-						}
-						else
-						{
-							ImGui::SameLine(0, 0);
-							std::string tempSeat = seats[column] + rows[row];
-							std::string seat = ", " + tempSeat;
-							ImGui::Text(seat.c_str());
-							countElementInLine++;
-							if (countElementInLine == maxElementInLine)
-							{
-								firstElement = true;
-								firstElementNotFirstLine = true;
-								countElementInLine = 0;
-							}
-						}
+						{std::string tempSeat = seats[column] + rows[row];
+						ImGui::Text("%s", tempSeat.c_str());}
+
+			ImGui::Separator();
 
 			ImGui::EndGroup();
 		}
