@@ -2,6 +2,7 @@
 
 std::string aircraftFile = "./Media/aircraft.txt";
 std::string flightFile = "./Media/flight.txt";
+std::string ticketFile = "./Media/ticket.txt";
 
 void string_uppercase(std::string &);
 bool check_valid_planeID(std::string &);
@@ -236,10 +237,29 @@ void insert_flight(FlightNodePTR &First, const char *&flightNumber1, char (&flig
 	flight->maxTicket = planeList.nodes[selectedPlane]->seatNum * planeList.nodes[selectedPlane]->rowNum;
 	flight->ticketList = new Ticket[flight->maxTicket];
 
-	// Ticket *ticket = &flight->ticketList[flight->totalTicket];
-	// ticket->ticketID = ;
-	// ticket->passengerID = ;
-	// ticket->inUse = 0;
+	std::string seats[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+	for (int i = 0; i < flight->maxTicket; i++)
+	{
+		int seatIndex = i / planeList.nodes[selectedPlane]->rowNum;
+		int rowIndex = i % planeList.nodes[selectedPlane]->rowNum + 1;
+		p->flight.ticketList[i].ticketID = seats[seatIndex];
+		if (planeList.nodes[selectedPlane]->rowNum == 100)
+		{
+			if (rowIndex < 10)
+				p->flight.ticketList[i].ticketID += "00";
+			else if (rowIndex < 100)
+				p->flight.ticketList[i].ticketID += "0";
+		}
+		else if (planeList.nodes[selectedPlane]->rowNum > 9)
+		{
+			if (rowIndex < 10)
+				p->flight.ticketList[i].ticketID += "0";
+		}
+		p->flight.ticketList[i].ticketID += std::to_string(rowIndex);
+
+		p->flight.ticketList[i].passengerID = "";
+		p->flight.ticketList[i].inUse = 0;
+	}
 
 	DT *departureTime = &flight->departureTime;
 	departureTime->day = day;
@@ -363,7 +383,7 @@ void load_flight(FlightNodePTR &First, std::string &filename)
 			flight->planeID = planeID;
 			flight->totalTicket = totalTicket;
 			flight->maxTicket = maxTicket;
-			flight->ticketList = new Ticket[maxTicket];
+			p->flight.ticketList = new Ticket[maxTicket];
 			flight->stt = stt;
 
 			DT *departureTime = &flight->departureTime;
@@ -398,4 +418,61 @@ void load_flight(FlightNodePTR &First, std::string &filename)
 
 	f.close();
 	std::cout << "Loaded from flight file successfully!" << std::endl;
+}
+
+void save_ticket(FlightNodePTR &First, std::string &filename)
+{
+	std::ofstream f(filename);
+
+	if (f.is_open())
+	{
+		FlightNodePTR p = First;
+		while (p != NULL)
+		{
+			for (int i = 0; i < p->flight.maxTicket; i++)
+				f << p->flight.ticketList[i].ticketID << '\t'
+				  << p->flight.ticketList[i].passengerID << '\t'
+				  << p->flight.ticketList[i].inUse << '\n';
+
+			p = p->next;
+		}
+	}
+	else
+	{
+		std::cout << "An error occurred while opening ticket file" << std::endl;
+		return;
+	}
+
+	f.close();
+	std::cout << "Saved to ticket file successfully!" << std::endl;
+}
+
+void load_ticket(FlightNodePTR &First, std::string &filename)
+{
+	std::ifstream f;
+	f.open(filename);
+	FlightNodePTR p = First;
+
+	if (f.is_open())
+		while (p != NULL)
+		{
+			for (int i = 0; i < p->flight.maxTicket; i++)
+			{
+				f >> p->flight.ticketList[i].ticketID;
+				f.ignore();
+				f >> p->flight.ticketList[i].passengerID;
+				f.ignore();
+				f >> p->flight.ticketList[i].inUse;
+				f.ignore();
+			}
+			p = p->next;
+		}
+	else
+	{
+		std::cout << "An error occurred while opening aircraft file" << std::endl;
+		return;
+	}
+
+	f.close();
+	std::cout << "Loaded from aircraft file successfully!" << std::endl;
 }
