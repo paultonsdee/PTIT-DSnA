@@ -992,7 +992,7 @@ void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 	}
 }
 
-void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &planeList, ImFont *&headerFont)
+void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &planeList, PassengerNodesPTR &root, ImFont *&headerFont)
 {
 	open_state[FLIGHT_MANAGEMENT] = true;
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -1205,7 +1205,7 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 			currentPage = totalPages - 1;
 	}
 
-	show_FM_action_buttons(pFirstFlight, planeList, selected_row, isInTable, currentPage);
+	show_FM_action_buttons(pFirstFlight, planeList, root, selected_row, isInTable, currentPage);
 
 	ImGui::End();
 }
@@ -1409,7 +1409,7 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 	}
 }
 
-void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &selected, bool &isInTable, int &currentPage)
+void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, PassengerNodesPTR &root, int &selected, bool &isInTable, int &currentPage)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
@@ -1467,7 +1467,7 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, i
 		if (ImGui::Button(bookTicketButton.name, actionButtonSize))
 			show_book_ticket_popup = true;
 		if (show_book_ticket_popup)
-			book_ticket_popup(pFirstFlight, planeList, currentPage, selected, show_book_ticket_popup);
+			book_ticket_popup(pFirstFlight, planeList, root, currentPage, selected, show_book_ticket_popup);
 	}
 }
 
@@ -1634,7 +1634,7 @@ void edit_flight_popup(FlightNodePTR &pFirstFlight, int &currentPage, int &row, 
 	}
 }
 
-void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &currentPage, int &selectedRow, bool &show_book_ticket_popup)
+void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, PassengerNodesPTR &root, int &currentPage, int &selectedRow, bool &show_book_ticket_popup)
 {
 	FlightNodePTR p = pFirstFlight;
 	for (int i = 0; i < currentPage * 30 + selectedRow; i++)
@@ -1650,6 +1650,7 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			break;
 		}
 	}
+	static int indexInFlight = 0;
 
 	ImGui::OpenPopup("Book Ticket");
 
@@ -1669,14 +1670,16 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 		static bool isFirstTime = true;
 		if (isFirstTime)
 		{
+			int index = 0;
 			for (int column = 0; column < seatNum; column++)
 				for (int row = 0; row < rowNum; row++)
 				{
 					isSeatSelected[row][column] = false;
-					if (p->flight.ticketList[row * seatNum + column].inUse == false)
-						isSeatBooked[row][column] = false;
-					else
+					if (p->flight.ticketList[index].inUse)
 						isSeatBooked[row][column] = true;
+					else
+						isSeatBooked[row][column] = false;
+					index++;
 				}
 			isFirstTime = false;
 		}
@@ -1714,14 +1717,16 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 						else if (ImGui::Checkbox("", &isSeatSelected[row][column - 1]))
 							if (isSeatSelected[row][column - 1] == false)
 							{
-									selectedSeat = false;
+								selectedSeat = false;
 							}
-							else if (selectedSeat == true)
+							else if (selectedSeat)
 							{
 								isSeatSelected[row][column - 1] = false;
 							}
-							else
+							else if (isSeatSelected[row][column - 1])
 							{
+								indexInFlight = (column - 1) * rowNum + row;
+								std::cout << indexInFlight << std::endl;
 								selectedSeat = true;
 							}
 
@@ -1756,11 +1761,8 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			ImGui::Text(": ");
 			ImGui::SameLine();
 
-			for (int row = 0; row < rowNum; row++)
-				for (int column = 0; column < seatNum; column++)
-					if (isSeatSelected[row][column])
-						{std::string tempSeat = seats[column] + rows[row];
-						ImGui::Text("%s", tempSeat.c_str());}
+			std::string tempSeat = p->flight.ticketList[indexInFlight].ticketID;
+			ImGui::Text("%s", tempSeat.c_str());
 
 			ImGui::Separator();
 
@@ -1774,14 +1776,16 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
 		ImGui::SetCursorPosX(saveButtonX);
 
+		static bool show_input_passengerID_popup = false;
+		if (show_input_passengerID_popup)
+		{
+			input_passengerID_popup(root, p, indexInFlight, show_input_passengerID_popup, show_book_ticket_popup);
+		}
+
 		if (ImGui::Button("Book", cmdButtonSize))
 		{
-			for (int row = 0; row < rowNum; row++)
-				for (int column = 0; column < seatNum; column++)
-					if (isSeatSelected[row][column] || isSeatBooked[row][column])
-						p->flight.ticketList[row * seatNum + column].inUse = true;
-			show_book_ticket_popup = false;
-			ImGui::CloseCurrentPopup();
+			show_input_passengerID_popup = true;
+			// ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
@@ -1791,6 +1795,160 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, int &c
 			ImGui::CloseCurrentPopup();
 		}
 
+		ImGui::EndPopup();
+	}
+}
+
+void input_passengerID_popup(PassengerNodesPTR &root, FlightNodePTR &p, int &ticketIndex, bool &show_input_passengerID_popup, bool &show_book_ticket_popup)
+{
+	ImGui::OpenPopup("Enter Passenger's ID");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Enter Passenger's ID", NULL, popupModalFlags))
+	{
+		ImGui::Text("Please enter passenger's ID to book this seat!");
+
+		ImGui::Separator();
+
+		ImGui::Text("Passenger's ID:");
+		ImGui::SameLine();
+		static char passengerIDBuf[13] = "";
+		ImGui::InputText("##passenger_ID", passengerIDBuf, 13, ImGuiInputTextFlags_CharsHexadecimal);
+
+		ImGui::Separator();
+
+		ImGui::Text("By \"Confirm\", you agreed to book this seat for the passenger with ID above!");
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		static bool show_add_passenger_popup = false;
+		if (show_add_passenger_popup)
+		{
+			add_passenger_popup(root, passengerIDBuf, show_add_passenger_popup, show_input_passengerID_popup, show_book_ticket_popup);
+		}
+
+		if (ImGui::Button("Confirm", cmdButtonSize))
+		{
+			if (isPassengerExist(root, passengerIDBuf))
+			{
+				book_ticket(p, passengerIDBuf, ticketIndex);
+				memset(passengerIDBuf, '\0', 13);
+				show_input_passengerID_popup = false;
+				show_book_ticket_popup = false;
+				ImGui::CloseCurrentPopup();
+			}
+			else
+				show_add_passenger_popup = true;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Back", cmdButtonSize))
+		{
+			memset(passengerIDBuf, '\0', 13);
+			show_input_passengerID_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void add_passenger_popup(PassengerNodesPTR &root, char (&passengerIDBuf)[13], bool &show_add_passenger_popup, bool &show_input_passengerID_popup, bool &show_book_ticket_popup)
+{
+	ImGui::OpenPopup("It seems the first time the passenger book a ticket");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("It seems the first time the passenger book a ticket", NULL, popupModalFlags))
+	{
+		ImGui::Text("Please enter the information!");
+
+		ImGui::Separator();
+
+		ImGui::Text("Passenger's ID");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		// static char passengerIDBuf[13] = "";
+		ImGui::PushItemWidth(BOX_WIDTH_PM);
+		ImGui::InputText("##passenger_ID", passengerIDBuf, 13, ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("First Name");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		static char firstNameBuf[51] = "";
+		ImGui::PushItemWidth(BOX_WIDTH_PM);
+		ImGui::InputText("##first_name", firstNameBuf, 51, ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_CharsUppercase);
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("Last Name");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		static char lastNameBuf[51] = "";
+		ImGui::PushItemWidth(BOX_WIDTH_PM);
+		ImGui::InputText("##last_name", lastNameBuf, 51, ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_CharsUppercase);
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("Gender");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		static bool isMale = false;
+		ImGui::Checkbox("(Check if you are Male)", &isMale);
+
+		ImGui::Separator();
+
+		ImGui::Text("By \"Save\", This passenger will be added to the database");
+		ImGui::Text("        and the ticket will be booked for this passenger!");
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Save", cmdButtonSize))
+		{
+
+			insert_passenger(root, passengerIDBuf, firstNameBuf, lastNameBuf, isMale);
+			memset(passengerIDBuf, '\0', 13);
+			memset(firstNameBuf, '\0', 51);
+			memset(lastNameBuf, '\0', 51);
+			isMale = false;
+			show_add_passenger_popup = false;
+			show_input_passengerID_popup = false;
+			show_book_ticket_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", cmdButtonSize))
+		{
+			memset(passengerIDBuf, '\0', 13);
+			memset(firstNameBuf, '\0', 51);
+			memset(lastNameBuf, '\0', 51);
+			isMale = false;
+			show_add_passenger_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
 		ImGui::EndPopup();
 	}
 }

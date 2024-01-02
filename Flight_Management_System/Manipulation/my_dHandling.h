@@ -3,6 +3,7 @@
 std::string aircraftFile = "./Media/aircraft.txt";
 std::string flightFile = "./Media/flight.txt";
 std::string ticketFile = "./Media/ticket.txt";
+std::string passengerFile = "./Media/passenger.txt";
 
 void string_uppercase(std::string &);
 bool check_valid_planeID(std::string &);
@@ -430,9 +431,23 @@ void save_ticket(FlightNodePTR &First, std::string &filename)
 		while (p != NULL)
 		{
 			for (int i = 0; i < p->flight.maxTicket; i++)
-				f << p->flight.ticketList[i].ticketID << '\t'
-				  << p->flight.ticketList[i].passengerID << '\t'
-				  << p->flight.ticketList[i].inUse << '\n';
+			{
+				// if (p->flight.ticketList[i].ticketID == "")
+				// 	f << p->flight.ticketList[i].ticketID << '\t'
+				// 	  << "##EMPTY##" << '\t'
+				// 	  << p->flight.ticketList[i].inUse << '\n';
+				// else
+				// 	f << p->flight.ticketList[i].ticketID << '\t'
+				// 	  << p->flight.ticketList[i].passengerID << '\t'
+				// 	  << p->flight.ticketList[i].inUse << '\n';
+
+				f << p->flight.ticketList[i].ticketID << '\t';
+				if (p->flight.ticketList[i].passengerID == "")
+					f << "##EMPTY##" << '\t';
+				else
+					f << p->flight.ticketList[i].passengerID << '\t';
+				f << p->flight.ticketList[i].inUse << '\n';
+			}
 
 			p = p->next;
 		}
@@ -452,18 +467,25 @@ void load_ticket(FlightNodePTR &First, std::string &filename)
 	std::ifstream f;
 	f.open(filename);
 	FlightNodePTR p = First;
+	std::string ticketID, passengerID;
+	bool inUse;
 
 	if (f.is_open())
 		while (p != NULL)
 		{
 			for (int i = 0; i < p->flight.maxTicket; i++)
 			{
-				f >> p->flight.ticketList[i].ticketID;
+				f >> ticketID;
 				f.ignore();
-				f >> p->flight.ticketList[i].passengerID;
+				f >> passengerID;
 				f.ignore();
-				f >> p->flight.ticketList[i].inUse;
+				f >> inUse;
 				f.ignore();
+
+				p->flight.ticketList[i].ticketID = ticketID;
+				if (passengerID == "##EMPTY##")
+					p->flight.ticketList[i].passengerID = "";
+				p->flight.ticketList[i].inUse = inUse;
 			}
 			p = p->next;
 		}
@@ -475,4 +497,100 @@ void load_ticket(FlightNodePTR &First, std::string &filename)
 
 	f.close();
 	std::cout << "Loaded from aircraft file successfully!" << std::endl;
+}
+
+void tree_initialize(PassengerNodesPTR &root)
+{
+	root = NULL;
+}
+
+void insert_passenger(PassengerNodesPTR &p, const std::string &ID, const std::string &firstName, const std::string &lastName, const bool &isMr)
+{
+	if (p == NULL) // nút p hiện tại sẽ là nút lá
+	{
+		p = new PassengerNodes;
+		p->passenger.passengerID = ID;
+		p->passenger.firstName = firstName;
+		p->passenger.lastName = lastName;
+		p->passenger.gender = isMr;
+		p->left = NULL;
+		p->right = NULL;
+	}
+	else if (ID < p->passenger.passengerID) // nếu ID nhỏ hơn ID của nút p hiện tại thì sẽ đi sang trái
+		insert_passenger(p->left, ID, firstName, lastName, isMr);
+	else if (ID > p->passenger.passengerID)
+		insert_passenger(p->right, ID, firstName, lastName, isMr);
+}
+
+bool isPassengerExist(PassengerNodesPTR &root, const std::string &ID)
+{
+	if (root == NULL)
+		return false;
+	else if (ID < root->passenger.passengerID)
+		return isPassengerExist(root->left, ID);
+	else if (ID > root->passenger.passengerID)
+		return isPassengerExist(root->right, ID);
+	else
+		return true;
+}
+
+void inorder_to_file(PassengerNodesPTR &p, std::ofstream &file)
+{
+	if (p != NULL)
+	{
+		inorder_to_file(p->left, file);
+		file << p->passenger.passengerID << "\t";
+		file << p->passenger.firstName << "\t";
+		file << p->passenger.lastName << "\t";
+		file << p->passenger.gender << "\n";
+		inorder_to_file(p->right, file);
+	}
+}
+
+void save_passenger(PassengerNodesPTR &root, std::string &filename)
+{
+	std::ofstream f(filename);
+
+	if (f.is_open())
+	{
+		inorder_to_file(root, f);
+		f.close();
+	}
+	else
+	{
+		std::cout << "An error occurred while opening passenger file" << std::endl;
+		return;
+	}
+
+	std::cout << "Saved to passenger file successfully!" << std::endl;
+}
+
+void load_passenger(PassengerNodesPTR &root, std::string &filename)
+{
+	std::ifstream f(filename);
+
+	if (f.is_open())
+	{
+		std::string ID, firstName, lastName;
+		bool isMr;
+		while (f >> ID >> firstName >> lastName >> isMr)
+		{
+			insert_passenger(root, ID, firstName, lastName, isMr);
+		}
+		f.close();
+	}
+	else
+	{
+		std::cout << "An error occurred while opening passenger file" << std::endl;
+		return;
+	}
+
+	std::cout << "Loaded from passenger file successfully!" << std::endl;
+}
+
+void book_ticket(FlightNodePTR &p, const std::string &ID, int &ticketIndex)
+{
+	p->flight.ticketList[ticketIndex].passengerID = ID;
+	p->flight.ticketList[ticketIndex].inUse = true;
+	p->flight.totalTicket++;
 }

@@ -15,6 +15,8 @@ int VIEWPORT_HEIGHT = 900;
 #define COLON_POSX_FM 157
 #define BOX_WIDTH_FM 168
 #define DROPDOWN_WIDTH 20
+#define COLON_POSX_PM 157
+#define BOX_WIDTH_PM 168
 
 const int AIRCRAFT_ID = 87;
 const int FLIGHT_ID = 178;

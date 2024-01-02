@@ -11,6 +11,9 @@ int main(int, char **)
 	FlightNodePTR pFirstFlight = NULL;
 	link_list_initialize(pFirstFlight);
 
+	PassengerNodesPTR treeRoot;
+	tree_initialize(treeRoot);
+
 	if (!init_SDL())
 	{
 		std::cout << "Failed to initialize!\n";
@@ -102,6 +105,14 @@ int main(int, char **)
 							std::cout << p->flight.departureTime.hour << ":";
 							std::cout << p->flight.departureTime.minute;
 							std::cout << std::endl;
+
+							for (int i = 0; i < 3; i++)
+							{
+								std::cout << p->flight.ticketList[i].ticketID << " | ";
+								std::cout << p->flight.ticketList[i].passengerID << " | ";
+								std::cout << p->flight.ticketList[i].inUse;
+								std::cout << std::endl;
+							}
 						}
 						std::cout << "----------" << std::endl;
 						break;
@@ -159,7 +170,7 @@ int main(int, char **)
 				draw_aircraft_management_screen(planeList, special_font);
 				break;
 			case FLIGHT_MANAGEMENT:
-				draw_flight_management_screen(pFirstFlight, planeList, special_font);
+				draw_flight_management_screen(pFirstFlight, planeList, treeRoot, special_font);
 				break;
 			case DEMO_WINDOW:
 				ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);

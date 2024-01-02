@@ -75,4 +75,4 @@ struct PassengerNodes
     PassengerNodes* left;
     PassengerNodes* right;
 };
-typedef struct nodeHK* PassengerNodesPTR;
+typedef struct PassengerNodes* PassengerNodesPTR;
