@@ -25,6 +25,7 @@ int main(int, char **)
 		load_aircraft(planeList, aircraftFile);
 		load_flight(pFirstFlight, flightFile);
 		load_ticket(pFirstFlight, ticketFile);
+		load_passenger(treeRoot, passengerFile);
 
 		ImGuiIO &io = init_ImGui();
 
@@ -60,6 +61,7 @@ int main(int, char **)
 						save_aircraft(planeList, aircraftFile);
 						save_flight(pFirstFlight, flightFile);
 						save_ticket(pFirstFlight, ticketFile);
+						save_passenger(treeRoot, passengerFile);
 
 						break;
 					case SDLK_SPACE:
@@ -120,9 +122,9 @@ int main(int, char **)
 				}
 				else if (ev.type == SDL_MOUSEBUTTONDOWN)
 				{
-					int mouseX, mouseY;
-					SDL_GetMouseState(&mouseX, &mouseY);
-					std::cout << mouseX << " " << mouseY << std::endl;
+					// int mouseX, mouseY;
+					// SDL_GetMouseState(&mouseX, &mouseY);
+					// std::cout << mouseX << " " << mouseY << std::endl;
 
 					// if (count_flights(pFirstFlight) != 0)
 					// {

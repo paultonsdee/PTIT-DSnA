@@ -21,6 +21,7 @@ int VIEWPORT_HEIGHT = 900;
 const int AIRCRAFT_ID = 87;
 const int FLIGHT_ID = 178;
 const int CONFIRM_ID = 257;
+const int TICKET_ID = 111;
 
 bool showNoti = false;
 std::string notiMessage = "";
@@ -42,6 +43,15 @@ struct button
 	int height;
 	int x_pos;
 	int y_pos;
+
+	button(const char *name, int w, int h, int x, int y)
+	{
+		this->name = name;
+		width = w;
+		height = h;
+		x_pos = x;
+		y_pos = y;
+	}
 
 	button(const char *name, int w, int h)
 	{
@@ -90,6 +100,7 @@ enum screen
 	MAIN_MENU,
 	AIRCRAFT_MANAGEMENT,
 	FLIGHT_MANAGEMENT,
+	TICKET_MANAGEMENT,
 	DEMO_WINDOW,
 };
 bool open_state[] = {false, false, false, false, false};

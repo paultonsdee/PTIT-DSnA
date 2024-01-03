@@ -24,13 +24,16 @@ void draw_flight_management_screen(FlightNodePTR &, PlaneList &, ImFont *&);
 void add_flight_popup(FlightNodePTR &, PlaneList &, bool &, int &);
 void draw_combo(const char *, PlaneList &, int &, const char *&, int &);
 void find_max_day_in_month(int *, int &, int &);
-void show_FM_action_buttons(FlightNodePTR &, PlaneList &, PassengerNodesPTR &, int &, bool &, int &);
+void show_FM_action_buttons(FlightNodePTR &, PlaneList &, PassengerNodesPTR &, int &, bool &, int &, ImVec2 &);
 void show_noti (const std::string &);
 void confirm_change_status(FlightNodePTR &, int &, int &, int &);
 void edit_flight_popup(FlightNodePTR &, int &, int &, bool &);
 void book_ticket_popup(FlightNodePTR &, PlaneList &, PassengerNodesPTR &, int &, int &, bool &);
-void input_passengerID_popup (PassengerNodesPTR &, FlightNodePTR &, int &, bool& , bool& );
-void add_passenger_popup(PassengerNodesPTR &, char (&)[13], bool &, bool &, bool &);
+void input_passengerID_popup (PassengerNodesPTR &, FlightNodePTR &, int &, bool& , bool& , bool&, bool&);
+void add_passenger_popup(PassengerNodesPTR &, FlightNodePTR &, int &, char (&)[13], bool &, bool &, bool &, bool&, bool&);
+void confirm_id (char (&)[13], bool &, bool &);
+void ticket_and_passenger_popup (FlightNodePTR &, PassengerNodesPTR &, int &, int &, bool &);
+void confirm_cancel_ticket (FlightNodePTR &, int &, int &);
 
 // --------------------------------------------
 // |             Data Handling                |
@@ -63,3 +66,4 @@ void inorder_to_file(PassengerNodesPTR &, std::ofstream &);
 void save_passenger(PassengerNodesPTR &, std::string &);
 void load_passenger(PassengerNodesPTR &, std::string &);
 void book_ticket (FlightNodePTR &, const std::string &D, int &);
+PassengerNodesPTR search_passenger(PassengerNodesPTR &, const std::string &);

@@ -485,6 +485,8 @@ void load_ticket(FlightNodePTR &First, std::string &filename)
 				p->flight.ticketList[i].ticketID = ticketID;
 				if (passengerID == "##EMPTY##")
 					p->flight.ticketList[i].passengerID = "";
+				else
+					p->flight.ticketList[i].passengerID = passengerID;
 				p->flight.ticketList[i].inUse = inUse;
 			}
 			p = p->next;
@@ -593,4 +595,16 @@ void book_ticket(FlightNodePTR &p, const std::string &ID, int &ticketIndex)
 	p->flight.ticketList[ticketIndex].passengerID = ID;
 	p->flight.ticketList[ticketIndex].inUse = true;
 	p->flight.totalTicket++;
+}
+
+PassengerNodesPTR search_passenger(PassengerNodesPTR &root, const std::string &key)
+{
+	PassengerNodesPTR p;
+	p = root;
+	while (p != NULL && p->passenger.passengerID != key)
+		if (key < p->passenger.passengerID)
+			p = p->left;
+		else
+			p = p->right;
+	return (p);
 }

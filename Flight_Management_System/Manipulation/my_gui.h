@@ -340,111 +340,6 @@ void draw_main_menu_screen()
 	ImGui::End();
 }
 
-void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
-{
-	open_state[AIRCRAFT_MANAGEMENT] = true;
-	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
-
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowSize(viewportSize);
-	ImGui::Begin("Aircraft Management", &open_state[AIRCRAFT_MANAGEMENT], fixed_full_screen);
-
-	ImGui::PushFont(headerFont);
-	const char *header = "AIRCRAFT MANAGEMENT";
-	ImVec2 headerSize = ImGui::CalcTextSize(header);
-	ImGui::SetCursorPosX((viewportSize.x - headerSize.x) / 2);
-	ImGui::Text(header);
-	ImGui::PopFont();
-
-	ImGui::Text("From here you can control all the aircrafts!");
-	HelpMarker(
-		"Using TableSetupColumn() to alter resizing policy on a per-column basis.\n\n"
-		"When combining Fixed and Stretch columns, generally you only want one, maybe two trailing columns to use _WidthStretch.");
-	// static ImGuiTableFlags flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
-
-	static ImGuiTableFlags flags = ImGuiTableFlags_RowBg |
-								   ImGuiTableFlags_BordersOuter;
-	//    ImGuiTableFlags_SizingStretchSame|
-	//    ImGuiTableFlags_ScrollX
-	//    ImGuiTableFlags_SizingFixedFit;
-
-	// ImGuiTableFlags_NoBordersInBody, HighlightHoveredColumn, ImGuiTableFlags_ScrollY
-
-	ImVec2 tableCursorPos = ImGui::GetCursorPos();
-
-	static int selected_row = -1;
-	if (ImGui::BeginTable("Planes", 3, flags))
-	{
-		ImGui::TableSetupColumn("Aircraft Registration");
-		ImGui::TableSetupColumn("Aircraft Type");
-		ImGui::TableSetupColumn("Total Seats");
-		ImGui::TableHeadersRow();
-
-		if (!is_planeList_empty(planeList))
-		{
-			ImGui::TableNextRow();
-			// static bool* selected = new bool[planeList.totalPlane] {false};
-			for (int row = 0; row < planeList.totalPlane; row++)
-			{
-
-				ImGui::TableNextRow();
-
-				for (int column = 0; column < 3; column++)
-				{
-					ImGui::TableSetColumnIndex(column);
-					Plane *plane = planeList.nodes[row];
-					switch (column)
-					{
-					case 0:
-						if (ImGui::Selectable((plane->planeID).c_str(), selected_row == row, ImGuiSelectableFlags_SpanAllColumns))
-							selected_row = row;
-						break;
-					case 1:
-						ImGui::Text((plane->planeType).c_str());
-						break;
-					case 2:
-						ImGui::Text("%d", (plane->rowNum * plane->seatNum));
-						if (ImGui::IsItemHovered())
-						{
-							ImGui::BeginTooltip();
-							ImGui::Text("%d x %d", plane->seatNum, plane->rowNum);
-							ImGui::EndTooltip();
-						}
-
-						break;
-					}
-				}
-			}
-			for (int row = planeList.totalPlane; row < 30; row++)
-			{
-				ImGui::TableNextRow();
-				for (int column = 0; column < 3; column++)
-				{
-					ImGui::TableSetColumnIndex(column);
-					ImGui::Text("");
-				}
-			}
-		}
-
-		ImGui::EndTable();
-	}
-	ImVec2 tableSize = ImGui::GetItemRectSize();
-
-	ImVec2 currentMousePos = ImGui::GetMousePos();
-	static bool isInTable = false;
-	if (ImGui::IsMouseHoveringRect(tableCursorPos, ImVec2(tableCursorPos.x + tableSize.x, tableCursorPos.y + tableSize.y)))
-	{
-		isInTable = true;
-	}
-	else
-	{
-		isInTable = false;
-	}
-	show_AM_action_buttons(planeList, selected_row, isInTable);
-
-	ImGui::End();
-}
-
 void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -492,11 +387,11 @@ void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable
 	if (selected != -1)
 	{
 		ImGui::SetCursorPos(ImVec2(editButton.x_pos, editButton.y_pos));
-		static bool show_edit_flight_popup = false;
+		static bool show_edit_plane_popup = false;
 		if (ImGui::Button(editButton.name, actionButtonSize))
-			show_edit_flight_popup = true;
-		if (show_edit_flight_popup)
-			edit_plane_popup(planeList, show_edit_flight_popup, selected);
+			show_edit_plane_popup = true;
+		if (show_edit_plane_popup)
+			edit_plane_popup(planeList, show_edit_plane_popup, selected);
 
 		ImGui::SetCursorPos(ImVec2(deleteButton.x_pos, deleteButton.y_pos));
 		static bool show_delete_plane_popup = false;
@@ -508,6 +403,146 @@ void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable
 			show_delete_plane_popup = false;
 		}
 	}
+}
+
+void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
+{
+	open_state[AIRCRAFT_MANAGEMENT] = true;
+	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
+
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(viewportSize);
+	ImGui::Begin("Aircraft Management", &open_state[AIRCRAFT_MANAGEMENT], fixed_full_screen);
+
+	ImGui::PushFont(headerFont);
+	const char *header = "AIRCRAFT MANAGEMENT";
+	ImVec2 headerSize = ImGui::CalcTextSize(header);
+	ImGui::SetCursorPosX((viewportSize.x - headerSize.x) / 2);
+	ImGui::Text(header);
+	ImGui::PopFont();
+
+	ImGui::Text("From here you can control all the aircrafts!");
+	HelpMarker(
+		"Using TableSetupColumn() to alter resizing policy on a per-column basis.\n\n"
+		"When combining Fixed and Stretch columns, generally you only want one, maybe two trailing columns to use _WidthStretch.");
+	// static ImGuiTableFlags flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+
+	static ImGuiTableFlags flags = ImGuiTableFlags_RowBg |
+								   ImGuiTableFlags_BordersOuter;
+	//    ImGuiTableFlags_SizingStretchSame|
+	//    ImGuiTableFlags_ScrollX
+	//    ImGuiTableFlags_SizingFixedFit;
+
+	// ImGuiTableFlags_NoBordersInBody, HighlightHoveredColumn, ImGuiTableFlags_ScrollY
+
+	ImVec2 tableCursorPos = ImGui::GetCursorPos();
+
+	static int selected_row = -1;
+	static int currentPage = 0;
+	int totalPages = planeList.totalPlane / 30;
+	if (planeList.totalPlane % 30)
+		totalPages++;
+
+	if (ImGui::BeginTable("Planes", 3, flags))
+	{
+		ImGui::TableSetupColumn("Aircraft Registration");
+		ImGui::TableSetupColumn("Aircraft Type");
+		ImGui::TableSetupColumn("Total Seats");
+		ImGui::TableHeadersRow();
+
+		if (!is_planeList_empty(planeList))
+		{
+			ImGui::TableNextRow();
+			// static bool* selected = new bool[planeList.totalPlane] {false};
+			int countRows = 0;
+			for (; countRows < 30 && ((currentPage * 30 + countRows) < planeList.totalPlane); countRows++)
+			{
+				int currentPlaneIndex = currentPage * 30 + countRows;
+				ImGui::TableNextRow();
+
+				for (int column = 0; column < 3; column++)
+				{
+					ImGui::TableSetColumnIndex(column);
+					Plane *plane = planeList.nodes[currentPlaneIndex];
+					switch (column)
+					{
+					case 0:
+						if (ImGui::Selectable((plane->planeID).c_str(), selected_row == currentPlaneIndex, ImGuiSelectableFlags_SpanAllColumns))
+							selected_row = currentPlaneIndex;
+						break;
+					case 1:
+						ImGui::Text((plane->planeType).c_str());
+						break;
+					case 2:
+						ImGui::Text("%d", (plane->rowNum * plane->seatNum));
+						if (ImGui::IsItemHovered())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Text("%d x %d", plane->seatNum, plane->rowNum);
+							ImGui::EndTooltip();
+						}
+
+						break;
+					}
+				}
+			}
+			if (countRows < 30)
+			{
+				for (; countRows < 30; countRows++)
+				{
+					ImGui::TableNextRow();
+					for (int column = 0; column < 3; column++)
+					{
+						ImGui::TableSetColumnIndex(column);
+						ImGui::Text("");
+					}
+				}
+			}
+		}
+
+		ImGui::EndTable();
+	}
+	ImVec2 tableSize = ImGui::GetItemRectSize();
+
+	ImVec2 currentMousePos = ImGui::GetMousePos();
+	static bool isInTable = false;
+	if (ImGui::IsMouseHoveringRect(tableCursorPos, ImVec2(tableCursorPos.x + tableSize.x, tableCursorPos.y + tableSize.y)))
+	{
+		isInTable = true;
+	}
+	else
+	{
+		isInTable = false;
+	}
+
+	ImVec2 pageNavButton = ImVec2(30, 30);
+
+	std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(totalPages);
+	int cursorX = viewportSize.x / 2 - pageNavButton.x - ITEM_SPACING - ImGui::CalcTextSize(pageInfo.c_str()).x / 2;
+	ImGui::SetCursorPosX(cursorX);
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 17);
+
+	if (ImGui::Button("<|", pageNavButton))
+	{
+		if (currentPage < totalPages)
+			currentPage--;
+		if (currentPage < 0)
+			currentPage = 0;
+	}
+	ImGui::SameLine();
+	ImGui::Text(pageInfo.c_str());
+	ImGui::SameLine();
+	if (ImGui::Button("|>", pageNavButton))
+	{
+		if (currentPage >= 0)
+			currentPage++;
+		if (currentPage >= totalPages)
+			currentPage = totalPages - 1;
+	}
+
+	show_AM_action_buttons(planeList, selected_row, isInTable);
+
+	ImGui::End();
 }
 
 void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &currentAircraft)
@@ -1205,7 +1240,7 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 			currentPage = totalPages - 1;
 	}
 
-	show_FM_action_buttons(pFirstFlight, planeList, root, selected_row, isInTable, currentPage);
+	show_FM_action_buttons(pFirstFlight, planeList, root, selected_row, isInTable, currentPage, tableCursorPos);
 
 	ImGui::End();
 }
@@ -1409,7 +1444,7 @@ void add_flight_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, bool &s
 	}
 }
 
-void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, PassengerNodesPTR &root, int &selected, bool &isInTable, int &currentPage)
+void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, PassengerNodesPTR &root, int &selected, bool &isInTable, int &currentPage, ImVec2 &tableCursorPos)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
@@ -1437,6 +1472,11 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, P
 
 	button bookTicketButton("BOOK TICKET", saveAndExitButton, widthSpacing, 4);
 
+	ImVec2 controlButtonSize = ImGui::CalcTextSize("TICKET & PASSENGER CONTROL");
+	controlButtonSize.x += 2 * ITEM_SPACING;
+	controlButtonSize.y += 2 * ITEM_SPACING;
+	button passengerAndTicketButton("TICKET & PASSENGER CONTROL", controlButtonSize.x, controlButtonSize.y, viewportSize.x - controlButtonSize.x - BASE_WIDTH, tableCursorPos.y - controlButtonSize.y - HEIGHT_SPACING * 2);
+
 	static bool isInEditButton = false;
 	if (ImGui::IsMouseHoveringRect(ImVec2(changeTimeButton.x_pos, changeTimeButton.y_pos), ImVec2(changeTimeButton.x_pos + changeTimeButton.width, changeTimeButton.y_pos + changeTimeButton.height)))
 		isInEditButton = true;
@@ -1449,7 +1489,13 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, P
 	else
 		isInDeleteButton = false;
 
-	if (!(isInTable) && !(isInEditButton) && !(isInDeleteButton))
+	static bool isInPassengerAndTicketButton = false;
+	if (ImGui::IsMouseHoveringRect(ImVec2(passengerAndTicketButton.x_pos, passengerAndTicketButton.y_pos), ImVec2(passengerAndTicketButton.x_pos + passengerAndTicketButton.width, passengerAndTicketButton.y_pos + passengerAndTicketButton.height)))
+		isInPassengerAndTicketButton = true;
+	else
+		isInPassengerAndTicketButton = false;
+
+	if (!(isInTable) && !(isInEditButton) && !(isInDeleteButton) && !(isInPassengerAndTicketButton))
 		if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
 			selected = -1;
 
@@ -1468,6 +1514,13 @@ void show_FM_action_buttons(FlightNodePTR &pFirstFlight, PlaneList &planeList, P
 			show_book_ticket_popup = true;
 		if (show_book_ticket_popup)
 			book_ticket_popup(pFirstFlight, planeList, root, currentPage, selected, show_book_ticket_popup);
+
+		ImGui::SetCursorPos(ImVec2(passengerAndTicketButton.x_pos, passengerAndTicketButton.y_pos));
+		static bool show_ticket_and_passenger_popup = false;
+		if (ImGui::Button(passengerAndTicketButton.name, ImVec2(passengerAndTicketButton.width, passengerAndTicketButton.height)))
+			show_ticket_and_passenger_popup = true;
+		if (show_ticket_and_passenger_popup)
+			ticket_and_passenger_popup(pFirstFlight, root, currentPage, selected, show_ticket_and_passenger_popup);
 	}
 }
 
@@ -1686,15 +1739,17 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, Passen
 
 		const int frozen_cols = 1;
 		const int frozen_rows = 1;
-		const float TABLE_WODTH = 388;
+		float TABLE_WIDTH = 388;
+		TABLE_WIDTH = 32 + 30 * seatNum + 14;
 		const float TABLE_HEIGHT = 307;
 		static bool selectedSeat = false;
 		bool moreThanOne = false;
 
-		ImVec2 OuterSize = ImVec2(TABLE_WODTH, TABLE_HEIGHT);
+		ImVec2 OuterSize = ImVec2(TABLE_WIDTH, TABLE_HEIGHT);
 		ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders;
 		if (ImGui::BeginTable("Tickets", columns_count, flags, OuterSize))
 		{
+
 			ImGui::TableSetupColumn("");
 			for (int n = 1; n < columns_count; n++)
 				ImGui::TableSetupColumn(seats[n - 1], ImGuiTableColumnFlags_None);
@@ -1769,7 +1824,8 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, Passen
 			ImGui::EndGroup();
 		}
 
-		ImGui::Text("(\"B\" means this seat is already booked by another passenger)");
+		ImGui::Text("(\"B\" means this seat is already booked)");
+		ImGui::Text(" by another passenger)");
 		ImGui::Separator();
 
 		int windowWidth = ImGui::GetWindowWidth();
@@ -1779,18 +1835,20 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, Passen
 		static bool show_input_passengerID_popup = false;
 		if (show_input_passengerID_popup)
 		{
-			input_passengerID_popup(root, p, indexInFlight, show_input_passengerID_popup, show_book_ticket_popup);
+			input_passengerID_popup(root, p, indexInFlight, show_input_passengerID_popup, show_book_ticket_popup, isFirstTime, selectedSeat);
 		}
 
 		if (ImGui::Button("Book", cmdButtonSize))
 		{
 			show_input_passengerID_popup = true;
-			// ImGui::CloseCurrentPopup();
+			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
 		if (ImGui::Button("Back", cmdButtonSize))
 		{
+			isFirstTime = true;
+			selectedSeat = false;
 			show_book_ticket_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
@@ -1799,7 +1857,7 @@ void book_ticket_popup(FlightNodePTR &pFirstFlight, PlaneList &planeList, Passen
 	}
 }
 
-void input_passengerID_popup(PassengerNodesPTR &root, FlightNodePTR &p, int &ticketIndex, bool &show_input_passengerID_popup, bool &show_book_ticket_popup)
+void input_passengerID_popup(PassengerNodesPTR &root, FlightNodePTR &p, int &ticketIndex, bool &show_input_passengerID_popup, bool &show_book_ticket_popup, bool &isFirstTime, bool &selectedSeat)
 {
 	ImGui::OpenPopup("Enter Passenger's ID");
 
@@ -1829,18 +1887,33 @@ void input_passengerID_popup(PassengerNodesPTR &root, FlightNodePTR &p, int &tic
 		static bool show_add_passenger_popup = false;
 		if (show_add_passenger_popup)
 		{
-			add_passenger_popup(root, passengerIDBuf, show_add_passenger_popup, show_input_passengerID_popup, show_book_ticket_popup);
+			add_passenger_popup(root, p, ticketIndex, passengerIDBuf, show_add_passenger_popup, show_input_passengerID_popup, show_book_ticket_popup, isFirstTime, selectedSeat);
+		}
+
+		static bool show_confirm_id_popup = false;
+		static bool confirmation = false;
+		if (show_confirm_id_popup)
+		{
+			confirm_id(passengerIDBuf, show_confirm_id_popup, confirmation);
+		}
+
+		if (isPassengerExist(root, passengerIDBuf) && confirmation)
+		{
+			book_ticket(p, passengerIDBuf, ticketIndex);
+			memset(passengerIDBuf, '\0', 13);
+			isFirstTime = true;
+			selectedSeat = false;
+			show_input_passengerID_popup = false;
+			show_book_ticket_popup = false;
+			ImGui::CloseCurrentPopup();
 		}
 
 		if (ImGui::Button("Confirm", cmdButtonSize))
 		{
-			if (isPassengerExist(root, passengerIDBuf))
+
+			if (isPassengerExist(root, passengerIDBuf) && confirmation == false)
 			{
-				book_ticket(p, passengerIDBuf, ticketIndex);
-				memset(passengerIDBuf, '\0', 13);
-				show_input_passengerID_popup = false;
-				show_book_ticket_popup = false;
-				ImGui::CloseCurrentPopup();
+				show_confirm_id_popup = true;
 			}
 			else
 				show_add_passenger_popup = true;
@@ -1858,7 +1931,7 @@ void input_passengerID_popup(PassengerNodesPTR &root, FlightNodePTR &p, int &tic
 	}
 }
 
-void add_passenger_popup(PassengerNodesPTR &root, char (&passengerIDBuf)[13], bool &show_add_passenger_popup, bool &show_input_passengerID_popup, bool &show_book_ticket_popup)
+void add_passenger_popup(PassengerNodesPTR &root, FlightNodePTR &p, int &indexInFlight, char (&passengerIDBuf)[13], bool &show_add_passenger_popup, bool &show_input_passengerID_popup, bool &show_book_ticket_popup, bool &isFirstTime, bool &selectedSeat)
 {
 	ImGui::OpenPopup("It seems the first time the passenger book a ticket");
 
@@ -1927,12 +2000,14 @@ void add_passenger_popup(PassengerNodesPTR &root, char (&passengerIDBuf)[13], bo
 
 		if (ImGui::Button("Save", cmdButtonSize))
 		{
-
 			insert_passenger(root, passengerIDBuf, firstNameBuf, lastNameBuf, isMale);
+			book_ticket(p, passengerIDBuf, indexInFlight);
 			memset(passengerIDBuf, '\0', 13);
 			memset(firstNameBuf, '\0', 51);
 			memset(lastNameBuf, '\0', 51);
 			isMale = false;
+			isFirstTime = true;
+			selectedSeat = false;
 			show_add_passenger_popup = false;
 			show_input_passengerID_popup = false;
 			show_book_ticket_popup = false;
@@ -1947,6 +2022,350 @@ void add_passenger_popup(PassengerNodesPTR &root, char (&passengerIDBuf)[13], bo
 			memset(lastNameBuf, '\0', 51);
 			isMale = false;
 			show_add_passenger_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void confirm_id(char (&passengerIDBuf)[13], bool &show_confirm_id_popup, bool &confirmation)
+{
+	ImGui::OpenPopup("Confirm to book this seat?");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Confirm to book this seat?", NULL, popupModalFlags))
+	{
+		ImGui::Text("It seems the passenger's ID is already in the database");
+
+		ImGui::Separator();
+
+		ImGui::Text("Passenger's ID:");
+		ImGui::SameLine();
+		ImGui::Text(passengerIDBuf);
+
+		ImGui::Separator();
+
+		ImGui::Text("By \"Confirm\", you agreed to book this seat after checking the passenger's ID!");
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Confirm", cmdButtonSize))
+		{
+			confirmation = true;
+			show_confirm_id_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Back", cmdButtonSize))
+		{
+			show_confirm_id_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void ticket_and_passenger_popup(FlightNodePTR &pFirstFlight, PassengerNodesPTR &root, int &currentPage, int &selectedRow, bool &show_ticket_and_passenger_popup)
+{
+	FlightNodePTR p = pFirstFlight;
+	for (int i = 0; i < currentPage * 30 + selectedRow; i++)
+		p = p->next;
+
+	ImGui::OpenPopup("Ticket & Passenger Information");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	static int selectedTicket = -1;
+	static int newStatus = -1;
+	static bool show_passenger_information = false;
+	static bool show_ticket_information = true;
+	static bool showButton = false;
+
+	if (ImGui::BeginPopupModal("Ticket & Passenger Information", NULL, popupModalFlags))
+	{
+		ImGui::Spacing();
+		if (ImGui::Button("Passenger", ImVec2(0.0f, 0.0f)))
+		{
+			show_passenger_information = true;
+			show_ticket_information = false;
+			showButton = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Ticket", ImVec2(0.0f, 0.0f)))
+		{
+			show_passenger_information = false;
+			show_ticket_information = true;
+			showButton = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Confirmation", ImVec2(0.0f, 0.0f)))
+		{
+			show_passenger_information = false;
+			show_ticket_information = false;
+			showButton = true;
+		}
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		if (show_passenger_information)
+		{
+			std::string header = "PASSENGERS OF FLIGHT " + p->flight.flightNumber;
+			ImGui::Text(header.c_str());
+
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			ImGui::Text("Departure: ");
+			ImGui::SameLine();
+			if (p->flight.departureTime.day < 10)
+				ImGui::Text("0%d", p->flight.departureTime.day);
+			else
+				ImGui::Text("%d", p->flight.departureTime.day);
+			ImGui::SameLine(0, 0);
+			ImGui::Text("/");
+			ImGui::SameLine(0, 0);
+			if (p->flight.departureTime.month < 10)
+				ImGui::Text("0%d", p->flight.departureTime.month);
+			else
+				ImGui::Text("%d", p->flight.departureTime.month);
+			ImGui::SameLine(0, 0);
+			ImGui::Text("/");
+			ImGui::SameLine(0, 0);
+			ImGui::Text("%d", p->flight.departureTime.year);
+
+			ImGui::SameLine();
+
+			if (p->flight.departureTime.hour < 10)
+				ImGui::Text("0%d", p->flight.departureTime.hour);
+			else
+				ImGui::Text("%d", p->flight.departureTime.hour);
+			ImGui::SameLine(0, 0);
+			ImGui::Text(":");
+			ImGui::SameLine(0, 0);
+			if (p->flight.departureTime.minute < 10)
+				ImGui::Text("0%d", p->flight.departureTime.minute);
+			else
+				ImGui::Text("%d", p->flight.departureTime.minute);
+
+			ImGui::Text("Destination Airport: ");
+			ImGui::SameLine();
+			ImGui::Text(p->flight.desAirport.c_str());
+
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			ImVec2 OuterSize = ImVec2(0.0f, 520.7f);
+			if (ImGui::BeginTable("Passenger Information", 5, tableFlags | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY, OuterSize))
+			{
+				float width_size = 100.0f;
+				ImGui::TableSetupColumn("NO.", ImGuiTableColumnFlags_WidthFixed, width_size / 4);
+				ImGui::TableSetupColumn("Ticket ID", ImGuiTableColumnFlags_WidthFixed, width_size);
+				ImGui::TableSetupColumn("Passenger ID", ImGuiTableColumnFlags_WidthFixed, width_size);
+				ImGui::TableSetupColumn("Full Name", ImGuiTableColumnFlags_WidthFixed, width_size);
+				ImGui::TableSetupColumn("Gender", ImGuiTableColumnFlags_WidthFixed, width_size / 3 + 14.0f);
+				ImGui::TableHeadersRow();
+
+				ImGui::TableNextRow();
+				int No_ = 0;
+				for (int i = 0; i < p->flight.maxTicket; i++)
+				{
+					if (p->flight.ticketList[i].inUse)
+					{
+						PassengerNodesPTR pTemp = search_passenger(root, p->flight.ticketList[i].passengerID);
+
+						ImGui::TableNextRow();
+						ImGui::TableSetColumnIndex(0);
+						ImGui::Text("%d", ++No_);
+						ImGui::TableSetColumnIndex(1);
+						ImGui::Text(p->flight.ticketList[i].ticketID.c_str());
+						ImGui::TableSetColumnIndex(2);
+						ImGui::Text(p->flight.ticketList[i].passengerID.c_str());
+						ImGui::TableSetColumnIndex(3);
+						std::string fullName = pTemp->passenger.firstName + " " + pTemp->passenger.lastName;
+						ImGui::Text(fullName.c_str());
+						ImGui::TableSetColumnIndex(4);
+						if (pTemp->passenger.gender)
+							ImGui::Text("Mr");
+						else
+							ImGui::Text("Ms");
+					}
+				}
+				if (No_ == 0)
+				{
+					ImGui::TableNextRow();
+					ImGui::Text("No passenger booked ticket for this flight!");
+				}
+				ImGui::EndTable();
+			}
+
+			ImGui::Spacing();
+			ImGui::Separator();
+		}
+		else if (show_ticket_information)
+		{
+			static bool showAvailableTicket = false;
+			static bool showBookedTicket = false;
+			ImGui::Text("Filter: ");
+			ImGui::SameLine();
+			float posX = ImGui::GetCursorPosX();
+			ImGui::Checkbox("Show booked tickets", &showBookedTicket);
+			ImGui::SetCursorPosX(posX);
+			ImGui::Checkbox("Show available tickets", &showAvailableTicket);
+
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			ImGui::Text("Ticket Information");
+			ImGui::Spacing();
+
+			ImVec2 OuterSize = ImVec2(0.0f, 520.7f);
+			if (ImGui::BeginTable("Ticket Information", 3, tableFlags | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY, OuterSize))
+			{
+				float width_size = 100.0f;
+				ImGui::TableSetupColumn("TicketID", ImGuiTableColumnFlags_WidthFixed, width_size);
+				ImGui::TableSetupColumn("PassengerID", ImGuiTableColumnFlags_WidthFixed, width_size);
+				ImGui::TableSetupColumn("Status", ImGuiTableColumnFlags_WidthFixed, width_size + 14.0f);
+				ImGui::TableHeadersRow();
+
+				ImGui::TableNextRow();
+
+				for (int i = 0; i < p->flight.maxTicket; i++)
+				{
+					if (showBookedTicket && p->flight.ticketList[i].inUse == false)
+						continue;
+					if (showAvailableTicket && p->flight.ticketList[i].inUse == true)
+						continue;
+					std::string id = "##" + std::to_string(TICKET_ID * i + i);
+					ImGui::TableNextRow();
+					ImGui::TableSetColumnIndex(0);
+					if (ImGui::Selectable(p->flight.ticketList[i].ticketID.c_str(), selectedTicket == i, ImGuiSelectableFlags_SpanAllColumns))
+						selectedTicket = i;
+					ImGui::TableSetColumnIndex(1);
+					ImGui::Text(p->flight.ticketList[i].passengerID.c_str());
+					ImGui::TableSetColumnIndex(2);
+					if (p->flight.ticketList[i].inUse)
+					{
+						ImGui::Text("Booked");
+						if (ImGui::BeginPopupContextItem(id.c_str()))
+						{
+							ImGui::Text("You can cancel booking ticket for this seat!");
+							ImGui::Text("By click the button: ");
+							ImGui::SameLine(0, 0);
+							if (ImGui::Button("Cancel Booking"))
+								newStatus = 0;
+							ImGui::EndPopup();
+						}
+					}
+					else
+					{
+						ImGui::Text("Available");
+					}
+
+					if (ImGui::IsItemHovered())
+					{
+						if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+						{
+							selectedTicket = i;
+						}
+					}
+				}
+				ImGui::EndTable();
+			}
+
+			if (newStatus != -1)
+			{
+				confirm_cancel_ticket(p, selectedTicket, newStatus);
+			}
+		}
+		else if (showButton)
+		{
+			int windowWidth = ImGui::GetWindowWidth();
+			int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+			ImGui::SetCursorPosX(saveButtonX);
+
+			if (ImGui::Button("Save", cmdButtonSize))
+			{
+				// show_input_passengerID_popup = true;;
+				show_passenger_information = false;
+				show_ticket_information = true;
+				showButton = false;
+				show_ticket_and_passenger_popup = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", cmdButtonSize))
+			{
+				show_passenger_information = false;
+				show_ticket_information = true;
+				showButton = false;
+				show_ticket_and_passenger_popup = false;
+				ImGui::CloseCurrentPopup();
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void confirm_cancel_ticket(FlightNodePTR &p, int &selectedTicket, int &newStatus)
+{
+	ImGui::OpenPopup("Confirm to cancel booking?");
+
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Confirm to cancel booking?", NULL, popupModalFlags))
+	{
+		ImGui::Text("Are you sure you want to cancel booking this ticket?");
+
+		ImGui::Separator();
+
+		ImGui::Text("Ticket ID:");
+		ImGui::SameLine();
+		ImGui::Text(p->flight.ticketList[selectedTicket].ticketID.c_str());
+
+		ImGui::Text("Passenger ID:");
+		ImGui::SameLine();
+		ImGui::Text(p->flight.ticketList[selectedTicket].passengerID.c_str());
+
+		ImGui::Text("Status:");
+		ImGui::SameLine();
+		ImGui::Text("Booked");
+
+		ImGui::Separator();
+
+		ImGui::Text("By \"Confirm\", you agreed to cancel booking this ticket!");
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Confirm", cmdButtonSize))
+		{
+			if (newStatus == 0)
+			{
+				p->flight.ticketList[selectedTicket].inUse = false;
+				p->flight.totalTicket--;
+				newStatus = -1;
+			}
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Back", cmdButtonSize))
+		{
+			newStatus = -1;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();
