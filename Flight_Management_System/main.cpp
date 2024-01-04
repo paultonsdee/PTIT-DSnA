@@ -63,7 +63,6 @@ int main(int, char **)
 					case SDLK_RETURN:
 						break;
 					case SDLK_SPACE:
-						current_screen = MAIN_MENU;
 						// SDL_Window* menuWindow = SDL_CreateWindow("Menu", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 						break;
 					case SDLK_LCTRL: // test case
@@ -181,6 +180,8 @@ int main(int, char **)
 				break;
 				// case DEMO_WINDOW:
 				// 	ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);
+			case PASSENGER_MANAGEMENT:
+				draw_passenger_management_screen(treeRoot, special_font);
 				break;
 			}
 

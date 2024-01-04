@@ -35,6 +35,11 @@ void confirm_id (char (&)[13], bool &, bool &);
 void ticket_and_passenger_popup (FlightNodePTR &, PassengerNodesPTR &, int &, int &, bool &);
 void confirm_cancel_ticket (FlightNodePTR &, int &, int &);
 void ranking_table_popup(PlaneList &, FlightNodePTR &, bool &);
+void draw_passenger_management_screen(PassengerNodesPTR &, ImFont *&);
+void show_PM_action_buttons(PassengerNodesPTR &, std::string &, int &, int &);
+void delete_passenger_popup(PassengerNodesPTR &, std::string &, int &, bool &);
+void edit_passenger_popup(PassengerNodesPTR &, std::string &, int &, bool &);
+
 
 // --------------------------------------------
 // |             Data Handling                |
@@ -71,3 +76,7 @@ void save_passenger(PassengerNodesPTR &, std::string &);
 void load_passenger(PassengerNodesPTR &, std::string &);
 void book_ticket (FlightNodePTR &, const std::string &D, int &);
 PassengerNodesPTR search_passenger(PassengerNodesPTR &, const std::string &);
+void print_inoder(PassengerNodesPTR &, int &, int &, std::string &);
+void remove_case_3(PassengerNodesPTR &);
+void delete_passenger(PassengerNodesPTR &, std::string &);
+

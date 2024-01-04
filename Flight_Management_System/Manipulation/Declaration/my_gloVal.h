@@ -107,8 +107,7 @@ enum screen
 	MAIN_MENU,
 	AIRCRAFT_MANAGEMENT,
 	FLIGHT_MANAGEMENT,
-	TICKET_MANAGEMENT,
-	// DEMO_WINDOW,
+	PASSENGER_MANAGEMENT,
 };
 bool open_state[] = {false, false, false, false, false};
 
@@ -117,7 +116,7 @@ bool open_state[] = {false, false, false, false, false};
 #define tableFlags ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter
 #define popupModalFlags ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
 
-screen current_screen = FLIGHT_MANAGEMENT;
+screen current_screen = PASSENGER_MANAGEMENT;
 
 const char *airlines[] = {"Vietnam Airlines", "Vietjet Air", "Bamboo Airways", "Emirates Airlines", "Starlux Airlines"};
 const char *flightNumbers[] = {"VN", "VJ", "QH", "EK", "JX"};

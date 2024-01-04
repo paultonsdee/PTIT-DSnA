@@ -407,15 +407,15 @@ void draw_main_menu_screen()
 		open_state[MAIN_MENU] = false;
 	}
 
-	// button DemoWindowButton("Show demo window", FlightManagementButton, 25);
-	// ImGui::SetCursorPos(ImVec2(DemoWindowButton.x_pos, DemoWindowButton.y_pos));
-	// if (ImGui::Button("Show demo window", ImVec2(DemoWindowButton.width, DemoWindowButton.height)))
-	// {
-	// 	current_screen = DEMO_WINDOW;
-	// 	open_state[MAIN_MENU] = false;
-	// }
+	button PassengerManagementButton("Passenger Management", FlightManagementButton, 25);
+	ImGui::SetCursorPos(ImVec2(PassengerManagementButton.x_pos, PassengerManagementButton.y_pos));
+	if (ImGui::Button(PassengerManagementButton.name, ImVec2(PassengerManagementButton.width, PassengerManagementButton.height)))
+	{
+		current_screen = PASSENGER_MANAGEMENT;
+		open_state[MAIN_MENU] = false;
+	}
 
-	button CloseWindowButton("Close Window", FlightManagementButton, 25);
+	button CloseWindowButton("Close Window", PassengerManagementButton, 25);
 	ImGui::SetCursorPos(ImVec2(CloseWindowButton.x_pos, CloseWindowButton.y_pos));
 	if (ImGui::Button("Close Window", ImVec2(CloseWindowButton.width, CloseWindowButton.height)))
 	{
@@ -1912,13 +1912,13 @@ void edit_flight_popup(FlightNodePTR &pFirstFlight, int &currentPage, int &row, 
 	FlightNodePTR p = pFirstFlight;
 	for (int i = 0; i < currentPage * 30 + row; i++)
 		p = p->next;
-	ImGui::OpenPopup("Want to add a new flight?");
+	ImGui::OpenPopup("Want to edit this flight?");
 
 	// Always center this window when appearing
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Want to add a new flight?", NULL, popupModalFlags))
+	if (ImGui::BeginPopupModal("Want to edit this flight?", NULL, popupModalFlags))
 	{
 		ImGui::Separator();
 		ImGui::Text("Flight Number");
@@ -2532,13 +2532,13 @@ void ticket_and_passenger_popup(FlightNodePTR &pFirstFlight, PassengerNodesPTR &
 		if (show_passenger_information)
 		{
 			float popupWitdh = ImGui::GetWindowWidth();
-		ImGui::PushFont(popup_header_font);
-		std::string header = "PASSENGER OF FLIGHT "+ p->flight.flightNumber;
-		ImVec2 headerSize = ImGui::CalcTextSize(header.c_str());
-		float currentCursorPos = ImGui::GetCursorPosX() + (popupWitdh - headerSize.x) / 2 - BASE_WIDTH;
-		ImGui::SetCursorPosX(currentCursorPos);
-		ImGui::Text(header.c_str());
-		ImGui::PopFont();
+			ImGui::PushFont(popup_header_font);
+			std::string header = "PASSENGER OF FLIGHT " + p->flight.flightNumber;
+			ImVec2 headerSize = ImGui::CalcTextSize(header.c_str());
+			float currentCursorPos = ImGui::GetCursorPosX() + (popupWitdh - headerSize.x) / 2 - BASE_WIDTH;
+			ImGui::SetCursorPosX(currentCursorPos);
+			ImGui::Text(header.c_str());
+			ImGui::PopFont();
 
 			ImGui::Separator();
 			ImGui::Spacing();
@@ -2895,6 +2895,234 @@ void ranking_table_popup(PlaneList &planeList, FlightNodePTR &pFirstFlight, bool
 		}
 		ImGui::SetItemDefaultFocus();
 
+		ImGui::EndPopup();
+	}
+}
+
+void draw_passenger_management_screen(PassengerNodesPTR &treeRoot, ImFont *&headerFont)
+{
+	open_state[PASSENGER_MANAGEMENT] = true;
+	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
+
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(viewportSize);
+	ImGui::Begin("Passenger Management", &open_state[PASSENGER_MANAGEMENT], fixed_full_screen);
+
+	ImGui::PushFont(headerFont);
+	const char *header = "PASSENGER MANAGEMENT";
+	ImVec2 headerSize = ImGui::CalcTextSize(header);
+	ImGui::SetCursorPosX((viewportSize.x - headerSize.x) / 2);
+	ImGui::Text(header);
+	ImGui::PopFont();
+
+	ImGui::Text("");
+	ImGui::Text("");
+
+	static int selectedRow = -1;
+	static std::string selectedID = "";
+	PassengerNodesPTR p = treeRoot;
+	int countRows = 0;
+	ImVec2 OuterSize = ImVec2(0.0f, 666.0f);
+	if (ImGui::BeginTable("Passenger Information", 3, tableFlags | ImGuiTableFlags_ScrollY | ImGuiTableFlags_NoHostExtendY, OuterSize))
+	{
+		ImGui::TableSetupColumn("Passenger ID");
+		ImGui::TableSetupColumn("Full Name");
+		ImGui::TableSetupColumn("Gender");
+		ImGui::TableHeadersRow();
+
+		ImGui::TableNextRow();
+
+		print_inoder(treeRoot, selectedRow, countRows, selectedID);
+
+		ImGui::EndTable();
+	}
+
+	ImGui::Spacing();
+
+	show_PM_action_buttons(treeRoot, selectedID, selectedRow, countRows);
+	ImGui::End();
+}
+
+void show_PM_action_buttons(PassengerNodesPTR &treeRoot, std::string &passengerID, int &selectedRow, int &countRows)
+{
+	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
+
+	ImVec2 actionButtonsCursorPos = ImGui::GetCursorPos();
+	button firstButton("FIRST BUTTON", actionButtonSize, actionButtonsCursorPos, 4);
+
+	int widthSpacing = (viewportSize.x - 4 * actionButtonSize.x - 2 * firstButton.x_pos) / 3;
+
+	button editButton("EDIT", firstButton, widthSpacing, 4);
+	ImGui::SetCursorPos(ImVec2(editButton.x_pos, editButton.y_pos));
+	static bool show_edit_passenger_popup = false;
+	if (ImGui::Button(editButton.name, actionButtonSize))
+		show_edit_passenger_popup = true;
+	if (show_edit_passenger_popup)
+		edit_passenger_popup(treeRoot, passengerID, selectedRow, show_edit_passenger_popup);
+
+	button deleteButton("DELETE", editButton, widthSpacing, 4);
+	ImGui::SetCursorPos(ImVec2(deleteButton.x_pos, deleteButton.y_pos));
+	static bool show_delete_passenger_popup = false;
+	if (ImGui::Button(deleteButton.name, actionButtonSize))
+		show_delete_passenger_popup = true;
+	if (show_delete_passenger_popup)
+		delete_passenger_popup(treeRoot, passengerID, selectedRow, show_delete_passenger_popup);
+}
+
+void edit_passenger_popup(PassengerNodesPTR &tree, std::string &passengerID, int &selectedRow, bool &show_edit_passenger_popup)
+{
+	PassengerNodesPTR p = search_passenger(tree, passengerID);
+
+	bool isFirstTime = true;
+	static char passengerIDBuf[13] = "";
+	static char firstNameBuf[51] = "";
+	static char lastNameBuf[51] = "";
+	static bool isMale = false;
+	if (isFirstTime)
+	{
+		strcpy_s(passengerIDBuf, p->passenger.passengerID.c_str());
+		strcpy_s(firstNameBuf, p->passenger.firstName.c_str());
+		strcpy_s(lastNameBuf, p->passenger.lastName.c_str());
+		isMale = p->passenger.gender;
+	}
+
+	ImGui::OpenPopup("Want to edit this passenger?");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Want to edit this passenger?", NULL, popupModalFlags))
+	{
+		ImGui::Separator();
+
+		ImGui::Text("Passenger's ID:");
+		ImGui::SameLine();
+
+		ImGui::Text("Please enter the information!");
+
+		ImGui::Separator();
+
+		ImGui::Text("Passenger's ID");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(BOX_WIDTH_PM);
+		ImGui::InputText("##passenger_ID", passengerIDBuf, 13, ImGuiInputTextFlags_CharsHexadecimal);
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("First Name");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(BOX_WIDTH_PM);
+		ImGui::InputText("##first_name", firstNameBuf, 51, ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_CharsUppercase);
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("Last Name");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		ImGui::PushItemWidth(BOX_WIDTH_PM);
+		ImGui::InputText("##last_name", lastNameBuf, 51, ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_CharsUppercase);
+		ImGui::PopItemWidth();
+
+		ImGui::Spacing();
+
+		ImGui::Text("Gender");
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(COLON_POSX_PM);
+		ImGui::Text(":  ");
+		ImGui::SameLine();
+		ImGui::Checkbox("(Check if you are Male)", &isMale);
+
+		ImGui::Separator();
+
+		ImGui::Separator();
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Save", cmdButtonSize))
+		{
+			bool rightFormat = true;
+			if (passengerIDBuf[11] == '\0' || firstNameBuf[0] == '\0' || lastNameBuf[0] == '\0')
+			{
+				rightFormat = false;
+				show_noti("Please enter the right format!");
+			}
+			if (rightFormat)
+			{
+				delete_passenger(tree, passengerID);
+				insert_passenger(tree, passengerIDBuf, firstNameBuf, lastNameBuf, isMale);
+				memset(passengerIDBuf, '\0', 13);
+				memset(firstNameBuf, '\0', 51);
+				memset(lastNameBuf, '\0', 51);
+				isMale = false;
+				isFirstTime = true;
+				show_edit_passenger_popup = false;
+			}
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", cmdButtonSize))
+		{
+			memset(passengerIDBuf, '\0', 13);
+			memset(firstNameBuf, '\0', 51);
+			memset(lastNameBuf, '\0', 51);
+			isMale = false;
+			isFirstTime = true;
+			show_edit_passenger_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void delete_passenger_popup(PassengerNodesPTR &treeRoot, std::string &passengerID, int &selectedRow, bool &show_delete_passenger_popup)
+{
+	ImGui::OpenPopup("Want to delete a plane?");
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Want to delete a plane?", NULL, popupModalFlags))
+	{
+		ImGui::Separator();
+
+		ImGui::Text("Are you sure you want to delete this plane?");
+
+		ImGui::Separator();
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - 2 * cmdButtonSize.x - ITEM_SPACING) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Yes", cmdButtonSize))
+		{
+			delete_passenger(treeRoot, passengerID);
+			selectedRow = -1;
+			show_delete_passenger_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("No", cmdButtonSize))
+		{
+			selectedRow = -1;
+			show_delete_passenger_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
 		ImGui::EndPopup();
 	}
 }

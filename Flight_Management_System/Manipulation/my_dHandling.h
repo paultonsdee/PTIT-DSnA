@@ -775,3 +775,66 @@ PassengerNodesPTR search_passenger(PassengerNodesPTR &root, const std::string &k
 			p = p->right;
 	return (p);
 }
+
+void print_inoder(PassengerNodesPTR &p, int &row, int &countRows, std::string &passengerID)
+{
+	if (p != NULL)
+	{
+		print_inoder(p->left, row, countRows, passengerID);
+		ImGui::TableNextRow();
+		ImGui::TableSetColumnIndex(0);
+		if (ImGui::Selectable(p->passenger.passengerID.c_str(), row == countRows, ImGuiSelectableFlags_SpanAllColumns))
+		{
+			row = countRows;
+			passengerID = p->passenger.passengerID;
+		}
+		ImGui::TableSetColumnIndex(1);
+		std::string fullName = p->passenger.firstName + " " + p->passenger.lastName;
+		ImGui::Text(fullName.c_str());
+		ImGui::TableSetColumnIndex(2);
+		if (p->passenger.gender)
+			ImGui::Text("Male");
+		else
+			ImGui::Text("Female");
+		countRows++;
+		print_inoder(p->right, row, countRows, passengerID);
+	}
+}
+
+PassengerNodesPTR rp;
+
+void remove_case_3(PassengerNodesPTR &r)
+{
+	if (r->left != NULL)
+		remove_case_3(r->left);
+	// den day r la nut cuc trai cua cay con ben phai co nut goc la rp}
+	else
+	{
+		rp->passenger.passengerID = r->passenger.passengerID;
+		rp->passenger.firstName = r->passenger.firstName;
+		rp->passenger.lastName = r->passenger.lastName;
+		rp->passenger.gender = r->passenger.gender;
+		rp = r;
+		r = rp->right;
+	}
+}
+void delete_passenger(PassengerNodesPTR &p, std::string &key)
+{
+	if (p == NULL)
+		return;
+	else if (key < p->passenger.passengerID)
+		delete_passenger(p->left, key);
+	else if (key > p->passenger.passengerID)
+		delete_passenger(p->right, key);
+	else
+	{
+		rp = p;
+		if (rp->right == NULL)
+			p = rp->left;
+		else if (rp->left == NULL)
+			p = rp->right;
+		else
+			remove_case_3(rp->right);
+		delete rp;
+	}
+}

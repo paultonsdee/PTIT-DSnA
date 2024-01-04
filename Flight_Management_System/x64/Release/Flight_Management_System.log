@@ -65,6 +65,18 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(40
 D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(404,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(411,87): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(411,54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(412,117): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(412,84): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
 D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(419,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
@@ -389,6 +401,39 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(28
 D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2889,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2953,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2956,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2956,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2964,61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2964,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(3050,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(3051,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(3052,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(3107,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(3108,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(3109,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'main.cpp')
+  
   imgui.cpp
   imgui_demo.cpp
   imgui_draw.cpp
@@ -408,6 +453,6 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration
      Creating library D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.lib and object D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 2010 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 2022 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Flight_Management_System.vcxproj -> D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exe
