@@ -237,7 +237,28 @@ void show_noti(const std::string &message)
 {
 	showNoti = true;
 	notiMessage = message;
-	notiStartTime = ImGui::GetTime();
+	notiStartTime = SDL_GetTicks();
+}
+
+void show_popup_noti(const std::string &message)
+{
+	showPopupNoti = true;
+	popupNotiMessage = message;
+	popupNotiStartTime = SDL_GetTicks();
+}
+
+void draw_popup_noti()
+{
+	ImGui::OpenPopup("Popup Notification");
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	ImGui::PushFont(noti_font);
+	if (ImGui::BeginPopupModal("Popup Notification", NULL, popupModalFlags | ImGuiWindowFlags_NoTitleBar))
+	{
+		ImGui::Text(popupNotiMessage.c_str());
+		ImGui::EndPopup();
+	}
+	ImGui::PopFont();
 }
 
 bool is_in_array(std::string &planeType, const char *arr[], const int &aircraftTypesIndex)
@@ -557,7 +578,6 @@ void draw_aircraft_management_screen(PlaneList &planeList, FlightNodePTR &pFirst
 
 	// ImGui::SetCursorPosY(viewportSize.y - ImGui::CalcTextSize("Home").y - HEIGHT_SPACING*2 - 10);
 	// ImGui::Button("Home");
-
 
 	ImGui::End();
 }
@@ -2624,7 +2644,6 @@ void ranking_table_popup(PlaneList &planeList, FlightNodePTR &pFirstFlight, bool
 
 		for (int i = 0; i < 7; i++)
 			ImGui::Spacing();
-		
 
 		int windowWidth = ImGui::GetWindowWidth();
 		int saveButtonX = (windowWidth - cmdButtonSize.x) / 2;

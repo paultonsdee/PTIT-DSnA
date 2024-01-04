@@ -26,17 +26,16 @@ int main(int, char **)
 		load_flight(pFirstFlight, flightFile);
 		load_ticket(pFirstFlight, ticketFile);
 		load_passenger(treeRoot, passengerFile);
-	
 
 		ImGuiIO &io = init_ImGui();
 
 		io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 16.0f);
 		io.FontDefault = io.Fonts->Fonts.back();
 		ImFont *special_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 37.0f);
-		ImFont *noti_font = io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 25.0f);
+		noti_font = io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 25.0f);
 		popup_header_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 20.0f);
 
-		show_noti("Welcome to Flight Management System! Press SPACE to return to main menu!");
+		show_popup_noti("Welcome to Flight Management System! Press CTRL + H to return to main menu!");
 
 		bool running = true;
 		SDL_Event ev;
@@ -62,17 +61,29 @@ int main(int, char **)
 						running = false;
 						break;
 					case SDLK_RETURN:
-						save_aircraft(planeList, aircraftFile);
-						save_flight(pFirstFlight, flightFile);
-						save_ticket(pFirstFlight, ticketFile);
-						save_passenger(treeRoot, passengerFile);
-
 						break;
 					case SDLK_SPACE:
 						current_screen = MAIN_MENU;
 						// SDL_Window* menuWindow = SDL_CreateWindow("Menu", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 						break;
 					case SDLK_LCTRL: // test case
+
+						break;
+					}
+				}
+				else if (ev.type == SDL_KEYDOWN)
+				{
+					const Uint8 *state = SDL_GetKeyboardState(NULL);
+					if (state[SDL_SCANCODE_S] && (state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL]))
+					{
+						save_aircraft(planeList, aircraftFile);
+						save_flight(pFirstFlight, flightFile);
+						save_ticket(pFirstFlight, ticketFile);
+						save_passenger(treeRoot, passengerFile);
+						show_noti("save all data successfully!");
+					}
+					else if (state[SDL_SCANCODE_T] && (state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL]))
+					{
 						if (planeList.totalPlane == 0)
 							std::cout << "Plane list is empty" << std::endl
 									  << "----------" << std::endl;
@@ -88,40 +99,59 @@ int main(int, char **)
 							std::cout << plane->rowNum;
 							std::cout << std::endl;
 						}
-						std::cout << "----------" << std::endl;
-						if (count_flights(pFirstFlight) == 0)
-							std::cout << "Flight list is empty" << std::endl
-									  << "----------" << std::endl;
-						else
-							std::cout << "Flightlist:" << std::endl
-									  << "----------" << std::endl;
-						for (FlightNodePTR p = pFirstFlight; p != NULL; p = p->next)
-						{
-							std::cout << p->flight.flightNumber << " | ";
-							std::cout << p->flight.desAirport << " | ";
-							std::cout << p->flight.stt << " | ";
-							std::cout << p->flight.planeID << " | ";
-							std::cout << p->flight.totalTicket << " | ";
-							std::cout << p->flight.maxTicket;
-							std::cout << std::endl
-									  << "\t\t";
-							std::cout << p->flight.departureTime.day << "/";
-							std::cout << p->flight.departureTime.month << "/";
-							std::cout << p->flight.departureTime.year << " ";
-							std::cout << p->flight.departureTime.hour << ":";
-							std::cout << p->flight.departureTime.minute;
-							std::cout << std::endl;
+						// std::cout << "----------" << std::endl;
+						// if (count_flights(pFirstFlight) == 0)
+						// 	std::cout << "Flight list is empty" << std::endl
+						// 			  << "----------" << std::endl;
+						// else
+						// 	std::cout << "Flightlist:" << std::endl
+						// 			  << "----------" << std::endl;
+						// for (FlightNodePTR p = pFirstFlight; p != NULL; p = p->next)
+						// {
+						// 	std::cout << p->flight.flightNumber << " | ";
+						// 	std::cout << p->flight.desAirport << " | ";
+						// 	std::cout << p->flight.stt << " | ";
+						// 	std::cout << p->flight.planeID << " | ";
+						// 	std::cout << p->flight.totalTicket << " | ";
+						// 	std::cout << p->flight.maxTicket;
+						// 	std::cout << std::endl
+						// 			  << "\t\t";
+						// 	std::cout << p->flight.departureTime.day << "/";
+						// 	std::cout << p->flight.departureTime.month << "/";
+						// 	std::cout << p->flight.departureTime.year << " ";
+						// 	std::cout << p->flight.departureTime.hour << ":";
+						// 	std::cout << p->flight.departureTime.minute;
+						// 	std::cout << std::endl;
 
-							for (int i = 0; i < 3; i++)
-							{
-								std::cout << p->flight.ticketList[i].ticketID << " | ";
-								std::cout << p->flight.ticketList[i].passengerID << " | ";
-								std::cout << p->flight.ticketList[i].inUse;
-								std::cout << std::endl;
-							}
-						}
+						// 	for (int i = 0; i < p->flight.maxTicket; i++)
+						// 	{
+						// 		std::cout << p->flight.ticketList[i].ticketID << " | ";
+						// 		std::cout << p->flight.ticketList[i].passengerID << " | ";
+						// 		std::cout << p->flight.ticketList[i].inUse;
+						// 		std::cout << "\t";
+						// 	}
+						// 	std::cout << std::endl;
+						// }
 						std::cout << "----------" << std::endl;
-						break;
+						// if (treeRoot == NULL)
+						// 	std::cout << "Passenger list is empty" << std::endl
+						// 			  << "----------" << std::endl;
+						// else
+						// 	std::cout << "Passengerlist:" << std::endl
+						// 			  << "----------" << std::endl;
+						show_noti("print all data to terminal successfully!");
+					}
+					else if (state[SDL_SCANCODE_H] && (state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL]))
+					{
+						current_screen = MAIN_MENU;
+					}
+					else if (state[SDL_SCANCODE_A] && (state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL]))
+					{
+						current_screen = AIRCRAFT_MANAGEMENT;
+					}
+					else if (state[SDL_SCANCODE_F] && (state[SDL_SCANCODE_LCTRL] || state[SDL_SCANCODE_RCTRL]))
+					{
+						current_screen = FLIGHT_MANAGEMENT;
 					}
 				}
 				else if (ev.type == SDL_MOUSEBUTTONDOWN)
@@ -129,35 +159,6 @@ int main(int, char **)
 					// int mouseX, mouseY;
 					// SDL_GetMouseState(&mouseX, &mouseY);
 					// std::cout << mouseX << " " << mouseY << std::endl;
-
-					// if (count_flights(pFirstFlight) != 0)
-					// {
-					// 	std::cout << pFirstFlight->flight.flightNumber << std::endl;
-					// 	std::cout << pFirstFlight->flight.departureTime.day << std::endl;
-					// 	std::cout << pFirstFlight->flight.departureTime.month << std::endl;
-					// 	std::cout << pFirstFlight->flight.departureTime.year << std::endl;
-					// 	std::cout << pFirstFlight->flight.departureTime.hour << std::endl;
-					// 	std::cout << pFirstFlight->flight.departureTime.minute << std::endl;
-					// 	std::cout << pFirstFlight->flight.desAirport << std::endl;
-					// 	std::cout << pFirstFlight->flight.stt << std::endl;
-					// 	std::cout << pFirstFlight->flight.planeID << std::endl;
-					// 	std::cout << pFirstFlight->flight.totalTicket << std::endl;
-					// 	std::cout << pFirstFlight->flight.maxTicket << std::endl;
-					// }
-					// if (count_flights(pFirstFlight) > 1)
-					// {
-					// 	std::cout << pFirstFlight->next->flight.flightNumber << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.departureTime.day << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.departureTime.month << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.departureTime.year << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.departureTime.hour << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.departureTime.minute << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.desAirport << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.stt << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.planeID << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.totalTicket << std::endl;
-					// 	std::cout << pFirstFlight->next->flight.maxTicket << std::endl;
-					// }
 				}
 				else if (ev.type == SDL_MOUSEBUTTONUP)
 				{
@@ -178,8 +179,8 @@ int main(int, char **)
 			case FLIGHT_MANAGEMENT:
 				draw_flight_management_screen(pFirstFlight, planeList, treeRoot, special_font);
 				break;
-			// case DEMO_WINDOW:
-			// 	ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);
+				// case DEMO_WINDOW:
+				// 	ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);
 				break;
 			}
 
@@ -197,6 +198,16 @@ int main(int, char **)
 				}
 				ImGui::End();
 				ImGui::PopFont();
+			}
+
+			if (showPopupNoti)
+			{
+				draw_popup_noti();
+				if (SDL_GetTicks() - popupNotiStartTime > timeDisplayNoti)
+				{
+					showPopupNoti = false;
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
 			// Rendering

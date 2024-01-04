@@ -9,16 +9,16 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_terminate.h(33,48):
   see previous definition of 'terminate'
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(73,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(78,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(74,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(79,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(75,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(80,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(76,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration\my_gloVal.h(81,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
 D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(132,1): warning C5043: 'terminate': exception specification does not match previous declaration
@@ -26,373 +26,376 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(13
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_terminate.h(33,48):
   see declaration of 'terminate'
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(240,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(240,30): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(274,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(247,35): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(275,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(295,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(276,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(296,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(310,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(297,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(310,49): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(331,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(311,98): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(331,49): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(311,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(332,98): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(317,81): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(332,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(317,51): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(338,81): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(318,100): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(338,51): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(318,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(339,100): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(333,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(339,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(333,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(354,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(334,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(354,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(334,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(355,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(350,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(355,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(353,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(371,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(353,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(374,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(361,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(374,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(361,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(382,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(374,183): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(382,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(374,130): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(395,183): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(374,89): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(395,130): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(374,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(395,89): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(375,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(395,68): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(375,53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(396,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(383,68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(396,53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(383,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(404,68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(383,138): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(404,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(383,101): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(404,138): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(389,72): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(404,101): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(389,52): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(410,72): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(389,148): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(410,52): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(389,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(410,148): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(400,58): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(410,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(400,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(421,58): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(407,62): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(421,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(407,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(428,62): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(534,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(428,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(535,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(555,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(728,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(556,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(729,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(748,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(730,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(749,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(971,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(750,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(972,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(991,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(973,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(992,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1026,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(993,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1027,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1046,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1028,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1047,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1104,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1048,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1139,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1124,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1363,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1159,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1364,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1383,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1413,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1384,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1437,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1433,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1453,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1457,57): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1489,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1473,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
 D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1509,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1568,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1529,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1569,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1588,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1570,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1589,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1596,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1590,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1599,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1616,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1599,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1619,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1607,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1619,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1607,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1627,71): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1620,196): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1627,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1620,143): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1640,196): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1620,102): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1640,143): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1620,81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1640,102): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1623,80): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1640,81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1623,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1643,80): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1623,168): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1643,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1623,119): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1643,168): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1629,80): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1643,119): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1629,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1649,80): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1629,168): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1649,56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1629,119): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1649,168): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1635,96): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1649,119): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1635,64): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1655,96): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1635,208): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1655,64): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1635,143): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1655,208): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1646,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1655,143): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1646,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1666,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1653,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1666,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1653,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1673,70): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1660,86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1673,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1660,54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1680,86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1662,115): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1680,54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1662,83): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1682,115): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1703,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1682,83): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1739,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1723,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
 D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1759,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1807,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1779,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1808,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1827,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1809,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1828,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1885,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1829,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1943,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1905,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1957,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1963,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1973,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1977,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1974,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1993,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1975,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1994,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2025,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(1995,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2026,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2045,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2027,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2046,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2139,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2047,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2140,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2159,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2141,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2160,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2195,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2161,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2196,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2215,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2197,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2216,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2434,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2217,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2435,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2454,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2436,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2455,20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2492,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2456,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2493,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2512,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2494,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2513,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2603,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2514,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2604,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2623,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2629,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2624,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2630,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2648,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   (compiling source file 'main.cpp')
   
-D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2631,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2649,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(2650,24): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'main.cpp')
   
   imgui.cpp
@@ -414,6 +417,6 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\Declaration
      Creating library D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.lib and object D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 2003 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 2006 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Flight_Management_System.vcxproj -> D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exe

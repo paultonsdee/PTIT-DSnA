@@ -28,6 +28,10 @@ std::string notiMessage = "";
 float notiStartTime = 0.0f;
 const int timeDisplayNoti = 2507;
 
+bool showPopupNoti = false;
+std::string popupNotiMessage = "";
+float popupNotiStartTime = 0.0f;
+
 SDL_Window *gWindow = NULL;			// The window we'll be rendering to
 SDL_Renderer *gRenderTarget = NULL; // The window renderer
 SDL_Texture *gBackGround = NULL;	// The image we will load and show on the screen
@@ -37,6 +41,7 @@ ImVec2 cmdButtonSize = ImVec2(70, 30);
 ImVec2 actionButtonSize = ImVec2(117, 41);
 
 ImFont *popup_header_font;
+ImFont *noti_font;
 
 struct button
 {
