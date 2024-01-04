@@ -4,7 +4,7 @@
 int main(int, char **)
 {
 	// Our state
-	bool show_another_window = false;
+	// bool show_another_window = false;
 	// std::string filename = "aircraft.dat";
 	PlaneList planeList;
 
@@ -26,6 +26,7 @@ int main(int, char **)
 		load_flight(pFirstFlight, flightFile);
 		load_ticket(pFirstFlight, ticketFile);
 		load_passenger(treeRoot, passengerFile);
+	
 
 		ImGuiIO &io = init_ImGui();
 
@@ -33,6 +34,9 @@ int main(int, char **)
 		io.FontDefault = io.Fonts->Fonts.back();
 		ImFont *special_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 37.0f);
 		ImFont *noti_font = io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 25.0f);
+		popup_header_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 20.0f);
+
+		show_noti("Welcome to Flight Management System! Press SPACE to return to main menu!");
 
 		bool running = true;
 		SDL_Event ev;
@@ -169,13 +173,13 @@ int main(int, char **)
 				draw_main_menu_screen();
 				break;
 			case AIRCRAFT_MANAGEMENT:
-				draw_aircraft_management_screen(planeList, special_font);
+				draw_aircraft_management_screen(planeList, pFirstFlight, special_font);
 				break;
 			case FLIGHT_MANAGEMENT:
 				draw_flight_management_screen(pFirstFlight, planeList, treeRoot, special_font);
 				break;
-			case DEMO_WINDOW:
-				ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);
+			// case DEMO_WINDOW:
+			// 	ImGui::ShowDemoWindow(&open_state[DEMO_WINDOW]);
 				break;
 			}
 

@@ -321,15 +321,15 @@ void draw_main_menu_screen()
 		open_state[MAIN_MENU] = false;
 	}
 
-	button DemoWindowButton("Show demo window", FlightManagementButton, 25);
-	ImGui::SetCursorPos(ImVec2(DemoWindowButton.x_pos, DemoWindowButton.y_pos));
-	if (ImGui::Button("Show demo window", ImVec2(DemoWindowButton.width, DemoWindowButton.height)))
-	{
-		current_screen = DEMO_WINDOW;
-		open_state[MAIN_MENU] = false;
-	}
+	// button DemoWindowButton("Show demo window", FlightManagementButton, 25);
+	// ImGui::SetCursorPos(ImVec2(DemoWindowButton.x_pos, DemoWindowButton.y_pos));
+	// if (ImGui::Button("Show demo window", ImVec2(DemoWindowButton.width, DemoWindowButton.height)))
+	// {
+	// 	current_screen = DEMO_WINDOW;
+	// 	open_state[MAIN_MENU] = false;
+	// }
 
-	button CloseWindowButton("Close Window", DemoWindowButton, 25);
+	button CloseWindowButton("Close Window", FlightManagementButton, 25);
 	ImGui::SetCursorPos(ImVec2(CloseWindowButton.x_pos, CloseWindowButton.y_pos));
 	if (ImGui::Button("Close Window", ImVec2(CloseWindowButton.width, CloseWindowButton.height)))
 	{
@@ -340,7 +340,7 @@ void draw_main_menu_screen()
 	ImGui::End();
 }
 
-void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable)
+void show_AM_action_buttons(PlaneList &planeList, FlightNodePTR &pFirstFlight, int &selected, bool &isInTable, ImVec2 &tableCursorPos)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
@@ -367,6 +367,17 @@ void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable
 	}
 
 	button deleteButton("DELETE", saveAndExitButton, widthSpacing, 4);
+
+	ImVec2 controlButtonSize = ImGui::CalcTextSize("RANKING TABLE");
+	controlButtonSize.x += 2 * ITEM_SPACING;
+	controlButtonSize.y += 2 * ITEM_SPACING;
+	button passengerAndTicketButton("RANKING TABLE", controlButtonSize.x, controlButtonSize.y, viewportSize.x - controlButtonSize.x - BASE_WIDTH, tableCursorPos.y - controlButtonSize.y - HEIGHT_SPACING * 2);
+	ImGui::SetCursorPos(ImVec2(passengerAndTicketButton.x_pos, passengerAndTicketButton.y_pos));
+	static bool show_ranking_table_popup = false;
+	if (ImGui::Button(passengerAndTicketButton.name, controlButtonSize))
+		show_ranking_table_popup = true;
+	if (show_ranking_table_popup)
+		ranking_table_popup(planeList, pFirstFlight, show_ranking_table_popup);
 
 	static bool isInEditButton = false;
 	if (ImGui::IsMouseHoveringRect(ImVec2(editButton.x_pos, editButton.y_pos), ImVec2(editButton.x_pos + editButton.width, editButton.y_pos + editButton.height)))
@@ -405,7 +416,7 @@ void show_AM_action_buttons(PlaneList &planeList, int &selected, bool &isInTable
 	}
 }
 
-void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
+void draw_aircraft_management_screen(PlaneList &planeList, FlightNodePTR &pFirstFlight, ImFont *&headerFont)
 {
 	open_state[AIRCRAFT_MANAGEMENT] = true;
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
@@ -421,10 +432,12 @@ void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
 	ImGui::Text(header);
 	ImGui::PopFont();
 
-	ImGui::Text("From here you can control all the aircrafts!");
-	HelpMarker(
-		"Using TableSetupColumn() to alter resizing policy on a per-column basis.\n\n"
-		"When combining Fixed and Stretch columns, generally you only want one, maybe two trailing columns to use _WidthStretch.");
+	ImGui::Text("");
+	ImGui::Text("");
+	// ImGui::Text("From here you can control all the aircrafts!");
+	// HelpMarker(
+	// 	"Using TableSetupColumn() to alter resizing policy on a per-column basis.\n\n"
+	// 	"When combining Fixed and Stretch columns, generally you only want one, maybe two trailing columns to use _WidthStretch.");
 	// static ImGuiTableFlags flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
 
 	static ImGuiTableFlags flags = ImGuiTableFlags_RowBg |
@@ -540,7 +553,11 @@ void draw_aircraft_management_screen(PlaneList &planeList, ImFont *&headerFont)
 			currentPage = totalPages - 1;
 	}
 
-	show_AM_action_buttons(planeList, selected_row, isInTable);
+	show_AM_action_buttons(planeList, pFirstFlight, selected_row, isInTable, tableCursorPos);
+
+	// ImGui::SetCursorPosY(viewportSize.y - ImGui::CalcTextSize("Home").y - HEIGHT_SPACING*2 - 10);
+	// ImGui::Button("Home");
+
 
 	ImGui::End();
 }
@@ -1043,11 +1060,102 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 	ImGui::Text(header);
 	ImGui::PopFont();
 
-	ImGui::Text("From here you can control all the flights!");
-	HelpMarker(
-		"Using TableSetupColumn() to alter resizing policy on a per-column basis.\n\n"
-		"When combining Fixed and Stretch columns, generally you only want one, maybe two trailing columns to use _WidthStretch.");
+	ImGui::Text("");
+	// ImGui::Text("From here you can control all the flights!");
+	// HelpMarker(
+	// 	"Using TableSetupColumn() to alter resizing policy on a per-column basis.\n\n"
+	// 	"When combining Fixed and Stretch columns, generally you only want one, maybe two trailing columns to use _WidthStretch.");
 	// static ImGuiTableFlags flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+	ImGui::Text("Filters:");
+
+	static bool showDayFilter = false;
+	static bool showMonthFilter = false;
+	static bool showYearFilter = false;
+	static bool showDestinationAirportFilter = false;
+	static bool showAvailableTicketsFilter = false;
+
+	ImGui::SameLine();
+	ImGui::Text("Day:");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Day", &showDayFilter);
+	ImGui::SameLine();
+	ImGui::Text("Month:");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Month", &showMonthFilter);
+	ImGui::SameLine();
+	ImGui::Text("Year:");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Year", &showYearFilter);
+	ImGui::SameLine();
+	ImGui::Text("Destination Airport:");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Destination Airport", &showDestinationAirportFilter);
+	ImGui::SameLine();
+	ImGui::Text("Only book available flights:");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Available Tickets", &showAvailableTicketsFilter);
+
+	ImGui::Spacing();
+
+	ImGui::Text("Departure Date: ");
+	ImGui::SameLine();
+	int box2digit = BASE_WIDTH + DIGIT_WIDTH * 2;
+	int box4digit = BASE_WIDTH + DIGIT_WIDTH * 4;
+	ImGui::PushItemWidth(box2digit);
+	static int dayFilter = 1;
+	static int monthFilter = 1;
+	static int yearFilter = 2024;
+	int maxDayInMonth[12];
+	const int minDay = 1;
+	const int minMonth = 1;
+	const int maxMonth = 12;
+	const int minYear = 2024;
+	const int maxYear = 2099;
+	find_max_day_in_month(maxDayInMonth, monthFilter, yearFilter);
+
+	if (ImGui::InputInt("##day", &dayFilter, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+	{
+
+		if (dayFilter < minDay)
+			dayFilter = minDay;
+		else if (dayFilter > maxDayInMonth[monthFilter - 1])
+			dayFilter = maxDayInMonth[monthFilter - 1];
+	}
+	ImGui::SameLine();
+	ImGui::Text("/");
+	ImGui::SameLine();
+	if (ImGui::InputInt("##month", &monthFilter, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+	{
+		if (monthFilter < minMonth)
+			monthFilter = minMonth;
+		else if (monthFilter > maxMonth)
+			monthFilter = maxMonth;
+	}
+
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+	ImGui::Text("/");
+	ImGui::SameLine();
+	ImGui::PushItemWidth(box4digit);
+	if (ImGui::InputInt("##year", &yearFilter, 0, 0, ImGuiInputTextFlags_CharsDecimal))
+	{
+		if (yearFilter < minYear)
+			yearFilter = minYear;
+		else if (yearFilter > maxYear)
+			yearFilter = maxYear;
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::SameLine();
+
+	ImGui::Text("Departure Time: ");
+	ImGui::SameLine();
+	static int current_destinationAirport_index = 0;
+	static const char *current_destinationAirport = airports[current_destinationAirport_index];
+	const int Airports_length = combo_length(airports);
+	ImGui::PushItemWidth(BOX_WIDTH_FM);
+	draw_combo("##destination_airport", airports, Airports_length, current_destinationAirport_index, current_destinationAirport);
+	ImGui::PopItemWidth();
 
 	static ImGuiTableFlags flags = ImGuiTableFlags_RowBg |
 								   ImGuiTableFlags_BordersOuter;
@@ -1079,11 +1187,45 @@ void draw_flight_management_screen(FlightNodePTR &pFirstFlight, PlaneList &plane
 
 		FlightNodePTR p = pFirstFlight;
 		ImGui::TableNextRow();
-		for (int i = 0; i < 30 * currentPage; i++)
-			p = p->next;
+
+		if (!(showDayFilter || showMonthFilter || showYearFilter || showDestinationAirportFilter || showAvailableTicketsFilter))
+			for (int i = 0; i < 30 * currentPage; i++)
+				p = p->next;
 		int countRows = 0;
 		while (countRows < 30 && p != NULL)
 		{
+			if (showDayFilter && p->flight.departureTime.day != dayFilter)
+			{
+				p = p->next;
+				continue;
+			}
+			if (showMonthFilter && p->flight.departureTime.month != monthFilter)
+			{
+				p = p->next;
+				continue;
+			}
+			if (showYearFilter && p->flight.departureTime.year != yearFilter)
+			{
+				p = p->next;
+				continue;
+			}
+			if (showDestinationAirportFilter && p->flight.desAirport != current_destinationAirport)
+			{
+				p = p->next;
+				continue;
+			}
+			if (showAvailableTicketsFilter && !(showDayFilter || showMonthFilter || showYearFilter || showDestinationAirportFilter || showAvailableTicketsFilter))
+			{
+			}
+			else
+			{
+				if (p->flight.totalTicket == p->flight.maxTicket)
+				{
+					p = p->next;
+					continue;
+				}
+			}
+
 			ImGui::TableNextRow();
 			for (int column = 0; column < 7; column++)
 			{
@@ -2368,6 +2510,133 @@ void confirm_cancel_ticket(FlightNodePTR &p, int &selectedTicket, int &newStatus
 			newStatus = -1;
 			ImGui::CloseCurrentPopup();
 		}
+		ImGui::EndPopup();
+	}
+}
+
+void ranking_table_popup(PlaneList &planeList, FlightNodePTR &pFirstFlight, bool &show_ranking_table_popup)
+{
+	ImGui::OpenPopup("Ranking Table");
+
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Ranking Table", NULL, popupModalFlags | ImGuiWindowFlags_NoTitleBar))
+	{
+		float popupWitdh = ImGui::GetWindowWidth();
+		ImGui::PushFont(popup_header_font);
+		const char *header = "RAKING TABLE";
+		ImVec2 headerSize = ImGui::CalcTextSize(header);
+		float currentCursorPos = ImGui::GetCursorPosX() + (popupWitdh - headerSize.x) / 2 - BASE_WIDTH;
+		ImGui::SetCursorPosX(currentCursorPos);
+		ImGui::Text(header);
+		ImGui::PopFont();
+
+		for (int i = 0; i < 7; i++)
+			ImGui::Spacing();
+
+		int flightCount[MAXPLANE] = {};
+		int descendingSortedIndex[MAXPLANE] = {};
+		int maxFlight = 0;
+		for (int i = 0; i < planeList.totalPlane; i++)
+		{
+			flightCount[i] = 0;
+			FlightNodePTR p = pFirstFlight;
+			while (p != NULL)
+			{
+				if (p->flight.planeID == planeList.nodes[i]->planeID && p->flight.stt == 3)
+					flightCount[i]++;
+				if (flightCount[i] > maxFlight)
+					maxFlight = flightCount[i];
+				p = p->next;
+			}
+		}
+		for (int i = planeList.totalPlane; i < MAXPLANE; i++)
+		{
+			flightCount[i] = -1;
+			descendingSortedIndex[i] = -1;
+		}
+
+		int currentIndex = 0;
+		while (maxFlight > -1)
+		{
+			for (int i = 0; i < planeList.totalPlane; i++)
+			{
+				if (flightCount[i] == maxFlight)
+				{
+					descendingSortedIndex[currentIndex] = i;
+					currentIndex++;
+				}
+			}
+			maxFlight--;
+		}
+
+		static int selected_row = -1;
+		static int currentPage = 0;
+		int totalPages = planeList.totalPlane / 20;
+		if (planeList.totalPlane % 20)
+			totalPages++;
+
+		if (ImGui::BeginTable("Ranking Table", 2, tableFlags))
+		{
+			ImGui::TableSetupColumn("Plane ID", ImGuiTableColumnFlags_WidthFixed, 200.0f);
+			ImGui::TableSetupColumn("Completed Flight(s)", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+			ImGui::TableHeadersRow();
+
+			ImGui::TableNextRow();
+			int countRows = 0;
+			for (; countRows < 20 && ((currentPage * 20 + countRows) < planeList.totalPlane); countRows++)
+			{
+				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Text(planeList.nodes[descendingSortedIndex[currentPage * 20 + countRows]]->planeID.c_str());
+				ImGui::TableSetColumnIndex(1);
+				ImGui::Text("%d", flightCount[descendingSortedIndex[currentPage * 20 + countRows]]);
+			}
+
+			ImGui::EndTable();
+		}
+
+		ImVec2 pageNavButton = ImVec2(30, 30);
+
+		std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(totalPages);
+		int cursorX = popupWitdh / 2 - pageNavButton.x - ITEM_SPACING - ImGui::CalcTextSize(pageInfo.c_str()).x / 2;
+		ImGui::SetCursorPosX(cursorX);
+		ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 17);
+
+		if (ImGui::Button("<|", pageNavButton))
+		{
+			if (currentPage < totalPages)
+				currentPage--;
+			if (currentPage < 0)
+				currentPage = 0;
+		}
+		ImGui::SameLine();
+		ImGui::Text(pageInfo.c_str());
+		ImGui::SameLine();
+		if (ImGui::Button("|>", pageNavButton))
+		{
+			if (currentPage >= 0)
+				currentPage++;
+			if (currentPage >= totalPages)
+				currentPage = totalPages - 1;
+		}
+
+		for (int i = 0; i < 7; i++)
+			ImGui::Spacing();
+		
+
+		int windowWidth = ImGui::GetWindowWidth();
+		int saveButtonX = (windowWidth - cmdButtonSize.x) / 2;
+		ImGui::SetCursorPosX(saveButtonX);
+
+		if (ImGui::Button("Close", cmdButtonSize))
+		{
+			show_ranking_table_popup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+
 		ImGui::EndPopup();
 	}
 }

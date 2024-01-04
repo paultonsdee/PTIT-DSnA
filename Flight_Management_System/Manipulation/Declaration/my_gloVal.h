@@ -36,6 +36,8 @@ ImVec4 clear_color;
 ImVec2 cmdButtonSize = ImVec2(70, 30);
 ImVec2 actionButtonSize = ImVec2(117, 41);
 
+ImFont *popup_header_font;
+
 struct button
 {
 	const char *name;
@@ -101,7 +103,7 @@ enum screen
 	AIRCRAFT_MANAGEMENT,
 	FLIGHT_MANAGEMENT,
 	TICKET_MANAGEMENT,
-	DEMO_WINDOW,
+	// DEMO_WINDOW,
 };
 bool open_state[] = {false, false, false, false, false};
 
@@ -110,7 +112,7 @@ bool open_state[] = {false, false, false, false, false};
 #define tableFlags ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter
 #define popupModalFlags ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
 
-screen current_screen = FLIGHT_MANAGEMENT;
+screen current_screen = NONE;
 
 const char *airlines[] = {"Vietnam Airlines", "Vietjet Air", "Bamboo Airways", "Emirates Airlines", "Starlux Airlines"};
 const char *flightNumbers[] = {"VN", "VJ", "QH", "EK", "JX"};

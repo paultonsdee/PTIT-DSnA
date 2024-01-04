@@ -13,12 +13,12 @@ void display_message(const char *, const char *, const char *);
 void renderImGui(ImGuiIO &);
 void terminate(); // Frees media and shuts down
 void draw_main_menu_screen();
-void draw_aircraft_management_screen(PlaneList &, ImFont *&);
+void draw_aircraft_management_screen(PlaneList &, FlightNodePTR &, ImFont *&);
 void popup_inputPlane(PlaneList &);
 void draw_combo(const char *, const char *[], const int &, int &, const char *&);
 void HelpMarker(const char *);
 void add_plane_popup(PlaneList &, bool &, int &);
-void show_AM_action_buttons(PlaneList &, int &, bool &);
+void show_AM_action_buttons(PlaneList &, FlightNodePTR &, int &, bool &, ImVec2 &);
 void show_delete_plane_popup(PlaneList &, int &);
 void draw_flight_management_screen(FlightNodePTR &, PlaneList &, ImFont *&);
 void add_flight_popup(FlightNodePTR &, PlaneList &, bool &, int &);
@@ -34,6 +34,7 @@ void add_passenger_popup(PassengerNodesPTR &, FlightNodePTR &, int &, char (&)[1
 void confirm_id (char (&)[13], bool &, bool &);
 void ticket_and_passenger_popup (FlightNodePTR &, PassengerNodesPTR &, int &, int &, bool &);
 void confirm_cancel_ticket (FlightNodePTR &, int &, int &);
+void ranking_table_popup(PlaneList &, FlightNodePTR &, bool &);
 
 // --------------------------------------------
 // |             Data Handling                |
