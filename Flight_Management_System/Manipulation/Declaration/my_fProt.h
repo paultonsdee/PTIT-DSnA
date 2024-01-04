@@ -17,9 +17,9 @@ void draw_aircraft_management_screen(PlaneList &, FlightNodePTR &, ImFont *&);
 void popup_inputPlane(PlaneList &);
 void draw_combo(const char *, const char *[], const int &, int &, const char *&);
 void HelpMarker(const char *);
-void add_plane_popup(PlaneList &, bool &, int &);
-void show_AM_action_buttons(PlaneList &, FlightNodePTR &, int &, bool &, ImVec2 &);
-void show_delete_plane_popup(PlaneList &, int &);
+void add_plane_popup(PlaneList &, bool &, int &, int &);
+void show_AM_action_buttons(PlaneList &, FlightNodePTR &, int &, int &, bool &, ImVec2 &);
+void delete_plane_popup(PlaneList &, int &, int &, bool &);
 void draw_flight_management_screen(FlightNodePTR &, PlaneList &, ImFont *&);
 void add_flight_popup(FlightNodePTR &, PlaneList &, bool &, int &);
 void draw_combo(const char *, PlaneList &, int &, const char *&, int &);
@@ -40,6 +40,8 @@ void ranking_table_popup(PlaneList &, FlightNodePTR &, bool &);
 // |             Data Handling                |
 // --------------------------------------------
 
+bool is_decimal(char &);
+bool is_alpha (char &);
 int string_length(std::string &);
 bool is_planeList_empty(PlaneList &);
 bool is_planeList_full(PlaneList &);
@@ -48,8 +50,8 @@ void save_plane(PlaneList &, char *);
 // void save_aircraft(PlaneList&, char*);
 void save_aircraft(PlaneList &, std::string &);
 // void load_aircraft(PlaneList&, char*);
-void edit_plane_popup(PlaneList &, bool &, int &);
-void edit_plane(PlaneList &, int &, char[], const char *&, int &, int &, int &);
+void edit_plane_popup(PlaneList &, FlightNodePTR &, bool &, int &);
+bool edit_plane(PlaneList &, FlightNodePTR &, int &, char[], const char *&, int &, int &, int &);
 bool is_in_array(std::string &, const char *[], const int &);
 void link_list_initialize(FlightNodePTR &);
 void insert_flight(FlightNodePTR &, const char *&, char (&)[5], const char *&, PlaneList &, int &, int &, int &, int &, int &, int &);

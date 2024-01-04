@@ -35,7 +35,7 @@ int main(int, char **)
 		noti_font = io.Fonts->AddFontFromFileTTF("Media/Roboto-Medium.ttf", 25.0f);
 		popup_header_font = io.Fonts->AddFontFromFileTTF("Media/PassionOne-Bold.ttf", 20.0f);
 
-		show_popup_noti("Welcome to Flight Management System! Press CTRL + H to return to main menu!");
+		// show_popup_noti("Welcome to Flight Management System! Press CTRL + H to return to main menu!");
 
 		bool running = true;
 		SDL_Event ev;

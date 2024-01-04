@@ -361,7 +361,7 @@ void draw_main_menu_screen()
 	ImGui::End();
 }
 
-void show_AM_action_buttons(PlaneList &planeList, FlightNodePTR &pFirstFlight, int &selected, bool &isInTable, ImVec2 &tableCursorPos)
+void show_AM_action_buttons(PlaneList &planeList, FlightNodePTR &pFirstFlight, int &selected, int &currentPage, bool &isInTable, ImVec2 &tableCursorPos)
 {
 	ImVec2 viewportSize = ImGui::GetIO().DisplaySize;
 
@@ -376,13 +376,14 @@ void show_AM_action_buttons(PlaneList &planeList, FlightNodePTR &pFirstFlight, i
 	if (ImGui::Button(addButton.name, actionButtonSize))
 		show_add_plane_popup = true;
 	if (show_add_plane_popup)
-		add_plane_popup(planeList, show_add_plane_popup, selected);
+		add_plane_popup(planeList, show_add_plane_popup, selected, currentPage);
 
 	button saveAndExitButton("SAVE & EXIT", addButton, widthSpacing, 4);
 	ImGui::SetCursorPos(ImVec2(saveAndExitButton.x_pos, saveAndExitButton.y_pos));
 	if (ImGui::Button(saveAndExitButton.name, actionButtonSize))
 	{
 		save_aircraft(planeList, aircraftFile);
+		save_flight(pFirstFlight, flightFile);
 		current_screen = MAIN_MENU;
 		open_state[AIRCRAFT_MANAGEMENT] = false;
 	}
@@ -423,17 +424,14 @@ void show_AM_action_buttons(PlaneList &planeList, FlightNodePTR &pFirstFlight, i
 		if (ImGui::Button(editButton.name, actionButtonSize))
 			show_edit_plane_popup = true;
 		if (show_edit_plane_popup)
-			edit_plane_popup(planeList, show_edit_plane_popup, selected);
+			edit_plane_popup(planeList, pFirstFlight, show_edit_plane_popup, selected);
 
 		ImGui::SetCursorPos(ImVec2(deleteButton.x_pos, deleteButton.y_pos));
 		static bool show_delete_plane_popup = false;
 		if (ImGui::Button(deleteButton.name, actionButtonSize))
 			show_delete_plane_popup = true;
 		if (show_delete_plane_popup)
-		{
-			delete_plane(planeList, selected);
-			show_delete_plane_popup = false;
-		}
+			delete_plane_popup(planeList, selected, currentPage, show_delete_plane_popup);
 	}
 }
 
@@ -574,7 +572,7 @@ void draw_aircraft_management_screen(PlaneList &planeList, FlightNodePTR &pFirst
 			currentPage = totalPages - 1;
 	}
 
-	show_AM_action_buttons(planeList, pFirstFlight, selected_row, isInTable, tableCursorPos);
+	show_AM_action_buttons(planeList, pFirstFlight, selected_row, currentPage, isInTable, tableCursorPos);
 
 	// ImGui::SetCursorPosY(viewportSize.y - ImGui::CalcTextSize("Home").y - HEIGHT_SPACING*2 - 10);
 	// ImGui::Button("Home");
@@ -582,7 +580,7 @@ void draw_aircraft_management_screen(PlaneList &planeList, FlightNodePTR &pFirst
 	ImGui::End();
 }
 
-void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &currentAircraft)
+void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &currentAircraft, int &currentPage)
 {
 	ImGui::OpenPopup("Want to add a plane?");
 
@@ -751,16 +749,50 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 
 		if (ImGui::Button("Save", cmdButtonSize))
 		{
-			if (insert_plane(planeList, current_airline_index, aircraft_registration_buf, current_aircraftType[current_airline_index], total_seats, total_rows))
+			bool rightFormat = true;
+			if (current_airline_index == 0 || current_airline_index == 1 || current_airline_index == 2)
 			{
-				for (int i = 0; i < 6; i++)
-				{
-					aircraft_registration_buf[i] = '\0';
-				}
-				currentAircraft = planeList.totalPlane - 1;
+				for (int i = 0; i < 4; i++)
+					if (!is_decimal(aircraft_registration_buf[i]))
+					{
+						show_noti("Please enter in the right format!");
+						rightFormat = false;
+					}
+			}
+			else if (current_airline_index == 3)
+			{
+				for (int i = 0; i < 3; i++)
+					if (!is_alpha(aircraft_registration_buf[i]))
+					{
+						show_noti("Please enter in the right format!");
+						rightFormat = false;
+					}
+			}
+			else if (current_airline_index == 4)
+			{
+				for (int i = 0; i < 5; i++)
+					if (!is_decimal(aircraft_registration_buf[i]))
+					{
+						show_noti("Please enter in the right format!");
+						rightFormat = false;
+					}
 			}
 
-			show_add_plane_popup = false;
+			if (rightFormat)
+			{
+				if (insert_plane(planeList, current_airline_index, aircraft_registration_buf, current_aircraftType[current_airline_index], total_seats, total_rows))
+				{
+					for (int i = 0; i < 6; i++)
+					{
+						aircraft_registration_buf[i] = '\0';
+					}
+					currentAircraft = planeList.totalPlane - 1;
+					currentPage = (planeList.totalPlane - 1) / 30;
+
+					show_add_plane_popup = false;
+				}
+			}
+
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
@@ -778,7 +810,7 @@ void add_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &curr
 	}
 }
 
-void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &selectedPlane)
+void edit_plane_popup(PlaneList &planeList, FlightNodePTR &pFirstFlight, bool &show_add_plane_popup, int &selectedPlane)
 {
 	ImGui::OpenPopup("Want to edit a plane?");
 
@@ -796,25 +828,34 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 		ImGui::SetCursorPosX(COLON_POSX_AM);
 		ImGui::Text(":  ");
 		ImGui::SameLine();
-
+		static bool isFirstTime = true;
 		static int current_airline_index = 0;
-		switch (planeList.nodes[selectedPlane]->planeID[0])
+		static int total_seats;
+		static int total_rows;
+		if (isFirstTime)
 		{
-		case 'A':
-			current_airline_index = 3;
-			break;
-		case 'B':
-			current_airline_index = 4;
-			break;
-		default:
-			if (is_in_array(planeList.nodes[selectedPlane]->planeType, aircraftTypes[0], 0))
-				current_airline_index = 0;
-			else if (is_in_array(planeList.nodes[selectedPlane]->planeType, aircraftTypes[1], 1))
-				current_airline_index = 1;
-			else
-				current_airline_index = 2;
-			break;
+			switch (planeList.nodes[selectedPlane]->planeID[0])
+			{
+			case 'A':
+				current_airline_index = 3;
+				break;
+			case 'B':
+				current_airline_index = 4;
+				break;
+			default:
+				if (is_in_array(planeList.nodes[selectedPlane]->planeType, aircraftTypes[0], 0))
+					current_airline_index = 0;
+				else if (is_in_array(planeList.nodes[selectedPlane]->planeType, aircraftTypes[1], 1))
+					current_airline_index = 1;
+				else
+					current_airline_index = 2;
+				break;
+			}
+			total_seats = planeList.nodes[selectedPlane]->seatNum;
+			total_rows = planeList.nodes[selectedPlane]->rowNum;
+			isFirstTime = false;
 		}
+
 		static const char *current_airline = airlines[current_airline_index];
 		const int airline_length = combo_length(airlines);
 		ImGui::PushItemWidth(BOX_WIDTH_AM);
@@ -949,7 +990,7 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 		ImGui::SetCursorPosX(COLON_POSX_AM);
 		ImGui::Text(":  ");
 		ImGui::SameLine();
-		static int total_seats = planeList.nodes[selectedPlane]->seatNum;
+
 		ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 2) - ITEM_SPACING);
 		ImGui::SliderInt("##slider_seats", &total_seats, 2, 11);
 		ImGui::PopItemWidth();
@@ -971,7 +1012,7 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 		ImGui::SetCursorPosX(COLON_POSX_AM);
 		ImGui::Text(":  ");
 		ImGui::SameLine();
-		static int total_rows = planeList.nodes[selectedPlane]->rowNum;
+
 		ImGui::PushItemWidth(BOX_WIDTH_AM - (BASE_WIDTH + DIGIT_WIDTH * 3) - ITEM_SPACING);
 		ImGui::SliderInt("##slider_rows", &total_rows, 1, 100);
 		ImGui::PopItemWidth();
@@ -994,23 +1035,57 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 
 		if (ImGui::Button("Save", cmdButtonSize))
 		{
-			edit_plane(planeList, current_airline_index, aircraft_registration_buf, current_aircraftType[current_airline_index], total_seats, total_rows, selectedPlane);
-			for (int i = 0; i < 6; i++)
+			bool rightFormat = true;
+			if (current_airline_index == 0 || current_airline_index == 1 || current_airline_index == 2)
 			{
-				aircraft_registration_buf[i] = '\0';
+				for (int i = 0; i < 4; i++)
+					if (!is_decimal(aircraft_registration_buf[i]))
+					{
+						show_noti("Please enter in the right format!");
+						rightFormat = false;
+					}
 			}
-			temp_i = 0;
-			startFlag = false;
-			startIndex = 0;
-			successLoadAircraftType = false;
-			selectedPlane = -1;
-			show_add_plane_popup = false;
+			else if (current_airline_index == 3)
+			{
+				for (int i = 0; i < 3; i++)
+					if (!is_alpha(aircraft_registration_buf[i]))
+					{
+						show_noti("Please enter in the right format!");
+						rightFormat = false;
+					}
+			}
+			else if (current_airline_index == 4)
+			{
+				for (int i = 0; i < 5; i++)
+					if (!is_decimal(aircraft_registration_buf[i]))
+					{
+						show_noti("Please enter in the right format!");
+						rightFormat = false;
+					}
+			}
+
+			if (rightFormat)
+				if (edit_plane(planeList, pFirstFlight, current_airline_index, aircraft_registration_buf, current_aircraftType[current_airline_index], total_seats, total_rows, selectedPlane))
+				{
+					for (int i = 0; i < 6; i++)
+					{
+						aircraft_registration_buf[i] = '\0';
+					}
+					temp_i = 0;
+					startFlag = false;
+					startIndex = 0;
+					successLoadAircraftType = false;
+					isFirstTime = true;
+					show_add_plane_popup = false;
+				}
+
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel", cmdButtonSize))
 		{
+			// reset all static variables
 			for (int i = 0; i < 6; i++)
 			{
 				aircraft_registration_buf[i] = '\0';
@@ -1019,7 +1094,7 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 			startFlag = false;
 			startIndex = 0;
 			successLoadAircraftType = false;
-			selectedPlane = -1;
+			isFirstTime = true;
 			show_add_plane_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
@@ -1027,7 +1102,7 @@ void edit_plane_popup(PlaneList &planeList, bool &show_add_plane_popup, int &sel
 	}
 }
 
-void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
+void delete_plane_popup(PlaneList &planeList, int &selectedPlane, int &currentPage, bool &show_delete_plane_popup)
 {
 	ImGui::OpenPopup("Want to delete a plane?");
 
@@ -1051,6 +1126,8 @@ void show_delete_plane_popup(PlaneList &planeList, int &selectedPlane)
 		{
 			delete_plane(planeList, selectedPlane);
 			selectedPlane = -1;
+			if (currentPage > 0 && planeList.totalPlane % 30 == 0)
+				currentPage--;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();

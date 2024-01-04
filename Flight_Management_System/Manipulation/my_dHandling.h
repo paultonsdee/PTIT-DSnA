@@ -14,6 +14,16 @@ void string_uppercase(std::string &str)
 			str[i] -= 32;
 }
 
+bool is_decimal (char &c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+bool is_alpha (char &c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
 int string_length(std::string &str)
 {
 	int length = 0;
@@ -66,8 +76,8 @@ bool insert_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircra
 {
 	if (is_planeList_full(planeList))
 	{
-		std::cout << "The aircraft list is full";
-		return 0;
+		show_noti("The aircraft list is full");
+		return false;
 	}
 
 	planeList.nodes[planeList.totalPlane] = new Plane;
@@ -90,18 +100,24 @@ bool insert_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircra
 	}
 
 	plane->planeID = aircraftRegistration + aircraft_registration_buf;
+	for (int i = 0; i < planeList.totalPlane; i++)
+		if (plane->planeID == planeList.nodes[i]->planeID)
+		{
+			show_noti("The aircraft ID already exists");
+			return false;
+		}
 	plane->planeType = pCurrent_aircraftType;
 	plane->seatNum = total_seats;
 	plane->rowNum = total_rows;
 
-	std::cout << "aircraft created successfully!" << std::endl;
-
 	planeList.totalPlane++;
 
-	return 1;
+	show_noti("Aircraft added successfully!");
+
+	return true;
 }
 
-void edit_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircraft_registration_buf[], const char *&pCurrent_aircraftType, int &total_seats, int &total_rows, int &planeIndex)
+bool edit_plane(PlaneList &planeList, FlightNodePTR &pFirstFlight, int &pCurrent_airline_index, char aircraft_registration_buf[], const char *&pCurrent_aircraftType, int &total_seats, int &total_rows, int &planeIndex)
 {
 	Plane *plane = planeList.nodes[planeIndex];
 
@@ -121,12 +137,72 @@ void edit_plane(PlaneList &planeList, int &pCurrent_airline_index, char aircraft
 		break;
 	}
 
-	plane->planeID = aircraftRegistration + aircraft_registration_buf;
+	std::string planeID = aircraftRegistration + aircraft_registration_buf;
+	for (int i = 0; i < planeList.totalPlane; i++)
+		if ((planeID == planeList.nodes[i]->planeID) && (i != planeIndex))
+		{
+			show_noti("The aircraft ID already exists");
+			return false;
+		}
+
+	if ((plane ->rowNum != total_rows) || (plane ->seatNum != total_seats))
+	{
+		FlightNodePTR p = pFirstFlight;
+		while (p != NULL)
+		{
+			if (p->flight.planeID == plane->planeID && (p->flight.stt == 1 || p->flight.stt == 2))
+			{
+				show_noti("The aircraft is in use, cannot be edited");
+				return false;
+			}
+			p = p->next;
+		}
+
+		p = pFirstFlight;
+		while (p != NULL)
+		{
+			if (p->flight.planeID == plane->planeID)
+			{
+				delete[] p->flight.ticketList;
+				p->flight.maxTicket = total_rows * total_seats;
+				p->flight.ticketList = new Ticket[p->flight.maxTicket];
+
+				std::string seats[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+				for (int i = 0; i < p->flight.maxTicket; i++)
+				{
+					int seatIndex = i / total_rows;
+					int rowIndex = i % total_rows + 1;
+					p->flight.ticketList[i].ticketID = seats[seatIndex];
+					if (total_rows == 100)
+					{
+						if (rowIndex < 10)
+							p->flight.ticketList[i].ticketID += "00";
+						else if (rowIndex < 100)
+							p->flight.ticketList[i].ticketID += "0";
+					}
+					else if (total_rows > 9)
+					{
+						if (rowIndex < 10)
+							p->flight.ticketList[i].ticketID += "0";
+					}
+					p->flight.ticketList[i].ticketID += std::to_string(rowIndex);
+
+					p->flight.ticketList[i].passengerID = "";
+					p->flight.ticketList[i].inUse = 0;
+				}
+			}
+			p = p->next;
+		}
+	}
+
+	plane->planeID = planeID;
 	plane->planeType = pCurrent_aircraftType;
 	plane->seatNum = total_seats;
 	plane->rowNum = total_rows;
 
-	std::cout << "aircraft edited successfully!" << std::endl;
+	show_noti("Aircraft edited successfully!");
+	
+	return true;
 }
 
 // void save_aircraft(PlaneList &planeList, std::string filename) //binary file
@@ -222,6 +298,8 @@ void delete_plane(PlaneList &planeList, int &planeIndex)
 	for (int i = planeIndex; i < planeList.totalPlane - 1; i++)
 		planeList.nodes[i] = planeList.nodes[i + 1];
 	planeList.totalPlane--;
+
+	show_noti("Aircraft deleted successfully!");
 }
 
 void insert_flight(FlightNodePTR &First, const char *&flightNumber1, char (&flightNumber2)[5], const char *&desAirport, PlaneList &planeList, int &selectedPlane, int &day, int &month, int &year, int &hour, int &minute)
