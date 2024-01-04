@@ -14,12 +14,12 @@ void string_uppercase(std::string &str)
 			str[i] -= 32;
 }
 
-bool is_decimal (char &c)
+bool is_decimal(char &c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-bool is_alpha (char &c)
+bool is_alpha(char &c)
 {
 	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
@@ -145,7 +145,7 @@ bool edit_plane(PlaneList &planeList, FlightNodePTR &pFirstFlight, int &pCurrent
 			return false;
 		}
 
-	if ((plane ->rowNum != total_rows) || (plane ->seatNum != total_seats))
+	if ((plane->rowNum != total_rows) || (plane->seatNum != total_seats))
 	{
 		FlightNodePTR p = pFirstFlight;
 		while (p != NULL)
@@ -201,7 +201,7 @@ bool edit_plane(PlaneList &planeList, FlightNodePTR &pFirstFlight, int &pCurrent
 	plane->rowNum = total_rows;
 
 	show_noti("Aircraft edited successfully!");
-	
+
 	return true;
 }
 
@@ -302,16 +302,102 @@ void delete_plane(PlaneList &planeList, int &planeIndex)
 	show_noti("Aircraft deleted successfully!");
 }
 
-void insert_flight(FlightNodePTR &First, const char *&flightNumber1, char (&flightNumber2)[5], const char *&desAirport, PlaneList &planeList, int &selectedPlane, int &day, int &month, int &year, int &hour, int &minute)
+bool is_six_hour_dif_day(int &hour1, int &min1, int &hour2, int &min2)
+{
+	if (hour1 < 6 && hour2 >= 18)
+	{
+		int time1 = (hour1 + 24) * 60 + min1;
+		int time2 = hour2 * 60 + min2;
+		if (abs(time1 - time2) < 360)
+		{
+			show_noti("Cannot use the same plane for two flights within 6 hours");
+			return false;
+		}
+	}
+	else if (hour1 >= 18 && hour2 < 6)
+	{
+		int time1 = (hour2 + 24) * 60 + min2;
+		int time2 = hour1 * 60 + min1;
+		if (abs(time1 - time2) < 360)
+			return false;
+	}
+	return true;
+}
+
+bool insert_flight(FlightNodePTR &First, const char *&flightNumber1, char (&flightNumber2)[5], const char *&desAirport, PlaneList &planeList, int &selectedPlane, int &day, int &month, int &year, int &hour, int &minute)
 {
 	FlightNodePTR p = new_flight();
 
 	Flight *flight = &p->flight;
-	flight->flightNumber = flightNumber1;
-	flight->flightNumber += flightNumber2;
+	std::string flightNumber = flightNumber1 + std::string(flightNumber2);
+
+	for (FlightNodePTR pTemp = First; pTemp != NULL; pTemp = pTemp->next)
+		if (pTemp->flight.flightNumber == flightNumber)
+		{
+			show_noti("The flight number already exists");
+			return false;
+		}
+	std::string planeID = planeList.nodes[selectedPlane]->planeID;
+	for (FlightNodePTR pTemp = First; pTemp != NULL; pTemp = pTemp->next)
+		if (pTemp->flight.planeID == planeID)
+		{
+			if (pTemp->flight.departureTime.year == year && pTemp->flight.departureTime.month == month && pTemp->flight.departureTime.day == day)
+			{
+				int maxDayInMonth[12];
+				const int minDay = 1;
+				const int minMonth = 1;
+				const int maxMonth = 12;
+				find_max_day_in_month(maxDayInMonth, month, year);
+
+				if ((abs(pTemp->flight.departureTime.year - year)) == 1)
+				{
+					if ((pTemp->flight.departureTime.month == 12 && month == 1 && pTemp->flight.departureTime.day == 31 && day == 1) || (pTemp->flight.departureTime.month == 1 && month == 12 && pTemp->flight.departureTime.day == 1 && day == 31))
+						if (is_six_hour_dif_day(pTemp->flight.departureTime.hour, pTemp->flight.departureTime.minute, hour, minute) == false)
+						{
+							show_noti("Cannot use the same plane for two flights within 6 hours");
+							return false;
+						}
+				}
+				else if (pTemp->flight.departureTime.year == year)
+				{
+					if ((abs(pTemp->flight.departureTime.month - month)) == 1)
+					{
+						if ((pTemp->flight.departureTime.day == maxDayInMonth[pTemp->flight.departureTime.month] && day == 1) || (pTemp->flight.departureTime.day == 1 && month == maxDayInMonth[month]))
+							if (is_six_hour_dif_day(pTemp->flight.departureTime.hour, pTemp->flight.departureTime.minute, hour, minute) == false)
+							{
+								show_noti("Cannot use the same plane for two flights within 6 hours");
+								return false;
+							}
+					}
+					else if (pTemp->flight.departureTime.month == month)
+					{
+						if ((abs(pTemp->flight.departureTime.day - day)) == 1)
+						{
+							if (is_six_hour_dif_day(pTemp->flight.departureTime.hour, pTemp->flight.departureTime.minute, hour, minute) == false)
+							{
+								show_noti("Cannot use the same plane for two flights within 6 hours");
+								return false;
+							}
+						}
+						else if (pTemp->flight.departureTime.day == day)
+						{
+							int time1 = pTemp->flight.departureTime.hour * 60 + pTemp->flight.departureTime.minute;
+							int time2 = hour * 60 + minute;
+							if (abs(time1 - time2) < 360)
+							{
+								show_noti("Cannot use the same plane for two flights within 6 hours");
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+
+	flight->flightNumber = flightNumber;
+	flight->planeID = planeID;
 	flight->desAirport = desAirport;
 	flight->stt = 1;
-	flight->planeID = planeList.nodes[selectedPlane]->planeID;
 	flight->totalTicket = 0;
 	flight->maxTicket = planeList.nodes[selectedPlane]->seatNum * planeList.nodes[selectedPlane]->rowNum;
 	flight->ticketList = new Ticket[flight->maxTicket];
@@ -374,7 +460,9 @@ void insert_flight(FlightNodePTR &First, const char *&flightNumber1, char (&flig
 		pCurrent->next = p;
 	}
 
-	std::cout << "flight created successfully!" << std::endl;
+	show_noti("Flight added successfully!");
+
+	return true;
 }
 
 void link_list_initialize(FlightNodePTR &First)
@@ -673,6 +761,7 @@ void book_ticket(FlightNodePTR &p, const std::string &ID, int &ticketIndex)
 	p->flight.ticketList[ticketIndex].passengerID = ID;
 	p->flight.ticketList[ticketIndex].inUse = true;
 	p->flight.totalTicket++;
+	show_noti("Ticket booked successfully!");
 }
 
 PassengerNodesPTR search_passenger(PassengerNodesPTR &root, const std::string &key)

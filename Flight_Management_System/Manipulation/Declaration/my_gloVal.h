@@ -117,7 +117,7 @@ bool open_state[] = {false, false, false, false, false};
 #define tableFlags ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter
 #define popupModalFlags ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
 
-screen current_screen = AIRCRAFT_MANAGEMENT;
+screen current_screen = FLIGHT_MANAGEMENT;
 
 const char *airlines[] = {"Vietnam Airlines", "Vietjet Air", "Bamboo Airways", "Emirates Airlines", "Starlux Airlines"};
 const char *flightNumbers[] = {"VN", "VJ", "QH", "EK", "JX"};
