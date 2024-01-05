@@ -11,7 +11,7 @@ SDL_Texture *LoadTexture(const char *);
 ImGuiIO &init_ImGui();
 void display_message(const char *, const char *, const char *);
 void renderImGui(ImGuiIO &);
-void terminate(); // Frees media and shuts down
+void terminate(PlaneList &, FlightNodePTR &, PassengerNodesPTR &);
 void draw_main_menu_screen();
 void draw_aircraft_management_screen(PlaneList &, FlightNodePTR &, ImFont *&);
 void popup_inputPlane(PlaneList &);

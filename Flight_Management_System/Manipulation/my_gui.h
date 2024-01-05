@@ -128,8 +128,28 @@ void init_row_arr()
 	}
 }
 
-void terminate()
+void terminate(PlaneList &planeList, FlightNodePTR &pFirstFlight, PassengerNodesPTR &treeRoot)
 {
+	for (int i = 0; i < planeList.totalPlane; i++)
+	{
+		delete planeList.nodes[i];
+	}
+
+	FlightNodePTR p = pFirstFlight;
+	while (p != NULL)
+	{
+		for (int i = 0; i < p->flight.totalTicket; i++)
+		{
+			delete p->flight.ticketList;
+		}
+		pFirstFlight = pFirstFlight->next;
+		delete p;
+		p = pFirstFlight;
+	}
+
+	delete treeRoot;
+	treeRoot = NULL;
+
 	ImGui_ImplSDLRenderer2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();

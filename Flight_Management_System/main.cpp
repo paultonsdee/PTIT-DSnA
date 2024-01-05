@@ -215,7 +215,7 @@ int main(int, char **)
 			renderImGui(io);
 		}
 	}
-	terminate();
+	terminate(planeList, pFirstFlight, treeRoot);
 
 	return 0;
 }
