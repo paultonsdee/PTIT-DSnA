@@ -2952,15 +2952,15 @@ void show_PM_action_buttons(PassengerNodesPTR &treeRoot, std::string &passengerI
 
 	int widthSpacing = (viewportSize.x - 4 * actionButtonSize.x - 2 * firstButton.x_pos) / 3;
 
-	button editButton("EDIT", firstButton, widthSpacing, 4);
-	ImGui::SetCursorPos(ImVec2(editButton.x_pos, editButton.y_pos));
-	static bool show_edit_passenger_popup = false;
-	if (ImGui::Button(editButton.name, actionButtonSize))
-		show_edit_passenger_popup = true;
-	if (show_edit_passenger_popup)
-		edit_passenger_popup(treeRoot, passengerID, selectedRow, show_edit_passenger_popup);
+	button addButton("ADD", firstButton, widthSpacing, 4);
+	ImGui::SetCursorPos(ImVec2(addButton.x_pos, addButton.y_pos));
+	static bool show_add_passenger_popup = false;
+	if (ImGui::Button(addButton.name, actionButtonSize))
+		show_add_passenger_popup = true;
+	if (show_add_passenger_popup)
+		add_passenger_popup(treeRoot, passengerID, selectedRow, show_add_passenger_popup);
 
-	button deleteButton("DELETE", editButton, widthSpacing, 4);
+	button deleteButton("DELETE", addButton, widthSpacing, 4);
 	ImGui::SetCursorPos(ImVec2(deleteButton.x_pos, deleteButton.y_pos));
 	static bool show_delete_passenger_popup = false;
 	if (ImGui::Button(deleteButton.name, actionButtonSize))
@@ -2969,30 +2969,23 @@ void show_PM_action_buttons(PassengerNodesPTR &treeRoot, std::string &passengerI
 		delete_passenger_popup(treeRoot, passengerID, selectedRow, show_delete_passenger_popup);
 }
 
-void edit_passenger_popup(PassengerNodesPTR &tree, std::string &passengerID, int &selectedRow, bool &show_edit_passenger_popup)
+void add_passenger_popup(PassengerNodesPTR &tree, std::string &passengerID, int &selectedRow, bool &show_add_passenger_popup)
 {
 	PassengerNodesPTR p = search_passenger(tree, passengerID);
 
-	bool isFirstTime = true;
 	static char passengerIDBuf[13] = "";
 	static char firstNameBuf[51] = "";
 	static char lastNameBuf[51] = "";
 	static bool isMale = false;
-	if (isFirstTime)
-	{
-		strcpy_s(passengerIDBuf, p->passenger.passengerID.c_str());
-		strcpy_s(firstNameBuf, p->passenger.firstName.c_str());
-		strcpy_s(lastNameBuf, p->passenger.lastName.c_str());
-		isMale = p->passenger.gender;
-	}
+	
 
-	ImGui::OpenPopup("Want to edit this passenger?");
+	ImGui::OpenPopup("Want to add a passenger?");
 
 	// Always center this window when appearing
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Want to edit this passenger?", NULL, popupModalFlags))
+	if (ImGui::BeginPopupModal("Want to add a passenger?", NULL, popupModalFlags))
 	{
 		ImGui::Separator();
 
@@ -3061,14 +3054,18 @@ void edit_passenger_popup(PassengerNodesPTR &tree, std::string &passengerID, int
 			}
 			if (rightFormat)
 			{
-				delete_passenger(tree, passengerID);
-				insert_passenger(tree, passengerIDBuf, firstNameBuf, lastNameBuf, isMale);
-				memset(passengerIDBuf, '\0', 13);
-				memset(firstNameBuf, '\0', 51);
-				memset(lastNameBuf, '\0', 51);
-				isMale = false;
-				isFirstTime = true;
-				show_edit_passenger_popup = false;
+				if (isPassengerExist(tree, passengerIDBuf))
+					show_noti("This passenger ID is already in the database!");
+				else
+				{
+					insert_passenger(tree, passengerIDBuf, firstNameBuf, lastNameBuf, isMale);
+					show_noti("Add passenger successfully!");
+					memset(passengerIDBuf, '\0', 13);
+					memset(firstNameBuf, '\0', 51);
+					memset(lastNameBuf, '\0', 51);
+					isMale = false;
+					show_add_passenger_popup = false;
+				}
 			}
 			ImGui::CloseCurrentPopup();
 		}
@@ -3080,8 +3077,7 @@ void edit_passenger_popup(PassengerNodesPTR &tree, std::string &passengerID, int
 			memset(firstNameBuf, '\0', 51);
 			memset(lastNameBuf, '\0', 51);
 			isMale = false;
-			isFirstTime = true;
-			show_edit_passenger_popup = false;
+			show_add_passenger_popup = false;
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();

@@ -38,7 +38,7 @@ void ranking_table_popup(PlaneList &, FlightNodePTR &, bool &);
 void draw_passenger_management_screen(PassengerNodesPTR &, ImFont *&);
 void show_PM_action_buttons(PassengerNodesPTR &, std::string &, int &, int &);
 void delete_passenger_popup(PassengerNodesPTR &, std::string &, int &, bool &);
-void edit_passenger_popup(PassengerNodesPTR &, std::string &, int &, bool &);
+void add_passenger_popup(PassengerNodesPTR &, std::string &, int &, bool &);
 
 
 // --------------------------------------------
