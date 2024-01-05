@@ -429,6 +429,6 @@ D:\Learning_Src_Code\PTIT\DSnA\Flight_Management_System\Manipulation\my_gui.h(31
   my_fProt.h
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 2024 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 2025 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Flight_Management_System.vcxproj -> D:\Learning_Src_Code\PTIT\DSnA\x64\Release\Flight_Management_System.exe
